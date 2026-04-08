@@ -97,8 +97,8 @@ const STARS: { x: number; y: number; r: number; o: number }[] = (() => {
   }
   return stars;
 })();
-const ROUND_ICON_PLACEHOLDER = '/icons/talents/scars%20icon%201.avif';
-const SQUARE_ICON_PLACEHOLDER = '/icons/talents/scars%20icon%202.avif';
+const ROUND_ICON_PLACEHOLDER = '/Icons/Talents/scars%20icon%201.avif';
+const SQUARE_ICON_PLACEHOLDER = '/Icons/Talents/scars%20icon%202.avif';
 
 
 // Test ability icon - swap in a CDN item icon on a few nodes to preview how real icons will look

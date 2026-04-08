@@ -49,6 +49,7 @@ const navItems: NavItem[] = [
   },
   {
     label: 'Character',
+    href: '/character',
     items: [
       { name: 'Classes', href: '/classes', children: classChildren('/classes') },
       {
@@ -315,7 +316,7 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
       {mobileOpen && (
         <div className="md:hidden bg-deep-night border-t border-border-subtle">
           {navItems.map((nav) =>
-            nav.href ? (
+            nav.href && !nav.items ? (
               <Link
                 key={nav.label}
                 href={nav.href}
@@ -326,9 +327,15 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
               </Link>
             ) : (
               <div key={nav.label} className="border-b border-border-subtle">
-                <div className="px-4 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider">
-                  {nav.label}
-                </div>
+                {nav.href ? (
+                  <Link href={nav.href} className="block px-4 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider hover:text-honor-gold" onClick={() => setMobileOpen(false)}>
+                    {nav.label}
+                  </Link>
+                ) : (
+                  <div className="px-4 py-2 text-xs font-semibold text-text-muted uppercase tracking-wider">
+                    {nav.label}
+                  </div>
+                )}
                 {nav.items?.map((item) => (
                   <Link
                     key={item.name}

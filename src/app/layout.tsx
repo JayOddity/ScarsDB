@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description,
-    metadataBase: new URL('https://scars-db.vercel.app'),
+    metadataBase: new URL('https://scarshq.com'),
     icons: {
       icon: '/favicon.ico',
       apple: '/apple-touch-icon.png',
@@ -54,6 +54,23 @@ export default async function RootLayout({
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'ScarsHQ',
+              url: 'https://scarshq.com',
+              description: 'Talent calculator, item database, class guides, and community tools for Scars of Honor MMORPG.',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: 'https://scarshq.com/items?search={search_term_string}',
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
         <AuthProvider>
           <Header siteName={siteName} siteAbbrev={siteAbbrev} />
           <main className="flex-1">{children}</main>

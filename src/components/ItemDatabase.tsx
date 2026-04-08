@@ -453,7 +453,7 @@ export default function ItemDatabase() {
           >
             All Items
           </button>
-          {Object.entries(CATEGORIES).map(([key, cat]) => (
+          {Object.entries(CATEGORIES_MAP).map(([key, cat]) => (
             <button
               key={key}
               onClick={() => { setCategory(category === key ? null : key); setSubFilter(null); setPage(1); }}

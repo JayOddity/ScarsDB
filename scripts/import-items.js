@@ -44,17 +44,22 @@ function mapItem(item) {
   if (
     item.stat_configuration &&
     item.stat_configuration.lists &&
-    item.stat_configuration.lists[0] &&
-    item.stat_configuration.lists[0].modifications
+    item.stat_configuration.lists.length > 0
   ) {
-    doc.stats = item.stat_configuration.lists[0].modifications.map((mod) => ({
-      _type: 'itemStat',
-      _key: mod.stat || String(Math.random()).slice(2, 10),
-      stat: mod.stat,
-      modifType: mod.modif_type,
-      modifWeight: mod.modif_weight,
-      minValue: mod.modif_min_value,
-      maxValue: mod.modif_max_value,
+    doc.statLists = item.stat_configuration.lists.map((list, li) => ({
+      _type: 'statPool',
+      _key: `pool-${li}`,
+      minStatCount: list.min_stat_count,
+      maxStatCount: list.max_stat_count,
+      modifications: (list.modifications || []).map((mod, mi) => ({
+        _type: 'statMod',
+        _key: `mod-${li}-${mi}`,
+        stat: mod.stat,
+        modifType: mod.modif_type,
+        modifWeight: mod.modif_weight,
+        minValue: mod.modif_min_value,
+        maxValue: mod.modif_max_value,
+      })),
     }));
   }
 

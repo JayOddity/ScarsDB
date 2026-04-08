@@ -72,7 +72,7 @@ function mapItem(item: BeastBurstItem) {
 }
 
 export async function GET(request: NextRequest) {
-  // Auth check — Vercel cron sends this header, manual calls use query param
+  // Auth check - Vercel cron sends this header, manual calls use query param
   const authHeader = request.headers.get('authorization');
   const querySecret = request.nextUrl.searchParams.get('secret');
   const validAuth = authHeader === `Bearer ${CRON_SECRET}` || querySecret === CRON_SECRET;

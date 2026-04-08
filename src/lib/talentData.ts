@@ -12,6 +12,7 @@ export interface RealTalentNode {
   name: string;
   description: string;
   maxRank: number;
+  iconUrl?: string | null;
 }
 
 export interface RealTalentEdge {

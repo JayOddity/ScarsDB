@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { classes } from '@/data/classes';
 
@@ -16,7 +16,7 @@ const staticResults: SearchResult[] = [
   ...classes.map((cls) => ({
     type: 'class' as const,
     name: cls.name,
-    description: `${cls.role} — ${cls.subclasses.map((s) => s.name).join(', ')}`,
+    description: `${cls.subtitle} - ${cls.subclasses.map((s) => s.name).join(', ')}`,
     href: `/classes/${cls.slug}`,
     icon: cls.icon,
   })),
@@ -29,7 +29,6 @@ const staticResults: SearchResult[] = [
   })),
   { type: 'page', name: 'Item Database', description: 'Browse all 1,603 items', href: '/items' },
   { type: 'page', name: 'Gear Planner', description: 'Plan your loadout', href: '/gear' },
-  { type: 'page', name: 'Dev Tracker', description: 'Latest developer updates', href: '/tracker' },
   { type: 'page', name: 'Playtest Info', description: 'Spring 2026 playtest details', href: '/playtest' },
   { type: 'page', name: 'Races & Factions', description: 'Sacred Order vs. Domination', href: '/races' },
   { type: 'page', name: 'All Classes', description: '10 playable classes overview', href: '/classes' },
@@ -38,7 +37,7 @@ const staticResults: SearchResult[] = [
   { type: 'page', name: 'Articles', description: 'Guides, lore, and in-depth articles', href: '/articles' },
   { type: 'page', name: 'Info Pages', description: 'General information about the site', href: '/pages' },
   { type: 'page', name: 'Professions', description: 'Gathering and crafting professions', href: '/professions' },
-  { type: 'page', name: 'Mounts', description: 'Ground and flying mounts', href: '/mounts' },
+  { type: 'page', name: 'Mounts', description: 'Ground mounts and how to obtain them', href: '/mounts' },
 ];
 
 export default function GlobalSearch() {
@@ -47,6 +46,7 @@ export default function GlobalSearch() {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [selectedIdx, setSelectedIdx] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
   // Keyboard shortcut
@@ -64,20 +64,32 @@ export default function GlobalSearch() {
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
+  // Close on click outside
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, [open]);
+
   // Focus input when opened
   useEffect(() => {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 50);
       setQuery('');
-      setResults(staticResults.slice(0, 8));
+      setResults([]);
       setSelectedIdx(0);
     }
   }, [open]);
 
   // Search
   useEffect(() => {
-    if (!query.trim()) {
-      setResults(staticResults.slice(0, 8));
+    if (query.trim().length < 3) {
+      setResults([]);
       setSelectedIdx(0);
       return;
     }
@@ -87,38 +99,62 @@ export default function GlobalSearch() {
       (r) => r.name.toLowerCase().includes(q) || r.description.toLowerCase().includes(q)
     );
 
-    // Also add a "Search items for..." option
     matched.push({
       type: 'item',
-      name: `Search items for "${query}"`,
-      description: 'Search the item database',
-      href: `/items`,
+      name: `View all items matching "${query}"`,
+      description: 'Open item database with this search',
+      href: `/items?search=${encodeURIComponent(query)}`,
     });
 
     setResults(matched.slice(0, 10));
     setSelectedIdx(0);
 
-    // Also search Sanity for articles/news/pages
     const controller = new AbortController();
-    fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal: controller.signal })
-      .then((r) => r.json())
-      .then((data: { results: SearchResult[] }) => {
-        if (data.results?.length) {
-          setResults((prev) => {
-            const existing = new Set(prev.map((r) => r.href));
-            const newResults = data.results.filter((r: SearchResult) => !existing.has(r.href));
-            return [...prev.slice(0, -1), ...newResults, prev[prev.length - 1]].slice(0, 12);
-          });
+    const signal = controller.signal;
+
+    Promise.all([
+      fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal }).then((r) => r.json()).catch(() => ({ results: [] })),
+      fetch(`/api/items?search=${encodeURIComponent(query)}&per_page=5`, { signal }).then((r) => r.json()).catch(() => ({ items: [] })),
+    ]).then(([sanityData, itemData]) => {
+      setResults((prev) => {
+        const existing = new Set(prev.map((r) => r.href));
+        const newResults: SearchResult[] = [];
+
+        if (sanityData.results?.length) {
+          for (const r of sanityData.results) {
+            if (!existing.has(r.href)) {
+              newResults.push(r);
+              existing.add(r.href);
+            }
+          }
         }
-      })
-      .catch(() => {});
+
+        if (itemData.items?.length) {
+          for (const item of itemData.items) {
+            const href = `/items/${item.id}`;
+            if (!existing.has(href)) {
+              newResults.push({
+                type: 'item',
+                name: item.name,
+                description: [item.rarity, item.type, item.slot_type].filter(Boolean).join(' · '),
+                href,
+              });
+              existing.add(href);
+            }
+          }
+        }
+
+        const viewAllLink = prev[prev.length - 1];
+        return [...prev.slice(0, -1), ...newResults, viewAllLink].slice(0, 15);
+      });
+    });
     return () => controller.abort();
   }, [query]);
 
-  function navigate(result: SearchResult) {
+  const navigate = useCallback((result: SearchResult) => {
     setOpen(false);
     router.push(result.href);
-  }
+  }, [router]);
 
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key === 'ArrowDown') {
@@ -132,37 +168,40 @@ export default function GlobalSearch() {
     }
   }
 
-  if (!open) return null;
-
   return (
-    <div className="fixed inset-0 z-[100]">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-void-black/80 backdrop-blur-sm" onClick={() => setOpen(false)} />
+    <div ref={containerRef} className="relative">
+      {/* Search input bar */}
+      <div
+        onClick={() => setOpen(true)}
+        className={`flex items-center gap-2 px-4 py-2 min-w-[480px] bg-dark-surface border rounded-lg text-sm cursor-text transition-colors ${
+          open ? 'border-honor-gold-dim' : 'border-border-subtle hover:border-honor-gold-dim'
+        }`}
+      >
+        <svg className="w-4 h-4 text-text-muted flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        {open ? (
+          <input
+            ref={inputRef}
+            type="text"
+            placeholder="Type 3 characters to search..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            className="flex-1 bg-transparent text-text-primary text-sm outline-none placeholder:text-text-muted"
+          />
+        ) : (
+          <span className="text-text-muted flex-1">Search</span>
+        )}
+        <kbd className="text-[10px] text-text-muted bg-void-black/50 px-1.5 py-0.5 rounded border border-border-subtle">
+          Ctrl+K
+        </kbd>
+      </div>
 
-      {/* Modal */}
-      <div className="relative max-w-xl mx-auto mt-[15vh] px-4">
-        <div className="bg-deep-night border border-border-subtle rounded-xl shadow-2xl overflow-hidden">
-          {/* Search input */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-border-subtle">
-            <svg className="w-5 h-5 text-text-muted flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Search classes, items, tools..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent text-text-primary text-sm outline-none placeholder:text-text-muted"
-            />
-            <kbd className="text-[10px] text-text-muted bg-dark-surface px-1.5 py-0.5 rounded border border-border-subtle">
-              ESC
-            </kbd>
-          </div>
-
-          {/* Results */}
-          <div className="max-h-80 overflow-y-auto py-2">
+      {/* Dropdown results */}
+      {open && query.trim().length >= 3 && (
+        <div className="absolute top-full left-0 right-0 mt-1 bg-deep-night border border-border-subtle rounded-lg shadow-2xl overflow-hidden z-[100]">
+          <div className="max-h-80 overflow-y-auto py-1">
             {results.map((result, i) => (
               <button
                 key={`${result.href}-${result.name}`}
@@ -172,8 +211,12 @@ export default function GlobalSearch() {
                   i === selectedIdx ? 'bg-dark-surface' : 'hover:bg-dark-surface/50'
                 }`}
               >
-                <span className="text-lg w-6 text-center flex-shrink-0">
-                  {result.icon || (result.type === 'item' ? '🔍' : '📄')}
+                <span className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                  {result.icon?.startsWith('/') ? (
+                    <img src={result.icon} alt="" className="w-5 h-5" />
+                  ) : (
+                    <span className="text-sm">{result.icon || (result.type === 'item' ? '🔍' : '📄')}</span>
+                  )}
                 </span>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-text-primary truncate">{result.name}</p>
@@ -184,12 +227,12 @@ export default function GlobalSearch() {
                 </span>
               </button>
             ))}
-            {results.length === 0 && (
+            {results.length === 0 && query.trim().length >= 3 && (
               <p className="px-4 py-6 text-sm text-text-muted text-center">No results found.</p>
             )}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

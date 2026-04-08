@@ -1,54 +1,74 @@
 import Link from 'next/link';
 
+interface FooterProps {
+  siteName: string;
+  siteAbbrev: string;
+  socials?: {
+    discord?: string;
+    twitter?: string;
+    youtube?: string;
+  };
+}
+
 const footerLinks = [
+  {
+    title: 'Database',
+    links: [
+      { name: 'All Items', href: '/items' },
+      { name: 'NPCs & Bestiary', href: '/npcs' },
+      { name: 'Skills', href: '/skills' },
+      { name: 'Maps & Zones', href: '/maps' },
+    ],
+  },
+  {
+    title: 'Guides',
+    links: [
+      { name: 'News', href: '/news' },
+      { name: 'Articles', href: '/articles' },
+      { name: 'FAQ', href: '/faq' },
+      { name: 'Creators', href: '/creators' },
+    ],
+  },
   {
     title: 'Character',
     links: [
       { name: 'Classes', href: '/classes' },
       { name: 'Races & Factions', href: '/races' },
-    ],
-  },
-  {
-    title: 'Items',
-    links: [
-      { name: 'Item Database', href: '/items' },
-      { name: 'Professions', href: '/professions' },
-      { name: 'Mounts', href: '/mounts' },
-    ],
-  },
-  {
-    title: 'Tools',
-    links: [
       { name: 'Talent Calculator', href: '/talents' },
+      { name: 'Scars System', href: '/scars' },
       { name: 'Gear Planner', href: '/gear' },
+      { name: 'Professions', href: '/professions' },
     ],
   },
   {
-    title: 'Community',
+    title: 'World',
     links: [
-      { name: 'News', href: '/news' },
-      { name: 'Articles', href: '/articles' },
-      { name: 'Dev Tracker', href: '/tracker' },
+      { name: 'PvE Content', href: '/pve' },
+      { name: 'PvP Content', href: '/pvp' },
       { name: 'Playtest', href: '/playtest' },
-      { name: 'Info', href: '/pages' },
-    ],
-  },
-  {
-    title: 'External',
-    links: [
-      { name: 'Official Site', href: 'https://www.scarsofhonor.com/', external: true },
-      { name: 'Steam', href: 'https://store.steampowered.com/app/4253010/Scars_of_Honor/', external: true },
-      { name: 'Discord', href: 'https://discord.com/invite/jDSuQVgwHF', external: true },
+      { name: 'Mounts', href: '/mounts' },
+      { name: 'Cosmetics', href: '/cosmetics' },
     ],
   },
 ];
 
-export default function Footer() {
+export default function Footer({ siteName, siteAbbrev, socials }: FooterProps) {
+  const externalLinks = [
+    ...(socials?.discord ? [{ name: 'Discord', href: socials.discord, external: true as const }] : []),
+    ...(socials?.twitter ? [{ name: 'Twitter/X', href: socials.twitter, external: true as const }] : []),
+    ...(socials?.youtube ? [{ name: 'YouTube', href: socials.youtube, external: true as const }] : []),
+  ];
+
+  const allGroups = [
+    ...footerLinks,
+    ...(externalLinks.length > 0 ? [{ title: 'External', links: externalLinks }] : []),
+  ];
+
   return (
     <footer className="bg-deep-night border-t border-border-subtle mt-auto">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8">
-          {footerLinks.map((group) => (
+          {allGroups.map((group) => (
             <div key={group.title}>
               <h4 className="font-heading text-honor-gold text-sm mb-3">{group.title}</h4>
               <ul className="space-y-2">
@@ -87,9 +107,9 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-text-muted">
           <div className="flex items-center gap-2">
             <div className="w-5 h-5 bg-honor-gold rounded flex items-center justify-center text-void-black font-bold text-[10px]">
-              SD
+              {siteAbbrev}
             </div>
-            <span>ScarsDB — Scars of Honor Fan Site</span>
+            <span>{siteName} - Fan Site</span>
           </div>
           <p className="text-center">
             This is an independent fan project. Not affiliated with Beast Burst Entertainment.

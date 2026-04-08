@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -15,8 +15,8 @@
   --parchment: #e8e0d0;
   --parchment-dim: #a89880;
   --text-primary: #f0ece4;
-  --text-secondary: #a0a0b8;
-  --text-muted: #6a6a80;
+  --text-secondary: #f0ece4;
+  --text-muted: #a8a8bc;
   --rarity-common: #9d9d9d;
   --rarity-rare: #4a8ff7;
   --rarity-epic: #a855f7;
@@ -44,13 +44,19 @@
   --color-rarity-epic: var(--rarity-epic);
   --color-rarity-legendary: var(--rarity-legendary);
   --font-heading: 'Cinzel', serif;
-  --font-body: 'Inter', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
 }
 
 body {
   background: var(--void-black);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 18px;
+}
+
+/* Reset font size for talent tree and build system */
+.text-base-reset {
+  font-size: 16px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -77,6 +83,58 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--honor-gold);
   transform: rotate(45deg);
 }
+
+/* Build guide markdown styles */
+.build-guide h1 {
+  font-size: 1.75rem;
+  color: var(--honor-gold);
+  margin: 1.5rem 0 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.build-guide h2 {
+  font-size: 1.35rem;
+  color: var(--honor-gold);
+  margin: 1.25rem 0 0.5rem;
+}
+.build-guide h3 {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  margin: 1rem 0 0.5rem;
+}
+.build-guide p {
+  color: var(--text-secondary);
+  margin: 0.5rem 0;
+  line-height: 1.7;
+}
+.build-guide strong { color: var(--text-primary); }
+.build-guide em { font-style: italic; }
+.build-guide code {
+  background: var(--dark-surface);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.85em;
+  color: var(--honor-gold);
+}
+.build-guide ul, .build-guide ol {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+.build-guide ul { list-style: disc; }
+.build-guide ol { list-style: decimal; }
+.build-guide li { margin: 0.25rem 0; line-height: 1.6; }
+.build-guide hr {
+  border: none;
+  border-top: 1px solid var(--border-subtle);
+  margin: 1.5rem 0;
+}
+.build-guide a {
+  color: var(--honor-gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.build-guide a:hover { color: var(--honor-gold-light); }
 
 /* Glow effects */
 .glow-gold {
@@ -112,3 +170,26 @@ h1, h2, h3, h4, h5, h6 {
 .rarity-border-rare { border-color: var(--rarity-rare); }
 .rarity-border-epic { border-color: var(--rarity-epic); }
 .rarity-border-legendary { border-color: var(--rarity-legendary); }
+
+/* Rarity background glow */
+.rarity-glow-common { box-shadow: 0 0 20px rgba(157, 157, 157, 0.15); }
+.rarity-glow-rare { box-shadow: 0 0 20px rgba(74, 143, 247, 0.2); }
+.rarity-glow-epic { box-shadow: 0 0 20px rgba(168, 85, 247, 0.2); }
+.rarity-glow-legendary { box-shadow: 0 0 20px rgba(245, 158, 11, 0.25); }
+
+/* Stat bar fill animation */
+@keyframes stat-fill {
+  from { width: 0%; }
+}
+.stat-bar-fill {
+  animation: stat-fill 0.4s ease-out;
+}
+
+/* Detail panel slide */
+@keyframes slide-in-right {
+  from { transform: translateX(20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+.detail-panel-enter {
+  animation: slide-in-right 0.2s ease-out;
+}

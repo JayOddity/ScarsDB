@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { professions } from '@/data/professions';
 
 export const metadata = {
-  title: 'Professions — ScarsDB',
+  title: 'Professions - ScarsHQ',
   description: 'Gathering and crafting professions in Scars of Honor. Mining, Herbalism, Blacksmithing, Alchemy, and more.',
 };
 
@@ -11,12 +11,12 @@ export default function ProfessionsPage() {
   const crafting = professions.filter((p) => p.type === 'Crafting');
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8">
       <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-4">Professions</h1>
-      <p className="text-text-secondary mb-12 max-w-3xl">
-        Aragon features a deep crafting and gathering system. Each profession includes unique minigames
-        and produces materials used across multiple crafting disciplines. Choose wisely — your professions
-        shape your economic power.
+      <p className="text-text-secondary mb-12 max-w-6xl">
+        Scars of Honor has a crafting and gathering system with multiple professions. Details on
+        specific mechanics are still being revealed, but gathering and crafting are both confirmed
+        as part of the game.
       </p>
 
       {/* Gathering */}
@@ -29,7 +29,7 @@ export default function ProfessionsPage() {
           {gathering.map((prof) => (
             <div key={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-green-500/30 transition-colors glow-gold-hover">
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">{prof.icon}</span>
+                <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
                 <div>
                   <h3 className="font-heading text-lg text-text-primary">{prof.name}</h3>
                   <span className="text-xs px-2 py-0.5 rounded bg-green-500/10 text-green-400">Gathering</span>
@@ -71,7 +71,7 @@ export default function ProfessionsPage() {
           {crafting.map((prof) => (
             <div key={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-3xl">{prof.icon}</span>
+                <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
                 <div>
                   <h3 className="font-heading text-lg text-text-primary">{prof.name}</h3>
                   <span className="text-xs px-2 py-0.5 rounded bg-honor-gold/10 text-honor-gold">Crafting</span>

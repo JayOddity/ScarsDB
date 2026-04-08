@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { PortableText, type PortableTextComponents } from 'next-sanity';
 import { urlFor } from '@/lib/sanity';
 
@@ -32,9 +33,11 @@ const components: PortableTextComponents = {
       if (!value?.asset) return null;
       return (
         <figure className="my-6">
-          <img
+          <Image
             src={urlFor(value).width(800).url()}
             alt={value.alt || ''}
+            width={800}
+            height={450}
             className="rounded-lg w-full"
           />
           {value.alt && <figcaption className="text-sm text-text-muted mt-2 text-center">{value.alt}</figcaption>}

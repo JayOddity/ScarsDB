@@ -22,3 +22,33 @@ const builder = createImageUrlBuilder(sanityClient);
 export function urlFor(source: { asset: { _ref: string } }) {
   return builder.image(source);
 }
+
+export interface SiteSettings {
+  siteName?: string;
+  siteDescription?: string;
+  logo?: { asset: { _ref: string } };
+  defaultSeo?: {
+    metaTitle?: string;
+    metaDescription?: string;
+    ogImage?: { asset: { _ref: string } };
+  };
+  socials?: {
+    discord?: string;
+    twitter?: string;
+    youtube?: string;
+  };
+}
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  return sanityClient.fetch(
+    `*[_type == "siteSettings"][0]{
+      siteName,
+      siteDescription,
+      logo,
+      defaultSeo,
+      socials
+    }`,
+    {},
+    { next: { revalidate: 300 } }
+  );
+}

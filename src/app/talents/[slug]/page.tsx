@@ -11,7 +11,7 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
     const cls = classes.find((c) => c.slug === slug);
     if (!cls) return { title: 'Not Found' };
     return {
-      title: `${cls.name} Talent Calculator — ScarsDB`,
+      title: `${cls.name} Talent Calculator - ScarsHQ`,
       description: `Build your ${cls.name} talent tree. 240+ nodes across ${cls.subclasses.map((s) => s.name).join(', ')} paths.`,
     };
   });

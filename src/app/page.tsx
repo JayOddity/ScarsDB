@@ -1,277 +1,229 @@
+import Image from 'next/image';
 import Link from 'next/link';
-import { classes, factions } from '@/data/classes';
-import { devPosts } from '@/data/devTracker';
 import { sanityClient } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
+import { getSteamNews } from '@/lib/steamNews';
+import PopularItems from '@/components/PopularItems';
+import NewsletterSignup from '@/components/NewsletterSignup';
+import PlaytestCountdown from '@/components/PlaytestCountdown';
 
-interface SanityPost {
+interface SanityNews {
   _id: string;
   title: string;
   slug: { current: string };
-  category?: string;
   excerpt?: string;
+  featuredImage?: { asset: { _ref: string } };
   publishedAt?: string;
-  _type: string;
+}
+
+interface FeedItem {
+  id: string;
+  title: string;
+  excerpt?: string;
+  date: string;
+  source: 'sanity' | 'steam';
+  href: string;
+  image?: string;
+}
+
+export const revalidate = 300; // revalidate every 5 minutes
+
+// Rotating fallback images from Steam store screenshots so cards without images aren't all identical
+const STEAM_FALLBACK_IMAGES = [
+  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/aaa1fdfd5dd8340a52e24bb77189df6d2b1b17b1/header.jpg',
+  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/fbca4c46c3bf3fb7437c5214aac988e9d0895662/ss_fbca4c46c3bf3fb7437c5214aac988e9d0895662.600x338.jpg',
+  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d/ss_af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d.600x338.jpg',
+  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/0b141852523822bf7e1855bc288f4609b6751d79/ss_0b141852523822bf7e1855bc288f4609b6751d79.600x338.jpg',
+];
+
+// Extract best thumbnail from Steam post: YouTube > Steam clan image > game screenshot
+function getSteamImage(contents: string, index: number = 0): string {
+  // YouTube from [previewyoutube] tag
+  const yt = contents.match(/\[previewyoutube="?([\w-]+)/);
+  if (yt) return `https://img.youtube.com/vi/${yt[1]}/hqdefault.jpg`;
+
+  // YouTube from embed URL
+  const ytEmbed = contents.match(/youtube\.com\/embed\/([\w-]+)/);
+  if (ytEmbed) return `https://img.youtube.com/vi/${ytEmbed[1]}/hqdefault.jpg`;
+
+  // YouTube from watch URL
+  const ytWatch = contents.match(/youtube\.com\/watch\?v=([\w-]+)/);
+  if (ytWatch) return `https://img.youtube.com/vi/${ytWatch[1]}/hqdefault.jpg`;
+
+  // youtu.be short links
+  const ytShort = contents.match(/youtu\.be\/([\w-]+)/);
+  if (ytShort) return `https://img.youtube.com/vi/${ytShort[1]}/hqdefault.jpg`;
+
+  // First Steam clan image
+  const steamImg = contents.match(/\{STEAM_CLAN_IMAGE\}\/([^\s"\]]+)/);
+  if (steamImg) return `https://clan.akamai.steamstatic.com/images/${steamImg[1]}`;
+
+  // Fallback to rotating game screenshots
+  return STEAM_FALLBACK_IMAGES[index % STEAM_FALLBACK_IMAGES.length];
+}
+
+// Strip Steam BBCode for excerpt
+function stripSteamMarkup(text: string): string {
+  return text
+    .replace(/\[previewyoutube[^\]]*\]\s*\[\/previewyoutube\]/g, '')
+    .replace(/\[[^\]]+\]/g, '')
+    .replace(/\{STEAM_CLAN_IMAGE\}[^\s"]*/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 export default async function HomePage() {
-  const featuredPosts = devPosts.slice(0, 3);
-
-  // Fetch latest news and articles from Sanity
-  const [latestNews, latestArticles] = await Promise.all([
-    sanityClient.fetch<SanityPost[]>(
-      `*[_type == "newsPost"] | order(publishedAt desc) [0...3] { _id, title, slug, excerpt, publishedAt, _type }`
+  const [sanityNews, steamNews] = await Promise.all([
+    sanityClient.fetch<SanityNews[]>(
+      `*[_type == "newsPost"] | order(publishedAt desc) [0...20] {
+        _id, title, slug, excerpt, featuredImage, publishedAt
+      }`,
     ),
-    sanityClient.fetch<SanityPost[]>(
-      `*[_type == "article"] | order(publishedAt desc) [0...3] { _id, title, slug, category, excerpt, publishedAt, _type }`
-    ),
+    getSteamNews(),
   ]);
 
+  // Merge into unified feed
+  const feed: FeedItem[] = [];
+
+  for (const post of sanityNews) {
+    feed.push({
+      id: post._id,
+      title: post.title,
+      excerpt: post.excerpt,
+      date: post.publishedAt || '',
+      source: 'sanity',
+      href: `/news/${post.slug.current}`,
+      image: post.featuredImage?.asset ? urlFor(post.featuredImage).width(224).height(160).url() : undefined,
+    });
+  }
+
+  steamNews.forEach((item, i) => {
+    feed.push({
+      id: `steam-${item.gid}`,
+      title: item.title,
+      excerpt: stripSteamMarkup(item.contents).slice(0, 200),
+      date: new Date(item.date * 1000).toISOString(),
+      source: 'steam',
+      href: item.url,
+      image: getSteamImage(item.contents, i),
+    });
+  });
+
+  // Sort newest first
+  feed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   return (
-    <div>
-      {/* Hero */}
-      <section className="relative py-24 px-4 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-dark-surface/50 to-void-black" />
-        <div className="relative max-w-4xl mx-auto">
-          <div className="w-20 h-20 bg-honor-gold rounded-lg flex items-center justify-center text-void-black font-bold font-heading text-2xl mx-auto mb-6">
-            SD
-          </div>
-          <h1 className="font-heading text-4xl md:text-6xl text-honor-gold mb-4">
-            ScarsDB
-          </h1>
-          <p className="font-heading text-xl md:text-2xl text-parchment mb-2">
-            Scars of Honor Database &amp; Tools
-          </p>
-          <p className="text-text-secondary max-w-2xl mx-auto mb-8">
-            Your community-first command center for Scars of Honor builds, talent trees,
-            skills, items, and progression. Plan your path through Aragon.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/talents"
-              className="px-8 py-3 bg-honor-gold text-void-black font-heading font-semibold rounded-lg hover:bg-honor-gold-light transition-colors"
-            >
-              Talent Calculator
-            </Link>
-            <Link
-              href="/items"
-              className="px-8 py-3 border border-honor-gold text-honor-gold font-heading font-semibold rounded-lg hover:bg-honor-gold/10 transition-colors"
-            >
-              Item Database
-            </Link>
-          </div>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      {/* Playtest Countdown */}
+      <PlaytestCountdown />
+
+      {/* Things to check out */}
+      <section className="mb-12">
+        <h2 className="font-heading text-xl text-honor-gold mb-4">Things to Check Out</h2>
+        <div className="grid grid-cols-3 gap-4">
+          <Link href="/#news" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
+            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/aaa1fdfd5dd8340a52e24bb77189df6d2b1b17b1/header.jpg" alt="News" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">News</span>
+          </Link>
+          <Link href="/classes" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
+            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d/ss_af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d.600x338.jpg" alt="Classes" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Classes</span>
+          </Link>
+          <Link href="/talents" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
+            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/0b141852523822bf7e1855bc288f4609b6751d79/ss_0b141852523822bf7e1855bc288f4609b6751d79.600x338.jpg" alt="Talent Calculator" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Talent Calculator</span>
+          </Link>
+        </div>
+        <div className="grid grid-cols-3 gap-4 mt-4">
+          <Link href="/scars-of-honor-release-date" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
+            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/fbca4c46c3bf3fb7437c5214aac988e9d0895662/ss_fbca4c46c3bf3fb7437c5214aac988e9d0895662.600x338.jpg" alt="Release Date" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Release Date</span>
+          </Link>
+          <Link href="/gameplay" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
+            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/0b141852523822bf7e1855bc288f4609b6751d79/ss_0b141852523822bf7e1855bc288f4609b6751d79.600x338.jpg" alt="Gameplay" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Gameplay</span>
+          </Link>
+          <a href="https://store.steampowered.com/app/4253010/Scars_of_Honor/" target="_blank" rel="noopener noreferrer" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
+            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/aaa1fdfd5dd8340a52e24bb77189df6d2b1b17b1/header.jpg" alt="Steam" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 to-black/70" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <Image src="/Icons/steam-logo.svg" alt="" width={48} height={48} className="opacity-90 mb-2" />
+              <span className="font-heading text-lg text-white">Steam Page</span>
+            </div>
+          </a>
         </div>
       </section>
 
-      {/* Dev Tracker Preview */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="diamond-divider mb-8">
-          <span className="diamond" />
-        </div>
-        <h2 className="font-heading text-2xl text-honor-gold text-center mb-8">
-          Latest Dev Updates
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6 mb-8">
-          {featuredPosts.map((post) => (
-            <div
-              key={post.id}
-              className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover"
-            >
-              <div className="flex items-center gap-3 mb-3">
-                <span
-                  className="text-xs font-semibold px-2 py-1 rounded"
-                  style={{ backgroundColor: post.categoryColor + '20', color: post.categoryColor }}
+      {/* News feed */}
+      <section id="news" className="mb-12 scroll-mt-20">
+        <h1 className="font-heading text-2xl text-honor-gold mb-6">Latest News</h1>
+
+        {feed.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {feed.slice(0, 9).map((item) => (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  className="flex flex-col bg-card-bg border border-border-subtle rounded-lg overflow-hidden hover:border-honor-gold-dim transition-colors glow-gold-hover group"
                 >
-                  {post.category}
-                </span>
-                <span className="text-xs text-text-muted">{post.date}</span>
-              </div>
-              <p className="text-sm text-text-secondary leading-relaxed mb-4 line-clamp-4">
-                &ldquo;{post.quote}&rdquo;
-              </p>
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-dark-surface rounded-full flex items-center justify-center text-xs text-honor-gold font-bold">
-                  BB
-                </div>
-                <div>
-                  <p className="text-xs text-text-primary font-medium">{post.author}</p>
-                  <p className="text-xs text-text-muted">{post.title}</p>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="text-center">
-          <Link href="/tracker" className="text-honor-gold hover:text-honor-gold-light text-sm font-medium transition-colors">
-            Read More Dev Updates →
-          </Link>
-        </div>
-      </section>
-
-      {/* Latest News & Articles */}
-      {(latestNews.length > 0 || latestArticles.length > 0) && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-          <div className="diamond-divider mb-8">
-            <span className="diamond" />
-          </div>
-          <h2 className="font-heading text-2xl text-honor-gold text-center mb-8">
-            Latest News &amp; Articles
-          </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* News column */}
-            <div>
-              <h3 className="font-heading text-lg text-parchment mb-4 flex items-center gap-2">
-                <span className="text-xs font-semibold px-2 py-1 rounded bg-honor-gold/10 text-honor-gold">News</span>
-              </h3>
-              {latestNews.length > 0 ? (
-                <div className="space-y-3">
-                  {latestNews.map((post) => (
-                    <Link key={post._id} href={`/news/${post.slug.current}`}
-                      className="block bg-card-bg border border-border-subtle rounded-lg p-4 hover:border-honor-gold-dim transition-colors glow-gold-hover">
-                      <h4 className="text-sm font-medium text-text-primary mb-1">{post.title}</h4>
-                      {post.excerpt && <p className="text-xs text-text-muted line-clamp-2">{post.excerpt}</p>}
-                      {post.publishedAt && (
-                        <span className="text-xs text-text-muted mt-1 block">
-                          {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                  {item.image ? (
+                    <div className="w-full aspect-video bg-dark-surface overflow-hidden relative">
+                      <Image src={item.image} alt="" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" />
+                    </div>
+                  ) : (
+                    <div className="w-full aspect-video bg-dark-surface flex items-center justify-center">
+                      <span className="text-2xl text-text-muted">📰</span>
+                    </div>
+                  )}
+                  <div className="p-4 flex flex-col flex-1">
+                    <h2 className="text-sm font-medium text-text-primary group-hover:text-honor-gold transition-colors line-clamp-2 mb-2">
+                      {item.title}
+                    </h2>
+                    {item.excerpt && (
+                      <p className="text-xs text-text-muted line-clamp-2 mb-3 flex-1">{item.excerpt}</p>
+                    )}
+                    <div className="flex items-center gap-2 mt-auto">
+                      {item.date && (
+                        <span className="text-[11px] text-text-muted">
+                          {new Date(item.date).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                          })}
                         </span>
                       )}
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-text-muted">No news yet.</p>
-              )}
-              <Link href="/news" className="text-honor-gold hover:text-honor-gold-light text-xs font-medium mt-3 inline-block transition-colors">
-                All News →
-              </Link>
-            </div>
-            {/* Articles column */}
-            <div>
-              <h3 className="font-heading text-lg text-parchment mb-4 flex items-center gap-2">
-                <span className="text-xs font-semibold px-2 py-1 rounded bg-emerald-500/10 text-emerald-400">Articles</span>
-              </h3>
-              {latestArticles.length > 0 ? (
-                <div className="space-y-3">
-                  {latestArticles.map((post) => (
-                    <Link key={post._id} href={`/articles/${post.slug.current}`}
-                      className="block bg-card-bg border border-border-subtle rounded-lg p-4 hover:border-honor-gold-dim transition-colors glow-gold-hover">
-                      <h4 className="text-sm font-medium text-text-primary mb-1">{post.title}</h4>
-                      {post.excerpt && <p className="text-xs text-text-muted line-clamp-2">{post.excerpt}</p>}
-                      {post.publishedAt && (
-                        <span className="text-xs text-text-muted mt-1 block">
-                          {new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                        </span>
-                      )}
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-text-muted">No articles yet.</p>
-              )}
-              <Link href="/articles" className="text-honor-gold hover:text-honor-gold-light text-xs font-medium mt-3 inline-block transition-colors">
-                All Articles →
-              </Link>
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Factions & Races */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="diamond-divider mb-8">
-          <span className="diamond" />
-        </div>
-        <h2 className="font-heading text-2xl text-honor-gold text-center mb-8">
-          Factions &amp; Races of Aragon
-        </h2>
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="bg-card-bg border border-border-subtle rounded-lg p-6">
-            <h3 className="font-heading text-xl text-honor-gold mb-2">{factions.sacredOrder.name}</h3>
-            <p className="text-sm text-text-secondary mb-4">{factions.sacredOrder.description}</p>
-            <div className="grid grid-cols-2 gap-3">
-              {factions.sacredOrder.races.map((race) => (
-                <div key={race.name} className="flex items-center gap-2 p-2 rounded bg-dark-surface/50">
-                  <span className="text-xl">{race.icon}</span>
-                  <div>
-                    <p className="text-sm text-text-primary font-medium">{race.name}</p>
-                    <p className="text-xs text-text-muted">{race.description}</p>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded ${
+                        item.source === 'steam'
+                          ? 'bg-blue-500/10 text-blue-400'
+                          : 'bg-honor-gold/10 text-honor-gold'
+                      }`}>
+                        {item.source === 'steam' ? 'Steam' : 'ScarsHQ'}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                </Link>
+            ))}
           </div>
-          <div className="bg-card-bg border border-scar-red/30 rounded-lg p-6">
-            <h3 className="font-heading text-xl text-scar-red mb-2">{factions.domination.name}</h3>
-            <p className="text-sm text-text-secondary mb-4">{factions.domination.description}</p>
-            <div className="grid grid-cols-2 gap-3">
-              {factions.domination.races.map((race) => (
-                <div key={race.name} className="flex items-center gap-2 p-2 rounded bg-dark-surface/50">
-                  <span className="text-xl">{race.icon}</span>
-                  <div>
-                    <p className="text-sm text-text-primary font-medium">{race.name}</p>
-                    <p className="text-xs text-text-muted">{race.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+        ) : (
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-8 text-center">
+            <p className="text-text-muted">No news available right now.</p>
           </div>
-        </div>
+        )}
       </section>
 
-      {/* Classes Preview */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="diamond-divider mb-8">
-          <span className="diamond" />
-        </div>
-        <h2 className="font-heading text-2xl text-honor-gold text-center mb-8">
-          10 Classes, No Subclasses — Your Build, Your Way
-        </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-8">
-          {classes.map((cls) => (
-            <Link
-              key={cls.slug}
-              href={`/classes/${cls.slug}`}
-              className="flex flex-col items-center gap-2 p-4 bg-card-bg border border-border-subtle rounded-lg hover:border-honor-gold-dim transition-colors glow-gold-hover group"
-            >
-              <span className="text-3xl">{cls.icon}</span>
-              <span className="text-sm font-heading text-text-primary group-hover:text-honor-gold transition-colors">
-                {cls.name}
-              </span>
-              <span className="text-xs text-text-muted">{cls.role}</span>
-            </Link>
-          ))}
-        </div>
-        <div className="text-center">
-          <Link href="/classes" className="text-honor-gold hover:text-honor-gold-light text-sm font-medium transition-colors">
-            Explore All Classes →
-          </Link>
-        </div>
+      {/* Popular Items */}
+      <section className="mb-12">
+        <PopularItems />
       </section>
 
-      {/* Playtest CTA */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
-        <div className="bg-card-bg border border-honor-gold/30 rounded-lg p-8 text-center glow-gold">
-          <h2 className="font-heading text-2xl text-honor-gold mb-2">Spring 2026 Playtest</h2>
-          <p className="text-lg text-parchment mb-1">April 30 — May 11, 2026</p>
-          <p className="text-sm text-text-secondary mb-6">
-            4 classes, 4 races, dungeons, PvP, and full talent trees. Wishlist on Steam to play.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="https://store.steampowered.com/app/4253010/Scars_of_Honor/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-honor-gold text-void-black font-heading font-semibold rounded-lg hover:bg-honor-gold-light transition-colors"
-            >
-              Wishlist on Steam
-            </a>
-            <Link
-              href="/playtest"
-              className="px-6 py-3 border border-honor-gold text-honor-gold font-heading font-semibold rounded-lg hover:bg-honor-gold/10 transition-colors"
-            >
-              Playtest Details
-            </Link>
-          </div>
-        </div>
+      {/* Newsletter */}
+      <section>
+        <NewsletterSignup />
       </section>
     </div>
   );

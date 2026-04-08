@@ -20,18 +20,32 @@ export const item = defineType({
     defineField({ name: 'sellValue', title: 'Sell Value', type: 'number' }),
     defineField({ name: 'isDestructible', title: 'Destructible', type: 'boolean' }),
     defineField({
-      name: 'stats',
-      title: 'Stats',
+      name: 'statLists',
+      title: 'Stat Pools',
       type: 'array',
       of: [
         {
           type: 'object',
           fields: [
-            defineField({ name: 'stat', title: 'Stat Name', type: 'string' }),
-            defineField({ name: 'modifType', title: 'Modifier Type', type: 'string' }),
-            defineField({ name: 'modifWeight', title: 'Weight', type: 'number' }),
-            defineField({ name: 'minValue', title: 'Min Value', type: 'string' }),
-            defineField({ name: 'maxValue', title: 'Max Value', type: 'string' }),
+            defineField({ name: 'minStatCount', title: 'Min Stat Count', type: 'number' }),
+            defineField({ name: 'maxStatCount', title: 'Max Stat Count', type: 'number' }),
+            defineField({
+              name: 'modifications',
+              title: 'Modifications',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    defineField({ name: 'stat', title: 'Stat Name', type: 'string' }),
+                    defineField({ name: 'modifType', title: 'Modifier Type', type: 'string' }),
+                    defineField({ name: 'modifWeight', title: 'Weight', type: 'number' }),
+                    defineField({ name: 'minValue', title: 'Min Value', type: 'string' }),
+                    defineField({ name: 'maxValue', title: 'Max Value', type: 'string' }),
+                  ],
+                },
+              ],
+            }),
           ],
         },
       ],

@@ -1,6 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { sanityClient } from '@/lib/sanity';
 import type { Item } from '@/lib/api';
+import TrackView from '@/components/TrackView';
 
 const rarityColorClass: Record<string, string> = {
   Common: 'rarity-common',
@@ -33,18 +35,18 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
         "is_destructible": isDestructible,
         "updated_at": _updatedAt,
         "stat_configuration": select(
-          defined(stats) && length(stats) > 0 => {
-            "lists": [{
-              "min_stat_count": 1,
-              "max_stat_count": count(stats),
-              "modifications": stats[] {
+          defined(statLists) && length(statLists) > 0 => {
+            "lists": statLists[] {
+              "min_stat_count": minStatCount,
+              "max_stat_count": maxStatCount,
+              "modifications": modifications[] {
                 "stat": stat,
                 "modif_type": modifType,
                 "modif_weight": modifWeight,
                 "modif_min_value": minValue,
                 "modif_max_value": maxValue
               }
-            }]
+            }
           },
           null
         )
@@ -54,7 +56,7 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
     if (!item) throw new Error('Not found');
   } catch {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <h1 className="font-heading text-3xl text-scar-red mb-4">Item Not Found</h1>
         <p className="text-text-secondary mb-4">This item could not be found in the database.</p>
         <Link href="/items" className="text-honor-gold hover:text-honor-gold-light">← Back to Item Database</Link>
@@ -63,7 +65,8 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <TrackView itemId={id} />
       {/* Breadcrumb */}
       <nav className="text-sm text-text-muted mb-8 flex items-center gap-2">
         <Link href="/" className="hover:text-honor-gold transition-colors">Home</Link>
@@ -78,7 +81,7 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
         <div className="flex items-start gap-6">
           <div className={`w-20 h-20 rounded-lg border-2 ${rarityBorderClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}>
             {item.icon && !item.icon.includes('placehold') ? (
-              <img src={item.icon} alt={item.name} className="w-full h-full object-cover" />
+              <Image src={item.icon} alt={item.name} width={80} height={80} className="object-cover" />
             ) : (
               <span className="text-2xl text-text-muted">?</span>
             )}
@@ -98,34 +101,84 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stat Pools */}
       {item.stat_configuration?.lists?.length ? (
         <div className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-8">
           <h2 className="font-heading text-lg text-honor-gold mb-4">Stat Configuration</h2>
-          {item.stat_configuration.lists.map((list, li) => (
-            <div key={li} className="mb-4 last:mb-0">
-              <p className="text-xs text-text-muted mb-2">
-                Rolls {list.min_stat_count}–{list.max_stat_count} stats from this pool:
-              </p>
-              <div className="space-y-2">
-                {list.modifications.map((mod, mi) => {
-                  const min = parseFloat(mod.modif_min_value);
-                  const max = parseFloat(mod.modif_max_value);
-                  return (
-                    <div key={mi} className="flex items-center justify-between py-2 px-4 bg-dark-surface/50 rounded">
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-text-primary font-medium">{mod.stat}</span>
-                        <span className="text-xs text-text-muted">{mod.modif_type}</span>
+          {item.stat_configuration.lists.map((list, li) => {
+            const poolLabel = ['Base Stats', 'Stat Pool 2', 'Stat Pool 3', 'Stat Pool 4'][li] || `Stat Pool ${li + 1}`;
+            const poolBarColor = ['bg-honor-gold', 'bg-rarity-rare', 'bg-rarity-epic', 'bg-rarity-legendary'][li] || 'bg-honor-gold';
+            const poolBarDim = ['bg-honor-gold/30', 'bg-rarity-rare/30', 'bg-rarity-epic/30', 'bg-rarity-legendary/30'][li] || 'bg-honor-gold/30';
+
+            // Combine weapon damage
+            const minDmg = list.modifications.find((m) => m.stat === 'Weapon Min Damage');
+            const maxDmg = list.modifications.find((m) => m.stat === 'Weapon Max Damage');
+            const rest = list.modifications.filter((m) => m.stat !== 'Weapon Min Damage' && m.stat !== 'Weapon Max Damage');
+
+            type ProcessedStat = { label: string; min: number; max: number; type: string };
+            const processed: ProcessedStat[] = [];
+
+            if (minDmg && maxDmg) {
+              processed.push({
+                label: 'Damage',
+                min: parseFloat(minDmg.modif_min_value) || 0,
+                max: parseFloat(maxDmg.modif_max_value) || 0,
+                type: 'Flat',
+              });
+            } else {
+              if (minDmg) rest.unshift(minDmg);
+              if (maxDmg) rest.unshift(maxDmg);
+            }
+
+            for (const mod of rest) {
+              processed.push({
+                label: mod.stat,
+                min: parseFloat(mod.modif_min_value) || 0,
+                max: parseFloat(mod.modif_max_value) || 0,
+                type: mod.modif_type,
+              });
+            }
+
+            const maxVal = Math.max(...processed.map((s) => s.max), 1);
+
+            return (
+              <div key={li} className={`${li > 0 ? 'mt-5 pt-5 border-t border-border-subtle/50' : ''}`}>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm text-text-secondary font-medium">{poolLabel}</span>
+                  <span className="text-xs text-text-muted">
+                    {list.min_stat_count === list.max_stat_count
+                      ? `${list.min_stat_count} fixed`
+                      : `Rolls ${list.min_stat_count}–${list.max_stat_count}`}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {processed.map((stat, si) => {
+                    const fillPercent = (stat.max / maxVal) * 100;
+                    const minPercent = (stat.min / maxVal) * 100;
+                    return (
+                      <div key={si}>
+                        <div className="flex items-center justify-between py-2 px-4 bg-dark-surface/50 rounded-t">
+                          <div className="flex items-center gap-3">
+                            <span className="text-sm text-text-primary font-medium">{stat.label}</span>
+                            <span className="text-xs text-text-muted">{stat.type}</span>
+                          </div>
+                          <span className="text-sm text-honor-gold font-medium">
+                            {stat.min === stat.max ? `+${stat.min}` : `${stat.min} – ${stat.max}`}
+                          </span>
+                        </div>
+                        <div className="px-4 pb-2 bg-dark-surface/50 rounded-b">
+                          <div className="h-1.5 bg-void-black/50 rounded-full overflow-hidden relative">
+                            <div className={`absolute inset-y-0 left-0 ${poolBarDim} rounded-full`} style={{ width: `${fillPercent}%` }} />
+                            <div className={`absolute inset-y-0 left-0 ${poolBarColor} rounded-full`} style={{ width: `${minPercent}%` }} />
+                          </div>
+                        </div>
                       </div>
-                      <span className="text-sm text-honor-gold font-medium">
-                        {min === max ? `+${min}` : `+${min} – ${max}`}
-                      </span>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : null}
 

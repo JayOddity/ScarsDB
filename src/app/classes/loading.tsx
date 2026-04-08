@@ -1,6 +1,6 @@
 export default function ClassesLoading() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <div className="h-10 w-64 bg-card-bg rounded animate-pulse mb-4" />
       <div className="h-5 w-full max-w-xl bg-card-bg rounded animate-pulse mb-8" />
 

@@ -4,8 +4,8 @@ import { visionTool } from '@sanity/vision';
 import { schemaTypes } from './src/sanity/schemas';
 
 export default defineConfig({
-  name: 'scarsdb',
-  title: 'ScarsDB',
+  name: 'scarshq',
+  title: 'ScarsHQ',
   projectId: 'oazt8hd0',
   dataset: 'production',
   basePath: '/studio',
@@ -24,6 +24,11 @@ export default defineConfig({
             S.documentTypeListItem('page').title('Pages'),
             S.divider(),
             S.documentTypeListItem('item').title('Items'),
+            S.documentTypeListItem('talentBuild').title('Talent Builds'),
+            S.divider(),
+            S.documentTypeListItem('newsletter').title('Newsletter Subscribers'),
+            S.divider(),
+            S.documentTypeListItem('user').title('Users'),
           ]),
     }),
     visionTool(),

@@ -11,11 +11,13 @@ export const metadata = {
     url: '/classes',
     siteName: 'ScarsHQ',
     type: 'website',
+    images: [{ url: '/images/og-classes.jpg', width: 1200, height: 630, alt: 'Scars of Honor — 10 Playable Classes' }],
   },
   twitter: {
     card: 'summary_large_image' as const,
     title: 'Scars of Honor Classes: All 10 Playable Classes',
     description: 'All 10 playable classes in Scars of Honor. No fixed subclasses — your talent tree defines your role.',
+    images: ['/images/og-classes.jpg'],
   },
   alternates: {
     canonical: '/classes',

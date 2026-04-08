@@ -8,10 +8,14 @@ export default function TalentsPage() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    let lastClass = 'warrior';
-    try { const saved = localStorage.getItem('scarshq-last-class'); if (saved) lastClass = saved; } catch {}
     const tab = searchParams.get('tab');
-    const params = new URLSearchParams({ pick: 'true' });
+    const skipClassPicker = tab === 'Equipment' || tab === 'Scars';
+    let lastClass = skipClassPicker ? 'paladin' : 'warrior';
+    if (!skipClassPicker) {
+      try { const saved = localStorage.getItem('scarshq-last-class'); if (saved) lastClass = saved; } catch {}
+    }
+    const params = new URLSearchParams();
+    if (!skipClassPicker) params.set('pick', 'true');
     if (tab) params.set('tab', tab);
     router.replace(`/talents/${lastClass}?${params.toString()}`);
   }, [router, searchParams]);

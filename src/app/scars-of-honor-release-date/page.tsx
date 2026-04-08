@@ -132,6 +132,21 @@ export default function ReleaseDatePage() {
     <div>
       <script
         type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: 'Scars of Honor Release Date: Early Access & Alpha Roadmap 2026',
+            description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. Next playtest: April 30 to May 11, 2026.',
+            author: { '@type': 'Organization', name: 'ScarsHQ', url: 'https://scarshq.com' },
+            publisher: { '@type': 'Organization', name: 'ScarsHQ', url: 'https://scarshq.com' },
+            dateModified: new Date().toISOString().split('T')[0],
+            mainEntityOfPage: 'https://scarshq.com/scars-of-honor-release-date',
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       {/* Hero */}

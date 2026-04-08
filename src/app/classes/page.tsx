@@ -33,15 +33,15 @@ export default function ClassesPage() {
       </p>
 
       {/* Quick nav */}
-      <div className="flex flex-wrap gap-2 mb-12">
+      <div className="grid grid-cols-5 sm:grid-cols-10 gap-2 mb-12">
         {classes.map((cls) => (
           <Link
             key={cls.slug}
             href={`/classes/${cls.slug}`}
-            className="flex items-center gap-2 px-3 py-2 bg-card-bg border border-border-subtle rounded-lg hover:border-honor-gold-dim transition-colors text-sm"
+            className="flex flex-col items-center gap-1 px-2 py-2 bg-card-bg border border-border-subtle rounded-lg hover:border-honor-gold-dim transition-colors"
           >
-            <img src={cls.icon} alt={cls.name} className="w-6 h-6" />
-            <span className="text-text-primary">{cls.name}</span>
+            <img src={cls.icon} alt={cls.name} className="w-8 h-8" />
+            <span className="text-text-primary text-[11px] leading-tight text-center">{cls.name}</span>
           </Link>
         ))}
       </div>

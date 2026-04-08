@@ -433,6 +433,28 @@ export default function ItemDatabase() {
 
   const hasActiveFilters = rarityFilter || category || subFilter || statFilters.length || sourceFilter || search;
 
+  if (loading && initialLoad.current) {
+    return (
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+        <div className="h-10 w-64 bg-card-bg rounded animate-pulse mb-2" />
+        <div className="h-5 w-96 bg-card-bg rounded animate-pulse mb-8" />
+        <div className="bg-card-bg border border-border-subtle rounded-lg p-5 mb-6 space-y-3">
+          <div className="flex flex-wrap gap-2">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <div key={i} className="h-9 w-24 bg-dark-surface rounded-lg animate-pulse" style={{ animationDelay: `${i * 40}ms` }} />
+            ))}
+          </div>
+          <div className="h-10 bg-dark-surface rounded-lg animate-pulse" />
+        </div>
+        <div className="space-y-1">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div key={i} className="h-12 bg-card-bg border border-border-subtle/50 rounded animate-pulse" style={{ animationDelay: `${i * 40}ms` }} />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-2">Item Database</h1>
@@ -587,14 +609,6 @@ export default function ItemDatabase() {
 
       {/* Table */}
       <div>
-          {loading ? (
-            <div className="space-y-1">
-              {Array.from({ length: 12 }).map((_, i) => (
-                <div key={i} className="h-12 bg-card-bg border border-border-subtle/50 rounded animate-pulse" style={{ animationDelay: `${i * 40}ms` }} />
-              ))}
-            </div>
-          ) : (
-            <>
               <div className="overflow-x-auto bg-card-bg border border-border-subtle rounded-lg">
                 <table className="w-full text-sm table-fixed">
                   <thead>
@@ -712,9 +726,6 @@ export default function ItemDatabase() {
                   </div>
                 </div>
               )}
-            </>
-          )}
-
       </div>
 
       {/* Hover Detail Panel - follows cursor */}

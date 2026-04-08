@@ -1,10 +1,10 @@
-import GearPlanner from '@/components/GearPlanner';
+'use client';
 
-export const metadata = {
-  title: 'Gear Planner - ScarsHQ',
-  description: 'Plan your loadout. Equip items, compare stats, and optimize your build.',
-};
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function GearPage() {
-  return <GearPlanner />;
+  const router = useRouter();
+  useEffect(() => { router.replace('/talents?tab=Equipment'); }, [router]);
+  return null;
 }

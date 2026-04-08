@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { classes, factions, allRaces } from '@/data/classes';
 
 export const metadata = {
-  title: 'Character Overview - ScarsHQ',
+  title: 'Scars of Honor Classes, Races & Factions | ScarsHQ',
   description: '10 classes, 8 races, 2 factions, and the Scars system. How character creation works in Scars of Honor.',
   alternates: {
     canonical: '/character',
@@ -16,7 +16,7 @@ export default function CharacterPage() {
       <section className="relative overflow-hidden rounded-2xl border border-honor-gold/20 bg-[radial-gradient(circle_at_top,rgba(200,168,78,0.18),transparent_42%),linear-gradient(180deg,rgba(22,22,42,0.96),rgba(10,10,15,0.98))] p-8 md:p-10 mb-10">
         <div className="max-w-3xl">
           <p className="text-xs uppercase tracking-[0.28em] text-honor-gold/75 mb-3">Character Overview</p>
-          <h1 className="font-heading text-4xl md:text-5xl text-honor-gold mb-4">Class, Race, Faction, Scars</h1>
+          <h1 className="font-heading text-4xl md:text-5xl text-honor-gold mb-4">10 Classes, 8 Races, 2 Factions</h1>
           <p className="text-text-secondary leading-relaxed mb-6">
             You pick a race, which locks your faction and limits your class options.
             You pick a class, which gives you a 240+ node talent tree with no subclass lock.

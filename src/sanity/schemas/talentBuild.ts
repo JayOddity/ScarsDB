@@ -81,7 +81,8 @@ export const talentBuild = defineType({
       name: 'patch',
       title: 'Patch / Version',
       type: 'string',
-      description: 'Game patch this build was created for, e.g. "Pre-Alpha", "Spring 2026 Playtest"',
+      description: 'Game patch this build was created for, e.g. "Pre Spring Playtest"',
+      initialValue: 'Pre Spring Playtest',
     }),
     defineField({
       name: 'totalPoints',

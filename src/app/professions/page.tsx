@@ -4,6 +4,7 @@ import { professions } from '@/data/professions';
 export const metadata = {
   title: 'Professions - ScarsHQ',
   description: 'Gathering and crafting professions in Scars of Honor. Mining, Herbalism, Blacksmithing, Alchemy, and more.',
+  alternates: { canonical: '/professions' },
 };
 
 export default function ProfessionsPage() {

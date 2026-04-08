@@ -3,6 +3,7 @@ import Link from 'next/link';
 export const metadata = {
   title: 'The Scars System - ScarsHQ',
   description: 'Scars are permanent character modifications earned through gameplay. They cannot be respecced and sit on top of your class, talent, and gear choices.',
+  alternates: { canonical: '/scars' },
 };
 
 export default function ScarsPage() {

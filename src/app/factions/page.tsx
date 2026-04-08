@@ -6,6 +6,7 @@ import type { Faction } from '@/data/classes';
 export const metadata = {
   title: 'Factions - ScarsHQ',
   description: 'The Sacred Order vs. The Domination. Two factions locked in eternal war over the fate of Aragon.',
+  alternates: { canonical: '/factions' },
 };
 
 function FactionBlock({ faction, color }: { faction: Faction; color: 'gold' | 'red' }) {

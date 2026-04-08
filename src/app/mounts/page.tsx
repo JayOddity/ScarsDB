@@ -3,6 +3,7 @@ import Link from 'next/link';
 export const metadata = {
   title: 'Mounts - ScarsHQ',
   description: 'Mounts in Scars of Honor. Ground mounts only — no flying mounts in the game.',
+  alternates: { canonical: '/mounts' },
 };
 
 export default function MountsPage() {

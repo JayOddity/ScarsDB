@@ -6,6 +6,7 @@ export const item = defineType({
   type: 'document',
   fields: [
     defineField({ name: 'name', title: 'Name', type: 'string', validation: (r) => r.required() }),
+    defineField({ name: 'patch', title: 'Patch', type: 'string', initialValue: 'Pre Spring Playtest' }),
     defineField({ name: 'externalId', title: 'BeastBurst ID', type: 'string', readOnly: true }),
     defineField({
       name: 'rarity',

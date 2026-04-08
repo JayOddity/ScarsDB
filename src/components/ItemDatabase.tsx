@@ -248,6 +248,7 @@ export default function ItemDatabase() {
   const [meta, setMeta] = useState<ApiMeta | null>(null);
   const [filters, setFilters] = useState<{ slots: string[]; types: string[]; rarities: string[]; stats: string[] } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [ready, setReady] = useState(false);
   const [search, setSearch] = useState(initialSearch);
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
   const [rarityFilter, setRarityFilter] = useState<string | null>(null);
@@ -282,10 +283,8 @@ export default function ItemDatabase() {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Fetch items - only show skeleton on first load
-  const initialLoad = useRef(true);
+  // Fetch items
   const fetchItems = useCallback(async () => {
-    if (initialLoad.current) setLoading(true);
     const params = new URLSearchParams();
     params.set('page', String(page));
     params.set('per_page', '50');
@@ -311,7 +310,7 @@ export default function ItemDatabase() {
       setItems([]);
     } finally {
       setLoading(false);
-      initialLoad.current = false;
+      setReady(true);
     }
   }, [page, debouncedSearch, rarityFilter, category, subFilter, statFilters]);
 
@@ -433,7 +432,7 @@ export default function ItemDatabase() {
 
   const hasActiveFilters = rarityFilter || category || subFilter || statFilters.length || sourceFilter || search;
 
-  if (loading && initialLoad.current) {
+  if (!ready) {
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <div className="h-10 w-64 bg-card-bg rounded animate-pulse mb-2" />

@@ -3,7 +3,7 @@ import { classes, factions, allRaces } from '@/data/classes';
 
 export const metadata = {
   title: 'Character Overview - ScarsHQ',
-  description: 'Classes, races, factions, and the Scars system. Everything that defines your character in Scars of Honor.',
+  description: '10 classes, 8 races, 2 factions, and the Scars system. How character creation works in Scars of Honor.',
   alternates: {
     canonical: '/character',
   },
@@ -16,12 +16,12 @@ export default function CharacterPage() {
       <section className="relative overflow-hidden rounded-2xl border border-honor-gold/20 bg-[radial-gradient(circle_at_top,rgba(200,168,78,0.18),transparent_42%),linear-gradient(180deg,rgba(22,22,42,0.96),rgba(10,10,15,0.98))] p-8 md:p-10 mb-10">
         <div className="max-w-3xl">
           <p className="text-xs uppercase tracking-[0.28em] text-honor-gold/75 mb-3">Character Overview</p>
-          <h1 className="font-heading text-4xl md:text-5xl text-honor-gold mb-4">Four Layers Define Your Character</h1>
+          <h1 className="font-heading text-4xl md:text-5xl text-honor-gold mb-4">Class, Race, Faction, Scars</h1>
           <p className="text-text-secondary leading-relaxed mb-6">
-            Every character in Scars of Honor is shaped by four connected choices: class, race, faction, and Scars.
-            There are no locked subclasses. Your talent tree has 240+ nodes that let you build your own role.
-            Your race locks you into a faction and determines which classes you can play.
-            Scars add permanent progression on top of everything else.
+            You pick a race, which locks your faction and limits your class options.
+            You pick a class, which gives you a 240+ node talent tree with no subclass lock.
+            Then you earn Scars through gameplay, which are permanent and cannot be undone.
+            That is the full character system.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             <div className="rounded-lg border border-border-subtle bg-void-black/30 px-4 py-3">
@@ -114,9 +114,8 @@ export default function CharacterPage() {
           </Link>
         </div>
         <p className="text-text-secondary max-w-3xl leading-relaxed mb-6">
-          Your race determines your faction. The Sacred Order and the Domination are at war, and every race
-          belongs to one side. Race also restricts which classes you can play, so your race choice has real
-          mechanical weight beyond aesthetics and lore.
+          Your race locks you into a faction. Sacred Order or Domination, 4 races each.
+          Race also restricts which classes you can play, so it is not just a cosmetic pick.
         </p>
         <div className="grid md:grid-cols-2 gap-5">
           {[

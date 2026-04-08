@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/images/og-default.jpg',
+        url: '/images/og-playtest.jpg',
         width: 1200,
         height: 630,
         alt: 'Scars of Honor playtest — April 30 to May 11, 2026',

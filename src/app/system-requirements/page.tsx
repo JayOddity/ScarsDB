@@ -24,6 +24,7 @@ export const metadata: Metadata = {
     title: 'Scars of Honor System Requirements',
     description: 'Official minimum specs from Steam: Windows 10, GTX 970 / RX 480, 8 GB RAM, DirectX 11.',
   },
+  alternates: { canonical: '/system-requirements' },
 };
 
 const specs = [

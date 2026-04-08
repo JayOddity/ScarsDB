@@ -3,6 +3,7 @@ import Link from 'next/link';
 export const metadata = {
   title: 'PvP Content - Open World, Battlegrounds & Arenas | ScarsHQ',
   description: 'PvP in Scars of Honor — open world faction warfare, the Mourning Pass 5v5 battleground, and Thallan\'s Ring three-way arenas.',
+  alternates: { canonical: '/pvp' },
 };
 
 const pvpModes = [

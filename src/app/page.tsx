@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { sanityClient } from '@/lib/sanity';
@@ -6,6 +7,12 @@ import { getSteamNews } from '@/lib/steamNews';
 import PopularItems from '@/components/PopularItems';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import PlaytestCountdown from '@/components/PlaytestCountdown';
+
+export const metadata: Metadata = {
+  title: 'ScarsHQ - Scars of Honor Database & Tools',
+  description: 'Talent calculator, item database, class guides, and community tools for Scars of Honor MMORPG. 10 classes, 240+ talent nodes, 1600+ items.',
+  alternates: { canonical: '/' },
+};
 
 interface SanityNews {
   _id: string;

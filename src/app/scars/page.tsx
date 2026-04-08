@@ -2,27 +2,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'The Scars System - ScarsHQ',
-  description: 'Learn about the Scars system - a permanent progression mechanic that defines your character in Scars of Honor.',
+  description: 'Scars are permanent character modifications earned through gameplay. They cannot be respecced and sit on top of your class, talent, and gear choices.',
 };
-
-const aspects = [
-  {
-    title: 'Permanent Progression',
-    description: 'Scars are lasting marks on your character that persist forever. Unlike gear that can be swapped or talent points that can be respecced, Scars represent permanent choices that define who your character becomes over time.',
-  },
-  {
-    title: 'Earned Through Achievement',
-    description: 'Scars are not bought or randomly dropped. They are earned by reaching gameplay milestones, conquering challenges, and accomplishing feats across PvE, PvP, and the open world. Your Scars tell the story of what you have survived.',
-  },
-  {
-    title: 'Meaningful Choices',
-    description: 'Each Scar presents a meaningful decision that shapes your character. These choices go beyond raw power - they influence how your character interacts with the world, offering customization that talent trees alone cannot provide.',
-  },
-  {
-    title: 'Beyond Talent Trees',
-    description: 'While talent trees define your combat role and abilities, Scars add another layer of identity. They provide unique bonuses, unlock special interactions, and set your character apart from others of the same class and build.',
-  },
-];
 
 export default function ScarsPage() {
   return (
@@ -38,28 +19,58 @@ export default function ScarsPage() {
         The Scars System
       </h1>
       <p className="text-text-secondary mb-12 max-w-6xl">
-        At the heart of Scars of Honor lies its namesake system - Scars. A permanent
-        progression mechanic that goes beyond levels and gear, Scars are the defining feature
-        that makes every character truly unique. Your choices leave lasting marks that shape
-        your journey through Aragon.
+        Scars are the game&apos;s namesake mechanic. They are permanent modifications to your character
+        that you earn through gameplay. Unlike talents, they cannot be respecced. Unlike gear,
+        they cannot be swapped out. Once you have a Scar, it stays.
       </p>
 
-      {/* Core Aspects */}
+      {/* What they are */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-3 h-3 bg-honor-gold rotate-45" />
-          <h2 className="font-heading text-2xl text-honor-gold">How Scars Work</h2>
+          <h2 className="font-heading text-2xl text-honor-gold">What Scars Do</h2>
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
-          {aspects.map((aspect) => (
-            <div key={aspect.title} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
-                <h3 className="font-heading text-lg text-text-primary">{aspect.title}</h3>
-              </div>
-              <p className="text-sm text-text-secondary">{aspect.description}</p>
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <h3 className="font-heading text-lg text-text-primary">Permanent</h3>
             </div>
-          ))}
+            <p className="text-sm text-text-secondary">
+              You cannot undo a Scar. Talents can be respecced, gear can be replaced, but Scars
+              are locked in once earned. That is the whole point.
+            </p>
+          </div>
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <h3 className="font-heading text-lg text-text-primary">Earned, Not Bought</h3>
+            </div>
+            <p className="text-sm text-text-secondary">
+              Scars come from gameplay milestones. PvE clears, PvP wins, crafting mastery,
+              exploration. They are not in the shop and they do not drop from mobs.
+            </p>
+          </div>
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <h3 className="font-heading text-lg text-text-primary">On Top of Everything Else</h3>
+            </div>
+            <p className="text-sm text-text-secondary">
+              Scars sit on a separate layer from your class, talents, and gear. Two players with
+              the exact same build and equipment will still differ because of their Scars.
+            </p>
+          </div>
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <h3 className="font-heading text-lg text-text-primary">Choices That Matter</h3>
+            </div>
+            <p className="text-sm text-text-secondary">
+              Because Scars are permanent, picking one is a real decision. You are not
+              collecting all of them. You are choosing which ones define your character.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -67,30 +78,26 @@ export default function ScarsPage() {
         <span className="diamond" />
       </div>
 
-      {/* How It Fits */}
+      {/* Why it matters */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <div className="w-3 h-3 bg-honor-gold rotate-45" />
-          <h2 className="font-heading text-2xl text-honor-gold">Your Character, Your Story</h2>
+          <h2 className="font-heading text-2xl text-honor-gold">Why This Matters</h2>
         </div>
         <div className="bg-card-bg border border-border-subtle rounded-lg p-6">
           <p className="text-sm text-text-secondary mb-4">
-            In most MMOs, two players of the same class with the same gear are functionally
-            identical. In Scars of Honor, the Scars system ensures that is never the case.
-            Two Warriors might share the same talent build and equipment, but their Scars -
-            earned through different journeys, different choices, and different achievements -
-            make them fundamentally different characters.
+            In most MMOs, if two players pick the same class with the same gear, they play
+            identically. Scars of Honor adds a layer that prevents that. Your Scars reflect
+            what you actually did in the game, not just what build guide you followed.
           </p>
           <p className="text-sm text-text-secondary mb-4">
-            Scars work alongside the talent tree system, not in competition with it. Your talent
-            tree defines your combat role and abilities. Your Scars define your character&apos;s
-            history and identity. Together, they create a level of customization that gives
-            every player a reason to forge their own path.
+            The talent tree handles your combat role. Scars handle long term character identity.
+            They work alongside each other, not in competition. You do not pick Scars instead
+            of talents. You pick them on top of talents.
           </p>
           <p className="text-sm text-text-secondary">
-            Whether you earned your Scars through dungeon mastery, PvP dominance, exploration
-            milestones, or crafting achievements - they are yours permanently, and they tell
-            the world exactly who you are.
+            Whether your Scars came from dungeon clears, arena wins, or hitting crafting
+            milestones, they are permanent and they are yours.
           </p>
         </div>
       </section>
@@ -103,14 +110,13 @@ export default function ScarsPage() {
       <section className="mb-12">
         <div className="bg-card-bg border border-honor-gold/20 rounded-lg p-6">
           <div className="flex items-start gap-3">
-            <span className="text-honor-gold text-lg mt-0.5">⚠</span>
+            <span className="text-honor-gold text-lg mt-0.5">*</span>
             <div>
-              <h3 className="font-heading text-sm text-honor-gold mb-2">Subject to Change</h3>
+              <h3 className="font-heading text-sm text-honor-gold mb-2">Still in Development</h3>
               <p className="text-sm text-text-secondary">
-                The Scars system is still in active development. Specific mechanics, rewards,
-                and interactions may change before launch. The information on this page reflects
-                what has been shared publicly by the development team. We will update this page
-                as more details are revealed.
+                The Scars system has not been fully revealed yet. The devs have talked about
+                the concept publicly but specific mechanics, categories, and rewards are still
+                being worked on. We will update this page as more details come out.
               </p>
             </div>
           </div>

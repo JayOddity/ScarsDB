@@ -6,15 +6,15 @@ const faqs = [
     questions: [
       {
         q: 'Is Scars of Honor free to play?',
-        a: 'Yes. Scars of Honor is free to play with no subscription. The in game shop is cosmetic only.',
+        a: 'Yes. Free to play, no subscription. The shop is cosmetic only.',
       },
       {
         q: 'What platform is the game on?',
-        a: 'Scars of Honor is PC-first. The development team is focused on delivering the best possible experience on PC before considering other platforms.',
+        a: 'PC only for now. The team has said they want to get PC right first before looking at anything else.',
       },
       {
         q: 'When does Scars of Honor come out?',
-        a: 'Scars of Honor is expected to release in Early Access around Q1 2027, as per Beastburst CEO Armegon\'s statement on his Twitch channel. The full release date is currently unknown. The next public Technical Alpha runs April 30 to May 11, 2026 on Steam.',
+        a: 'Early Access is expected around Q1 2027 based on what Beastburst CEO Armegon has said on stream. No confirmed full release date yet. The next Technical Alpha runs April 30 to May 11, 2026 on Steam.',
       },
     ],
   },
@@ -23,15 +23,15 @@ const faqs = [
     questions: [
       {
         q: 'How many classes are there?',
-        a: 'There are 10 classes in Scars of Honor. Rather than using a subclass system, each class has a deep talent tree that lets you define your own role and playstyle. Your build is your identity.',
+        a: '10 classes. There are no subclasses. Instead, each class has a talent tree with 240+ nodes and three paths you can spend points in however you want.',
       },
       {
         q: 'Are there subclasses?',
-        a: 'No. Instead of subclasses, Scars of Honor uses a talent tree system where your node choices define your role - tank, healer, damage, or hybrid. This gives you far more flexibility than a rigid subclass structure.',
+        a: 'No. The talent tree replaces subclasses. You pick your nodes and that determines your role. You can go full tank, full healer, full damage, or mix across paths for a hybrid.',
       },
       {
         q: 'How many races can I choose from?',
-        a: 'There are 8 playable races split across 2 factions: the Sacred Order and the Domination. Each faction has 4 races, and your faction choice affects your story, allies, and enemies.',
+        a: '8 races across 2 factions (Sacred Order and Domination, 4 races each). Your race locks your faction and limits which classes you can play.',
       },
     ],
   },
@@ -40,11 +40,11 @@ const faqs = [
     questions: [
       {
         q: 'What is the Scars system?',
-        a: 'Scars are a permanent progression system unique to Scars of Honor. They provide meaningful character customization beyond talent trees, earned through gameplay achievements and milestones. Each Scar shapes your character in a lasting way.',
+        a: 'Scars are permanent character modifications you earn through gameplay. They cannot be respecced. Think of them as a layer on top of your talent build that makes your character different from someone running the same class and gear.',
       },
       {
         q: 'Are there professions?',
-        a: 'Yes. The game features both gathering and crafting professions. Gathering professions let you collect resources from the world, while crafting professions turn those materials into powerful gear and consumables.',
+        a: 'Yes. There are gathering professions (mining, herbalism, woodcutting, fishing) and crafting professions (blacksmithing, cooking, alchemy, enchanting). Gathering feeds into crafting.',
       },
     ],
   },
@@ -53,15 +53,15 @@ const faqs = [
     questions: [
       {
         q: 'What PvE content is available?',
-        a: 'PvE includes open world questing, boss encounters, and procedural dungeons. The developers have said dungeons will change between runs so they do not play out the same way every time. Group content is a core focus.',
+        a: 'Open world questing, boss encounters, and procedural dungeons. The devs have said dungeon layouts change between runs so you are not just memorising the same route every time.',
       },
       {
         q: 'What PvP modes are there?',
-        a: 'Confirmed PvP modes include the Mourning Pass 5v5 battleground and Thallan\'s Ring arena with 1v1v1 and 2v2v2 formats. Open world PvP has been discussed but not fully detailed.',
+        a: 'Mourning Pass (5v5 battleground) and Thallan\'s Ring (arena with 1v1v1 and 2v2v2). Open world PvP has been mentioned but not fully detailed yet.',
       },
       {
         q: 'How do dungeons work?',
-        a: 'Dungeons in Scars of Honor are procedurally generated. The developers have said layouts and encounters will vary between runs so each dungeon feels different.',
+        a: 'They are procedurally generated. Layouts and encounters change between runs. The devs want each dungeon run to feel different.',
       },
     ],
   },
@@ -70,11 +70,11 @@ const faqs = [
     questions: [
       {
         q: 'Is there a subscription fee?',
-        a: 'No. There is no subscription fee. The game is free to play and free to download.',
+        a: 'No. Free to play, free to download, no sub.',
       },
       {
-        q: 'What does the in-game shop sell?',
-        a: 'The shop sells cosmetic items only - skins, visual effects, and appearance options. Nothing in the shop gives you a gameplay advantage. Your power is earned, never bought.',
+        q: 'What does the in game shop sell?',
+        a: 'Cosmetics only. Skins, visual effects, appearance stuff. No gameplay advantages, no pay to win.',
       },
     ],
   },
@@ -94,8 +94,7 @@ export default function FaqContent() {
         Frequently Asked Questions
       </h1>
       <p className="text-text-secondary mb-12 max-w-3xl">
-        Everything you need to know about Scars of Honor. Can&apos;t find your answer?
-        Join the{' '}
+        Quick answers about Scars of Honor. If something isn&apos;t covered here, ask in the{' '}
         <a
           href="https://discord.com/invite/jDSuQVgwHF"
           target="_blank"
@@ -103,8 +102,7 @@ export default function FaqContent() {
           className="text-honor-gold hover:text-honor-gold-light transition-colors"
         >
           community Discord
-        </a>{' '}
-        and ask away.
+        </a>.
       </p>
 
       <div className="space-y-10">
@@ -131,7 +129,7 @@ export default function FaqContent() {
         <span className="diamond" />
       </div>
       <div className="text-center">
-        <p className="text-text-secondary mb-4">Ready to dive in?</p>
+        <p className="text-text-secondary mb-4">Want to try it?</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/playtest"

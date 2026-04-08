@@ -12,7 +12,7 @@ export const page = defineType({
       type: 'slug',
       options: { source: 'title', maxLength: 96 },
       validation: (r) => r.required(),
-      description: 'URL path — e.g. "about" becomes /pages/about',
+      description: 'URL path - e.g. "about" becomes /pages/about',
     }),
     defineField({ name: 'excerpt', title: 'Short Description', type: 'text', rows: 2 }),
     defineField({

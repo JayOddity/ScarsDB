@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     { slug }
   );
   return {
-    title: page?.seo?.metaTitle || `${page?.title} — ScarsDB`,
+    title: page?.seo?.metaTitle || `${page?.title} - ScarsHQ`,
     description: page?.seo?.metaDescription || page?.excerpt || '',
   };
 }
@@ -41,7 +41,7 @@ export default async function PageDetail({ params }: { params: Promise<{ slug: s
 
   if (!page) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <h1 className="font-heading text-3xl text-scar-red mb-4">Page Not Found</h1>
         <Link href="/pages" className="text-honor-gold hover:text-honor-gold-light">← Back to Pages</Link>
       </div>
@@ -49,7 +49,7 @@ export default async function PageDetail({ params }: { params: Promise<{ slug: s
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <nav className="text-sm text-text-muted mb-8 flex items-center gap-2">
         <Link href="/" className="hover:text-honor-gold transition-colors">Home</Link>
         <span>/</span>

@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     { slug }
   );
   return {
-    title: post?.seo?.metaTitle || `${post?.title} — ScarsDB`,
+    title: post?.seo?.metaTitle || `${post?.title} - ScarsHQ`,
     description: post?.seo?.metaDescription || post?.excerpt || '',
   };
 }
@@ -42,7 +42,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
 
   if (!post) {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <h1 className="font-heading text-3xl text-scar-red mb-4">Post Not Found</h1>
         <Link href="/news" className="text-honor-gold hover:text-honor-gold-light">← Back to News</Link>
       </div>
@@ -50,7 +50,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <nav className="text-sm text-text-muted mb-8 flex items-center gap-2">
         <Link href="/" className="hover:text-honor-gold transition-colors">Home</Link>
         <span>/</span>

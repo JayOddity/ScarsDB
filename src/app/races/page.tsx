@@ -1,62 +1,112 @@
-import { factions } from '@/data/classes';
+import Link from 'next/link';
+import { factions, classes, allRaces } from '@/data/classes';
+
+const classMap = new Map(classes.map((c) => [c.slug, c]));
 
 export const metadata = {
-  title: 'Races & Factions — ScarsDB',
-  description: 'Explore the races and factions of Aragon. The Sacred Order vs. The Domination.',
+  title: 'Races - ScarsHQ',
+  description: 'All 8 playable races in Scars of Honor. Humans, Sun Elves, Dwarves, Bearans, Orcs, Infernal Demons, Undead, and Gronthar.',
 };
 
 export default function RacesPage() {
+  const sections = [
+    { faction: factions.sacredOrder, color: 'gold' as const },
+    { faction: factions.domination, color: 'red' as const },
+  ];
+
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
-      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-4">Races & Factions</h1>
-      <p className="text-text-secondary mb-12">
-        Aragon is divided between two great factions locked in an eternal struggle.
-        Your choice of faction and race shapes your journey through the world.
-      </p>
-
-      {/* Sacred Order */}
-      <section className="mb-12">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-3 h-3 bg-honor-gold rotate-45" />
-          <h2 className="font-heading text-2xl text-honor-gold">{factions.sacredOrder.name}</h2>
-        </div>
-        <p className="text-text-secondary mb-6">{factions.sacredOrder.description}</p>
-        <div className="grid sm:grid-cols-2 gap-4">
-          {factions.sacredOrder.races.map((race) => (
-            <div key={race.name} className="bg-card-bg border border-border-subtle rounded-lg p-5 hover:border-honor-gold-dim transition-colors glow-gold-hover">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-3xl">{race.icon}</span>
-                <h3 className="font-heading text-lg text-text-primary">{race.name}</h3>
-              </div>
-              <p className="text-sm text-text-secondary">{race.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <div className="diamond-divider mb-12">
-        <span className="diamond" />
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      {/* Page header */}
+      <div className="text-center mb-16">
+        <h1 className="font-heading text-4xl md:text-5xl text-honor-gold mb-4">Races of Aragon</h1>
+        <p className="text-text-secondary max-w-2xl mx-auto">
+          Eight races divided across two factions wage war over the fate of Irongarth.
+          Your race shapes your story, your allies, and your enemies.
+        </p>
       </div>
 
-      {/* Domination */}
-      <section>
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-3 h-3 bg-scar-red rotate-45" />
-          <h2 className="font-heading text-2xl text-scar-red">{factions.domination.name}</h2>
-        </div>
-        <p className="text-text-secondary mb-6">{factions.domination.description}</p>
-        <div className="grid sm:grid-cols-2 gap-4">
-          {factions.domination.races.map((race) => (
-            <div key={race.name} className="bg-card-bg border border-scar-red/20 rounded-lg p-5 hover:border-scar-red/40 transition-colors">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-3xl">{race.icon}</span>
-                <h3 className="font-heading text-lg text-text-primary">{race.name}</h3>
+      {/* Race & Class chart */}
+      <div className="mb-16 rounded-xl overflow-hidden border border-border-subtle">
+        <img
+          src="/Icons/races-classes-chart.webp"
+          alt="Races & Classes compatibility chart"
+          className="w-full h-auto"
+        />
+      </div>
+
+      {sections.map(({ faction, color }, fi) => {
+        const isGold = color === 'gold';
+        return (
+          <div key={faction.name}>
+            {fi > 0 && (
+              <div className="diamond-divider my-16">
+                <span className="diamond" />
               </div>
-              <p className="text-sm text-text-secondary">{race.description}</p>
+            )}
+
+            {/* Faction label */}
+            <div className="flex items-center gap-3 mb-8">
+              <img src={faction.icon} alt={faction.name} width={32} height={32} className="rounded" />
+              <Link href="/factions" className={`font-heading text-xl hover:opacity-80 transition-opacity ${isGold ? 'text-honor-gold' : 'text-scar-red'}`}>
+                {faction.name}
+              </Link>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* Race cards */}
+            <div className="grid md:grid-cols-2 gap-6">
+              {faction.races.map((race) => (
+                <Link
+                  key={race.slug}
+                  href={`/races/${race.slug}`}
+                  className={`group relative bg-card-bg border rounded-xl overflow-hidden transition-all hover:translate-y-[-2px] hover:shadow-xl ${isGold ? 'border-honor-gold/15 hover:border-honor-gold/40 hover:shadow-honor-gold/5' : 'border-scar-red/15 hover:border-scar-red/40 hover:shadow-scar-red/5'}`}
+                >
+                  <div className="p-6 flex gap-5">
+                    {/* Race crest */}
+                    <div className="flex-shrink-0 w-16 h-16 relative">
+                      <img src={race.banner} alt={race.name} width={64} height={64} className="object-contain opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300" />
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-baseline justify-between mb-1">
+                        <h2 className={`font-heading text-2xl group-hover:translate-x-1 transition-transform ${isGold ? 'text-honor-gold' : 'text-scar-red-light'}`}>
+                          {race.name}
+                        </h2>
+                        <span className={`text-xs italic ${isGold ? 'text-honor-gold/60' : 'text-scar-red/60'}`}>
+                          {race.tagline}
+                        </span>
+                      </div>
+
+                      <p className="text-sm text-text-secondary leading-relaxed mb-3">{race.description}</p>
+
+                      {/* Available classes */}
+                      <div className="flex items-center gap-2 mb-3 flex-wrap">
+                        <span className="text-[10px] text-text-muted uppercase tracking-wide">Classes:</span>
+                        {race.availableClasses.map((slug) => {
+                          const cls = classMap.get(slug);
+                          if (!cls) return null;
+                          return (
+                            <span key={slug} title={cls.name}>
+                              <img src={cls.icon} alt={cls.name} width={24} height={24} className="opacity-80" />
+                            </span>
+                          );
+                        })}
+                      </div>
+
+                      <span className={`text-xs font-medium ${isGold ? 'text-honor-gold/50 group-hover:text-honor-gold' : 'text-scar-red/50 group-hover:text-scar-red-light'} transition-colors`}>
+                        View full history →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+
+      <p className="text-xs text-text-muted mt-16 text-center">
+        Source: <a href="https://www.scarsofhonor.com/races" target="_blank" rel="noopener noreferrer" className="text-honor-gold hover:text-honor-gold-light transition-colors">scarsofhonor.com/races</a>
+      </p>
     </div>
   );
 }

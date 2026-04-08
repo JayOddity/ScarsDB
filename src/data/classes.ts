@@ -1,275 +1,274 @@
 export interface Subclass {
   name: string;
-  roles: string[];
-  damageTypes: string[];
-  description: string;
 }
 
 export interface GameClass {
   slug: string;
   name: string;
   icon: string;
-  role: string;
+  subtitle: string;
   description: string;
-  lore: string;
-  strengths: string[];
-  weaknesses: string[];
   subclasses: Subclass[];
-  tips: string[];
 }
 
 export const classes: GameClass[] = [
   {
     slug: 'warrior',
     name: 'Warrior',
-    icon: '⚔️',
-    role: 'Melee',
-    description: 'Masters of martial combat who dominate the battlefield with raw strength and tactical prowess. Warriors excel in close-quarters fights, wielding heavy weapons and wearing the thickest armor.',
-    lore: 'Forged in the fires of countless battles across Aragon, Warriors are the backbone of any fighting force. They draw their power not from magic or divine blessing, but from sheer determination and years of grueling training.',
-    strengths: ['High survivability and armor', 'Excellent crowd control', 'Strong in both solo and group content', 'Versatile tank or DPS roles'],
-    weaknesses: ['Vulnerable to kiting', 'Resource-heavy abilities', 'Limited ranged options', 'Slower mobility than light classes'],
+    icon: '/Icons/Class%20Icons/class-warrior-CKO7Mqhr.webp',
+    subtitle: 'Frontline Fighter',
+    description: 'The backbone of every army, Warriors are disciplined melee fighters built to endure the chaos of battle. Versatile with weapons and resilient in close combat, they thrive on the front lines, taking and dealing heavy damage in equal measure. Whether as a seasoned Pathfinder, a stalwart Vanguard, or a relentless Berserker, Warriors embody strength, discipline, and unyielding resolve.',
     subclasses: [
-      { name: 'Pathfinder', roles: ['DPS'], damageTypes: ['Physical'], description: 'A mobile melee fighter who strikes fast and exploits enemy weaknesses with precision attacks.' },
-      { name: 'Vanguard', roles: ['Tank'], damageTypes: ['Physical'], description: 'An unyielding shield wall who absorbs punishment and protects allies with defensive mastery.' },
-      { name: 'Berserker', roles: ['DPS'], damageTypes: ['Physical'], description: 'A furious combatant who sacrifices defense for overwhelming offensive power and berserking rage.' },
-    ],
-    tips: [
-      'Start with Vanguard path if you\'re new — it\'s the most forgiving for learning mechanics.',
-      'Manage your rage resource carefully; don\'t spam abilities on cooldown.',
-      'Pair defensive talents with offensive ones for a balanced hybrid build.',
-      'Position yourself between enemies and your healer in group content.',
-      'Use crowd control abilities to interrupt dangerous enemy casts.',
-      'Experiment with two-handed vs. sword-and-shield to find your preferred style.',
+      { name: 'Pathfinder' },
+      { name: 'Vanguard' },
+      { name: 'Berserker' },
     ],
   },
   {
     slug: 'paladin',
     name: 'Paladin',
-    icon: '🛡️',
-    role: 'Melee',
-    description: 'Holy warriors who combine martial might with divine magic. Paladins can tank, heal, or deal damage, making them one of the most versatile classes in Aragon.',
-    lore: 'Paladins are the chosen champions of the Sacred Order, blessed with the power of light. Their oath binds them to protect the innocent and smite the forces of darkness wherever they may lurk.',
-    strengths: ['Excellent versatility (tank, heal, DPS)', 'Strong self-sustain', 'Powerful group buffs and auras', 'Effective against undead enemies'],
-    weaknesses: ['Jack of all trades, master of none', 'Mana-dependent for healing', 'Slower kill speed than pure DPS', 'Requires commitment to one role in endgame'],
+    icon: '/Icons/Class%20Icons/class-paladin-iqJcYEYK.webp',
+    subtitle: 'Frontline Holy Fighter',
+    description: 'Steadfast and unyielding, the Paladin endures on the front lines, wielding holy power and fire to strike down foes while sustaining themselves in battle. Whether as a zealous Inquisitor, a protective Templar, or an inspiring Justicar, Paladins embody faith, resilience, and unbreakable conviction.',
     subclasses: [
-      { name: 'Inquisitor', roles: ['DPS'], damageTypes: ['Holy', 'Physical'], description: 'A zealous crusader who channels holy fire to purge enemies with righteous fury.' },
-      { name: 'Templar', roles: ['Tank'], damageTypes: ['Holy'], description: 'A divine bulwark who uses holy shields and consecrated ground to protect allies.' },
-      { name: 'Crusader', roles: ['Healer', 'Support'], damageTypes: ['Holy'], description: 'A battle-medic who heals allies through combat, channeling holy power with every strike.' },
-    ],
-    tips: [
-      'Auras affect your entire group — choose them based on your party composition.',
-      'Inquisitor path excels against undead and demon enemies in PvE.',
-      'Templar is the strongest magical damage tank in the game.',
-      'Keep your mana reserve above 30% for emergency heals.',
-      'Crusader healing scales with your melee damage — stay in the fight.',
-      'Swap between auras between pulls to maximize efficiency.',
+      { name: 'Inquisitor' },
+      { name: 'Templar' },
+      { name: 'Justicar' },
     ],
   },
   {
     slug: 'mage',
     name: 'Mage',
-    icon: '🔮',
-    role: 'Ranged',
-    description: 'Wielders of arcane power who devastate enemies from afar with elemental spells. Mages command fire, ice, and raw arcane energy to control and destroy.',
-    lore: 'The mages of Aragon draw power from the Weave — an invisible tapestry of magical energy that permeates the world. Through years of study in the great academies, they learn to bend reality itself.',
-    strengths: ['Highest burst damage potential', 'Strong area-of-effect abilities', 'Excellent crowd control (freezes, slows)', 'Powerful in PvP and PvE'],
-    weaknesses: ['Very fragile (low armor/HP)', 'Mana management is critical', 'Vulnerable when caught in melee', 'Long cast times on powerful spells'],
+    icon: '/Icons/Class%20Icons/class-mage-Bj82a76r.webp',
+    subtitle: 'Ranged Damage Dealer',
+    description: 'Masters of the arcane, Mages wield fire, lightning, ice, and cosmic power to devastate enemies from afar. Fragile but unmatched in destructive potential, they control the battlefield through raw damage, crowd control, and mobility. Whether as a resilient Battle Mage, a versatile Runeweaver, or a long-range Wizard, Mages embody the deadly art of disciplined spellcraft.',
     subclasses: [
-      { name: 'Battlemage', roles: ['DPS'], damageTypes: ['Fire', 'Arcane'], description: 'A close-range caster who enhances weapons with magic and fights on the frontline.' },
-      { name: 'Runeweaver', roles: ['DPS', 'Support'], damageTypes: ['Arcane', 'Ice'], description: 'A tactical mage who places runic traps and barriers to control the battlefield.' },
-      { name: 'Wizard', roles: ['DPS'], damageTypes: ['Fire', 'Ice', 'Arcane'], description: 'A pure spellcaster who channels devastating elemental destruction from maximum range.' },
-    ],
-    tips: [
-      'Wizard is the simplest path to learn — focus on positioning and cast timing.',
-      'Battlemage is surprisingly tanky for a mage — consider it for solo play.',
-      'Always have an escape ability talented — Blink or Ice Block can save your life.',
-      'Manage your mana with lower-cost filler spells between big casts.',
-      'Runeweaver excels in PvP by controlling chokepoints.',
-      'Elemental resistances matter — swap damage types based on enemy weaknesses.',
+      { name: 'Battle Mage' },
+      { name: 'Runeweaver' },
+      { name: 'Wizard' },
     ],
   },
   {
     slug: 'priest',
     name: 'Priest',
-    icon: '✨',
-    role: 'Ranged',
-    description: 'Divine spellcasters who serve as the primary healers of Aragon. Priests channel holy or shadow magic to mend allies or smite foes.',
-    lore: 'Priests commune with the divine forces of Aragon, acting as conduits between mortals and the celestial powers. Some embrace the light, while others delve into forbidden shadow arts.',
-    strengths: ['Best pure healing in the game', 'Strong group utility and buffs', 'Shadow spec offers competitive DPS', 'Essential for endgame group content'],
-    weaknesses: ['Fragile in solo combat', 'Shadow and Holy are completely different playstyles', 'High priority target in PvP', 'Limited mobility'],
+    icon: '/Icons/Class%20Icons/class-priest-DOee8xLC.webp',
+    subtitle: 'Healer, Damage Dealer',
+    description: 'Devout and unwavering, Priests channel divine power to heal allies, shield the faithful, and smite their enemies with holy wrath. Stronger when their faith is tested, they stand as both protectors and punishers on the battlefield. Whether as a blessing Cleric, a god-empowered Worshipper, or a relentless Exorcist, Priests embody devotion, discipline, and divine retribution.',
     subclasses: [
-      { name: 'Cleric', roles: ['Healer'], damageTypes: ['Holy'], description: 'A devoted healer who excels at keeping groups alive through sustained, powerful healing.' },
-      { name: 'Worshipper', roles: ['DPS'], damageTypes: ['Shadow'], description: 'A shadow priest who deals damage over time and drains enemy life force.' },
-      { name: 'Exorcist', roles: ['DPS', 'Healer'], damageTypes: ['Holy', 'Shadow'], description: 'A hybrid caster who balances light and dark to both heal and harm simultaneously.' },
-    ],
-    tips: [
-      'Cleric is the most sought-after healer spec for dungeons and raids.',
-      'Worshipper has excellent solo leveling speed due to self-sustain.',
-      'Exorcist is complex but rewarding — practice your rotation on dummies.',
-      'Keep shield abilities on cooldown for proactive damage prevention.',
-      'In PvP, positioning is everything — stay behind your frontline.',
-      'Mana management is crucial; learn when to use efficient vs. powerful heals.',
+      { name: 'Cleric' },
+      { name: 'Worshipper' },
+      { name: 'Exorcist' },
     ],
   },
   {
     slug: 'ranger',
     name: 'Ranger',
-    icon: '🏹',
-    role: 'Ranged',
-    description: 'Expert marksmen and wilderness survivalists who strike from afar. Rangers combine ranged weapon mastery with nature-based traps and companion creatures.',
-    lore: 'Rangers are the wardens of Aragon\'s vast wilderness. They patrol the borders between civilization and the untamed wilds, their keen eyes and steady hands protecting the unwary from threats unseen.',
-    strengths: ['Excellent sustained ranged DPS', 'Strong kiting ability', 'Versatile trap mechanics', 'Good in both PvE and PvP'],
-    weaknesses: ['Weaker in melee range', 'Pet management adds complexity', 'Trap setup requires planning', 'Less burst than mages'],
+    icon: '/Icons/Class%20Icons/class-ranger-D_RUMGxg.webp',
+    subtitle: 'Ranged Damage Dealer',
+    description: 'Swift and deadly, Rangers strike from afar with precision shots, elemental power, and clever traps, cutting down foes before they reach the front lines. Fragile but highly mobile, they excel at sustained damage and battlefield control. Whether as a long-range Sharpshooter, a cunning Trapper, or an inventive Artificier, Rangers embody agility, ingenuity, and lethal aim.',
     subclasses: [
-      { name: 'Sharpshooter', roles: ['DPS'], damageTypes: ['Physical'], description: 'A precision archer who maximizes ranged damage with powerful aimed shots and critical strikes.' },
-      { name: 'Trapper', roles: ['DPS', 'Support'], damageTypes: ['Physical', 'Nature'], description: 'A tactical fighter who controls zones with traps, snares, and area denial abilities.' },
-      { name: 'Artificer', roles: ['DPS'], damageTypes: ['Physical', 'Fire'], description: 'A gadget-wielding engineer who uses mechanical devices and explosives alongside ranged attacks.' },
-    ],
-    tips: [
-      'Sharpshooter rewards perfect positioning — stay at maximum range always.',
-      'Trapper is excellent for solo content and PvP with zone control.',
-      'Artificer has the highest AoE damage among Ranger specs.',
-      'Learn to kite — move between shots to maintain distance from melee.',
-      'Pre-place traps before pulls in dungeons for massive opening damage.',
-      'Your mobility is your defense — never stand still if you can help it.',
+      { name: 'Sharpshooter' },
+      { name: 'Trapper' },
+      { name: 'Artificier' },
     ],
   },
   {
     slug: 'druid',
     name: 'Druid',
-    icon: '🌿',
-    role: 'Melee / Ranged',
-    description: 'Shape-shifting nature casters who adapt to any role. Druids can transform into powerful beasts, heal with nature magic, or command the forces of the wild.',
-    lore: 'Druids are the voice of nature in Aragon. They form an ancient pact with the land itself, drawing power from the forests, rivers, and beasts. Their shape-shifting abilities make them unpredictable.',
-    strengths: ['Most versatile class — can fill any role', 'Shape-shifting provides unique mechanics', 'Strong healing over time', 'Excellent solo survivability'],
-    weaknesses: ['Forms lock you out of certain abilities', 'Complex to master all forms', 'Less specialized than dedicated classes', 'Gear requirements span multiple stats'],
+    icon: '/Icons/Class%20Icons/class-druid-C7poOgBq.webp',
+    subtitle: 'Summoner, Shapeshifter',
+    description: 'Druids channel the raw balance of nature, summoning beasts, healing allies, and shifting forms to strike with elemental fury or primal strength. Whether as a prophetic Oracle, a beast-leading Beastmaster, or a versatile Shapeshifter, Druids embody the wild\'s harmony of nurture and ferocity.',
     subclasses: [
-      { name: 'Oracle', roles: ['Healer'], damageTypes: ['Nature'], description: 'A nature healer who uses powerful heal-over-time effects and rejuvenation magic.' },
-      { name: 'Beastmaster', roles: ['DPS', 'Summoner'], damageTypes: ['Nature', 'Physical'], description: 'A wild caller who summons and commands beasts while fighting alongside them.' },
-      { name: 'Shapeshifter', roles: ['DPS', 'Tank'], damageTypes: ['Physical', 'Nature'], description: 'A form-shifting warrior who transforms into powerful beasts for melee combat.' },
-    ],
-    tips: [
-      'Shapeshifter bear form is a viable tank — don\'t overlook it.',
-      'Oracle healing-over-time stacks are your bread and butter — keep them rolling.',
-      'Beastmaster pets need to be managed; position them to avoid cleave damage.',
-      'Learn to shift forms mid-combat for maximum flexibility.',
-      'Nature damage ignores some armor — use it against heavily armored foes.',
-      'Druid is the best class for world exploration thanks to travel forms.',
+      { name: 'Oracle' },
+      { name: 'Beastmaster' },
+      { name: 'Shapeshifter' },
     ],
   },
   {
     slug: 'assassin',
     name: 'Assassin',
-    icon: '🗡️',
-    role: 'Melee',
-    description: 'Shadow-wielding melee fighters who strike from stealth with lethal precision. Assassins excel at eliminating single targets with devastating burst combos.',
-    lore: 'Operating from the shadows of Aragon\'s great cities, Assassins are the unseen hand that shapes the fate of nations. Their guilds are whispered of in fear, their blades finding even the most protected targets.',
-    strengths: ['Highest single-target burst damage', 'Stealth and gap-closing abilities', 'Excellent in PvP', 'Strong evasion and dodge mechanics'],
-    weaknesses: ['Very fragile when caught', 'Stealth-dependent openers', 'Weaker sustained AoE damage', 'High skill ceiling'],
+    icon: '/Icons/Class%20Icons/class-assasin-DD1zK8fd.webp',
+    subtitle: 'Mobile, Finesse Fighter',
+    description: 'Swift and lethal, the Assassin trades resilience for speed, striking with blades, poison, or lightning before slipping back into the shadows. Whether as a relentless Bladedancer, a mage-slaying Spellbane, or a solitary Bounty Hunter, Assassins embody precision, cunning, and decisive execution.',
     subclasses: [
-      { name: 'Bladedancer', roles: ['DPS'], damageTypes: ['Physical'], description: 'A swift dual-wielder who chains attacks in fluid combos for sustained melee damage.' },
-      { name: 'Spellbane', roles: ['DPS'], damageTypes: ['Physical', 'Shadow'], description: 'An anti-mage specialist who disrupts casters and steals magical energy.' },
-      { name: 'Bounty Hunter', roles: ['DPS'], damageTypes: ['Physical', 'Poison'], description: 'A ruthless tracker who uses poisons, traps, and dirty tactics to eliminate targets.' },
-    ],
-    tips: [
-      'Always open from stealth — your opener abilities deal 2-3x normal damage.',
-      'Bladedancer has the smoothest rotation for beginners.',
-      'Spellbane is the ultimate PvP anti-caster — prioritize silence talents.',
-      'Bounty Hunter poisons stack — apply them before your burst window.',
-      'Save your vanish for emergencies, not just re-openers.',
-      'Learn enemy cast bars — interrupting key abilities is more valuable than raw DPS.',
+      { name: 'Bladedancer' },
+      { name: 'Spellbane' },
+      { name: 'Bounty Hunter' },
     ],
   },
   {
     slug: 'necromancer',
     name: 'Necromancer',
-    icon: '💀',
-    role: 'Melee / Ranged',
-    description: 'Dark spellcasters who command the forces of death. Necromancers raise undead minions, drain life force, and wield blood magic to devastate their enemies.',
-    lore: 'Necromancers walk the thin line between life and death. Once shunned by all of Aragon\'s societies, their mastery over death has become a necessary weapon against the growing darkness that threatens the world.',
-    strengths: ['Strong pet/minion army', 'Excellent self-healing through life drain', 'Unique blood magic mechanics', 'Good sustained damage'],
-    weaknesses: ['Minions can be AoE\'d down', 'Blood magic costs HP to cast', 'Socially stigmatized (lore-wise)', 'Complex resource management'],
+    icon: '/Icons/Class%20Icons/class-necromancer-BTMHgViB.webp',
+    subtitle: 'Spirit Fighter, Caster',
+    description: 'Masters of forbidden arts, Necromancers command the dead and wield elemental, spiritual, and cosmic powers at a terrible price. Twisting life and death itself, they summon servants, drain vitality, and spread decay in service to the Doomfather. Whether as a shielded Voidlord, an army-raising Lich, or a blood-fueled Blood Mage, Necromancers embody corruption, sacrifice, and relentless domination.',
     subclasses: [
-      { name: 'Voidlord', roles: ['Summoner', 'DPS'], damageTypes: ['Shadow', 'Void'], description: 'A master summoner who raises powerful undead armies to overwhelm enemies.' },
-      { name: 'Lich', roles: ['DPS'], damageTypes: ['Shadow', 'Ice'], description: 'A pure death caster who channels devastating necrotic and frost spells.' },
-      { name: 'Bloodmage', roles: ['DPS', 'Healer'], damageTypes: ['Shadow', 'Physical'], description: 'A blood magic practitioner who sacrifices HP for power and heals allies through damage.' },
-    ],
-    tips: [
-      'Voidlord is the strongest solo class — your army tanks for you.',
-      'Lich has incredible AoE burst with corpse explosion combos.',
-      'Bloodmage is a unique healer that heals by dealing damage — stay aggressive.',
-      'Manage your blood/health resource carefully — don\'t overcast and kill yourself.',
-      'Position minions to body-block for you in PvP.',
-      'Corpse abilities are powerful — fight near fallen enemies for bonus resources.',
+      { name: 'Voidlord' },
+      { name: 'Lich' },
+      { name: 'Blood Mage' },
     ],
   },
   {
     slug: 'pirate',
     name: 'Pirate',
-    icon: '☠️',
-    role: 'Melee / Ranged',
-    description: 'Swashbuckling rogues who combine swordplay with gunpowder and supernatural curses. Pirates fight dirty and use every trick at their disposal.',
-    lore: 'The Pirates of Aragon sail cursed seas and plunder forgotten ruins. Whether wielding cutlass, pistol, or dark voodoo, they live by one rule: take what you can, give nothing back.',
-    strengths: ['Unique hybrid melee/ranged combat', 'Fun and flashy playstyle', 'Strong mobility with grapple and dash', 'Curse debuffs weaken enemies'],
-    weaknesses: ['Split scaling between melee and ranged', 'Curse management adds complexity', 'Less raw armor than warriors', 'Gunpowder abilities have ammo/cooldowns'],
+    icon: '/Icons/Class%20Icons/class-pirate-CfMg84JT.webp',
+    subtitle: 'Melee & Ranged Hybrid',
+    description: 'Unpredictable and versatile, Pirates fight with blades, pistols, and cunning tricks, supported by their loyal parrots and a taste for poison and plunder. Dangerous in both close and mid-range combat, they overwhelm enemies with ruthless strikes and relentless pressure. Whether as a dueling Swashbuckler, an oath-broken Cursed, or a firepower-driven Cannoneer, Pirates embody chaos, greed, and deadly adaptability.',
     subclasses: [
-      { name: 'Swashbuckler', roles: ['DPS'], damageTypes: ['Physical'], description: 'A flashy duelist who combines sword mastery with acrobatic combat moves.' },
-      { name: 'Cursed', roles: ['DPS', 'Support'], damageTypes: ['Shadow', 'Physical'], description: 'A voodoo practitioner who hexes enemies with powerful curses and debuffs.' },
-      { name: 'Buccaneer', roles: ['DPS', 'Tank'], damageTypes: ['Physical', 'Fire'], description: 'A tough brawler who uses pistols, bombs, and brute force to dominate fights.' },
-    ],
-    tips: [
-      'Swashbuckler combo points build fast — don\'t sit on them, spend them.',
-      'Cursed debuffs stack and amplify your party\'s damage — great group utility.',
-      'Buccaneer\'s pistol shots can be weaved between melee attacks.',
-      'Grapple hook is both an engage and escape — use it wisely.',
-      'Bomb abilities have friendly fire in PvP — aim carefully.',
-      'Pirate is the most fun class in the game — enjoy the ride.',
+      { name: 'Swashbuckler' },
+      { name: 'Cursed' },
+      { name: 'Cannoneer' },
     ],
   },
   {
     slug: 'mystic',
     name: 'Mystic',
-    icon: '🌙',
-    role: 'Ranged',
-    description: 'Enigmatic spellcasters who channel cosmic and plague-based magic. Mystics wield celestial power, disease, and ancient forbidden knowledge.',
-    lore: 'Mystics peer beyond the veil of reality, communing with cosmic forces that most mortals cannot comprehend. Their power comes from the stars, from plague, and from ancient rites lost to time.',
-    strengths: ['Unique damage types (celestial, plague)', 'Strong damage-over-time abilities', 'Good healing through Plague Doctor', 'Enemies struggle with resistance'],
-    weaknesses: ['Damage ramps up slowly', 'Squishier than priests', 'Niche playstyle not for everyone', 'DoT-heavy builds weak in burst PvP'],
+    icon: '/Icons/Class%20Icons/class-witch-C_nuwL-T.webp',
+    subtitle: 'Debuffer, Damage Dealer',
+    description: 'Wielders of forbidden arts, Mystics spread curses, plagues, and spiritual afflictions to weaken and destroy their foes. Masters of control and damage over time, they embody the darker side of magic - draining strength and sowing despair. Whether as a star-forged Celestial, a poison-weaving Plague Doctor, or a curse-driven Acolyte, Mystics bring inevitable ruin to the battlefield.',
     subclasses: [
-      { name: 'Celestial', roles: ['DPS'], damageTypes: ['Arcane', 'Holy'], description: 'A star-wielder who calls down cosmic energy and celestial fire on enemies.' },
-      { name: 'Plague Doctor', roles: ['Healer', 'DPS'], damageTypes: ['Nature', 'Poison'], description: 'A physician who uses plague and antidotes to harm enemies and heal allies simultaneously.' },
-      { name: 'Acolyte', roles: ['DPS', 'Support'], damageTypes: ['Shadow', 'Arcane'], description: 'A forbidden knowledge seeker who debuffs enemies and empowers allies with dark rituals.' },
-    ],
-    tips: [
-      'Celestial is a strong ranged DPS alternative to Mage with different damage types.',
-      'Plague Doctor is a unique healer — your DoTs on enemies generate healing for allies.',
-      'Acolyte buffs are some of the strongest in the game — raids want one.',
-      'Your damage takes time to ramp — front-load DoTs before burst windows.',
-      'Celestial abilities look incredible — enjoy the star-fall animations.',
-      'Mystic pairs well with Necromancer in group content for shadow synergies.',
+      { name: 'Celestial' },
+      { name: 'Plague Doctor' },
+      { name: 'Acolyte' },
     ],
   },
 ];
 
-export const factions = {
+export interface Race {
+  slug: string;
+  name: string;
+  faction: 'sacred-order' | 'domination';
+  tagline: string;
+  description: string;
+  history: string;
+  image: string;
+  banner: string;
+  availableClasses: string[];
+}
+
+export interface Faction {
+  name: string;
+  icon: string;
+  summary: string;
+  lore: string[];
+  races: Race[];
+}
+
+export const factions: { sacredOrder: Faction; domination: Faction } = {
   sacredOrder: {
     name: 'The Sacred Order',
-    description: 'United by faith and honor, The Sacred Order stands as the last bastion of light in Aragon.',
+    icon: '/Icons/Factions/sacred-order.webp',
+    summary: 'Humans, Elves, Dwarves, and Bearans united under the Gods of Order. Bound by faith, brotherhood, and the pursuit of peace.',
+    lore: [
+      'After the fall of the Great Human Empire, the survivors fled to the continent Irongarth - the last bastion of humankind. From the shared losses of every race, a new alliance rose to stand for Order. In the darkest hours, unexpected heroes emerged: King Venuin\'s diplomacy united powerful allies - the masterful Dwarves, the nature-bound and unmatched assassins of the Sun Elves, and the fierce, loyal Bearans. Together, these four races forged the Sacred Order to defend their new homeland. Their mission: to pursue peace, justice, and equality, and to strengthen the forces of Order - the very power of life and growth. United, they rose to halt the spread of Chaos and to resist the Domination already pressing at Ondal\'s Gate.',
+      'But now, another threat awakens: the Ice Dragon. Not merely an enemy of peace, he is an abomination against everything the Sacred Order believes in - the embodiment of ancient chaos, a blight upon the balance of the world itself. By light and by faith, the Sacred Order will rise. The dawn does not kneel.',
+    ],
     races: [
-      { name: 'Human', icon: '👤', description: 'Adaptable and ambitious, humans form the backbone of The Sacred Order.' },
-      { name: 'Sun Elf', icon: '🧝', description: 'Ancient and wise, Sun Elves wield the magic of light and starfire.' },
-      { name: 'Dwarf', icon: '⛏️', description: 'Stout and unyielding, Dwarves are master craftsmen and fierce warriors.' },
-      { name: 'Bearan', icon: '🐻', description: 'Noble bear-folk who honor the old ways of nature and strength.' },
+      {
+        slug: 'human',
+        name: 'Human',
+        faction: 'sacred-order',
+        image: '/Icons/Races/human.webp',
+        banner: '/Icons/Races/banner-human.webp',
+        tagline: 'Children of the Order',
+        description: 'Bold and brave, the Humans compensate for their physical weakness with high spirits, sharp minds, and noble souls, as well as mastery of weapons and fierce battle prowess. They never give up, holding on to hope until their last breath.',
+        history: 'The Humans were born under the shadow of the soul-leeching Infernal Demons but never succumbed to fear or despair. Gifted with an unmatched will to live and proud to be champions of the Gods of Order, they built the Great Human Empire under the guidance of the Sun God, Thallan. Other races served them: the mighty Bearans, the skillful Dwarves, the proud green Treants, and the rogue Gronthar. Together, they fought in the Holy Demonic Wars against the common enemy and would have triumphed if not for the Soul Ring, forged by the King of the Infernal Demons, which unleashed a deadly spell that claimed millions of souls and left the continent lifeless. The refugees fled to Irongarth, the final bastion of humankind. In the darkest hour, a new hero emerged: King Venuin Stonehill founded a new kingdom from the ashes, choosing the beautiful Whitesong City as its capital. There, he laid the foundation of the Sacred Order, giving birth to a new era for the Humans.',
+        availableClasses: ['mage', 'paladin', 'ranger', 'warrior', 'priest', 'assassin', 'pirate'],
+      },
+      {
+        slug: 'sun-elf',
+        name: 'Sun Elf',
+        faction: 'sacred-order',
+        image: '/Icons/Races/sun-elf.webp',
+        banner: '/Icons/Races/banner-sun-elf.webp',
+        tagline: 'One with Nature',
+        description: 'From the very beginning, the Sun Elves have shared a deep bond with Nature. Proud, ambitious, and fearsome, they command both forests and battlefields. From a young age, they train in a wide array of elegant weapons, honing skills that blend precision, stealth, and deadly grace.',
+        history: 'The first Elves were once Infernal Demons, led by Lady Elyssandra in a bold rebellion against the Demon King. Ambushed and condemned to death, they struck a pact with the Moon Goddess Elvin and the Sun God Thallan, embracing the Gods of Order and transforming into the elegant and powerful Sun Elves. After a daring escape and bloody battle, they seized the Infernal Demons\' latest flotilla and sailed to Irongarth, founding their kingdom in the richest forests and building their radiant capital, Astra Lumina. But peace was fleeting. When Humans set foot on Irongarth and sought the Sun Elves\' forests for themselves, a long war erupted, ending only with the fall of the Great Human Empire. Facing the rising threat of the Domination, the Sun Elves joined the Sacred Order, standing alongside the other races to defend their homeland and stop the advance of Chaos.',
+        availableClasses: ['paladin', 'druid', 'ranger', 'warrior', 'priest', 'assassin', 'mystic'],
+      },
+      {
+        slug: 'dwarf',
+        name: 'Dwarf',
+        faction: 'sacred-order',
+        image: '/Icons/Races/dwarf.webp',
+        banner: '/Icons/Races/banner-dwarf.webp',
+        tagline: 'Light in the Depths',
+        description: 'Strong, stout, and hardworking, the Dwarves love to fight, but also value life, as well as well-crafted tools, weapons, and armor. Devout in their faith, they carry the light of the Gods of Order deep into every mountain they dig through.',
+        history: 'For centuries, the Dwarves ruled the depths of the largest mountain range on Mynorath, while exploring the lands above and building a kingdom unmatched in science and craftsmanship, surpassing both the brutal Orcs and daring Humans. Yet the Orcs, born for war, attacked mercilessly, and the Great Empire scouts raided the northern strongholds. The Depth Clans fell into disunity, and defeat followed. King Goldbeard led his followers to the Humans, seeking to preserve the Dwarven race, while some Depth Elders embraced the Gods of Chaos and joined the Orcish Chieftainate - a plan whose failure claimed countless lives. The Goldbeard Clan spent hundreds of years in servitude. Even after joining the Sacred Order, many Dwarves continued to live and work alongside Humans, their wealth and fate forever intertwined. After the fall of the Great Empire, some refugees returned to Mynorath, but most followed the Humans to Irongarth, where they joined the Clans, mining the continent\'s highest and richest mountains. For a Dwarf, a connection to the Depths can never be broken.',
+        availableClasses: ['paladin', 'ranger', 'warrior', 'priest', 'assassin', 'necromancer', 'pirate'],
+      },
+      {
+        slug: 'bearan',
+        name: 'Bearan',
+        faction: 'sacred-order',
+        image: '/Icons/Races/bearan.webp',
+        banner: '/Icons/Races/banner-bearan.webp',
+        tagline: 'Unstoppable Force of Nature',
+        description: 'Powerful and proud, the Bearans are fierce predators known for their explosive temperaments and superior hunting and fighting skills. Dominant and wild forest spirits, they also value loyalty and a good sense of humor.',
+        history: 'On an island far to the north, where the snow and ice never fully melt, a mystical Bear gathered the Bearans around a great lake to sing the songs of Wisdom and grant the primal predators the gift of sentience. She also gave them a set of remembering stones to help guide them on the path of Nature. The stones were inlaid in an armor set, and whoever was chosen to wear it became an Ursan of the Bearans, leaving behind their name and clan to serve the greatness of the whole race. The simple life of the Bearan clans ended when Humans set foot on their land. After a long and bloody war, many were taken into servitude, while the lucky few hid deep in the ice of the North to follow the Old Ways. Hundreds of years passed before the Bearans became respected allies of the Humans. Yet when disaster struck and the Great Empire fell, the refugees traveled to Irongarth, never giving up on being proud members of the Sacred Order.',
+        availableClasses: ['paladin', 'druid', 'ranger', 'warrior', 'priest', 'mystic', 'pirate'],
+      },
     ],
   },
   domination: {
     name: 'The Domination',
-    description: 'Bound by power and conquest, The Domination seeks to reshape Aragon under its iron will.',
+    icon: '/Icons/Factions/domination.webp',
+    summary: 'No one dares defy this blood-bound pact. From chaos, the Domination rose - a force of freedom, iron will, and relentless triumph.',
+    lore: [
+      'Long before the fall of the Great Human Empire, the Undead had already claimed parts of Irongarth, their decadent cities pulsing with ancient power and echoes of memory. As the refugees arrived, old resentments flared and restless feuds awakened. To challenge the Sacred Order, they sought allies in unexpected places: the Orcs - hardened survivors of endless wars who saw the Order as tyranny; the Gronthar - brutish, cunning, and anarchic by nature; and the Infernal Demons, pledging their flames to the cause of Chaos.',
+      'Despite their differences, these four forces forged a powerful alliance: the Domination. A banner of rebellion, freedom, and conquest, they fight to unmake the Order, shatter its laws, and reshape the world under their own vision.',
+      'But beyond their bloody banner, another force stirs - a being embodying everything they despise: ancient hierarchy, cold dominion, and the arrogance of singular rule. Even in the face of the Ice Dragon, they will not bow. The drums of war thunder across Aragon - and the wind now carries frost.',
+    ],
     races: [
-      { name: 'Infernal Demon', icon: '😈', description: 'Flame-born warriors who channel hellfire and dark pacts.' },
-      { name: 'Undead', icon: '🧟', description: 'Risen from death, the Undead serve with unwavering loyalty to The Domination.' },
-      { name: 'Orc', icon: '👹', description: 'Savage and proud, Orcs are born warriors who live for the thrill of battle.' },
-      { name: 'Gronthar', icon: '🦎', description: 'Reptilian warriors with ancient blood, tough scales, and primal cunning.' },
+      {
+        slug: 'orc',
+        name: 'Orc',
+        faction: 'domination',
+        image: '/Icons/Races/orc.webp',
+        banner: '/Icons/Races/banner-orc.webp',
+        tagline: 'Pride and Might',
+        description: 'Brutal and savage, the Orcs are born to be ultimate war machines, living at the heart of battle from cradle to grave. Children of Chaos, they possess immense strength and endurance, disciplined yet ambitious, violent, and fearsome beyond all other races.',
+        history: 'For hundreds of years, the Orcs lived under harsh conditions, facing fierce competition from other proto-races and monsters. Only the toughest and most intelligent survived, becoming the warriors and hunters we know today - the ultimate predators of Aragon. When the Orcen ships appeared on the horizon of Mynorath, the Dwarves were doomed, as Death had come to conquer their homeland. The Orcs built their capital there and expanded further, encountering new worthy foes: the Humans. After the fall of the Great Empire and the deadly spell of the Demon King, many Orcs traveled to Irongarth to stand alongside the Undead and other races of the Domination, waging a bloody war against the Sacred Order.',
+        availableClasses: ['mage', 'paladin', 'druid', 'warrior', 'priest', 'mystic', 'pirate'],
+      },
+      {
+        slug: 'infernal-demon',
+        name: 'Infernal Demon',
+        faction: 'domination',
+        image: '/Icons/Races/infernal-demon.webp',
+        banner: '/Icons/Races/banner-infernal-demon.webp',
+        tagline: 'The Neverending Hunger',
+        description: 'Griefthor, the Doom Father, taught the Infernal Demons the forbidden arts of Dark Magic. Wielders of the Infernal Flames and Masters of the Soul Leech, they became unmatched in the arts of war and hunt, yet developed a hunger for power that never lets them rest until all the lands of Aragon are under their heel. While cunning and sly, they always hold true to their words and oaths, proud to fight alongside the Domination in every battle.',
+        history: 'From the Gods of Chaos, the Infernal Demons received a gift and a curse worthy of true demonic beings: they are immortal and command the Infernal Flame as long as there are Human souls to feed upon - a hunger that never ends. For thousands of years, they hunted Humans one soul at a time, until the Demon King and Queen combined their unmatched powers to create the Soul Ring. The King unleashed a deadly spell to fill this infernal artifact with millions of souls from all races. Enraged and grieving, the Sun God Thallan, in the avatar of the Fire Dragon, attacked the Demon King and seized the Soul Ring. Yet the power of the artifact was so great that the Demon, the Dragon, and the God\'s magic collided in a cataclysm, rendering the continent nearly uninhabitable. The surviving Infernal Demons fled to Irongarth, joining forces with the Undead under the banner of the Domination, still driven by a single dream and purpose: to destroy the zealous Humans.',
+        availableClasses: ['mage', 'paladin', 'ranger', 'assassin', 'necromancer', 'mystic', 'pirate'],
+      },
+      {
+        slug: 'undead',
+        name: 'Undead',
+        faction: 'domination',
+        image: '/Icons/Races/undead.webp',
+        banner: '/Icons/Races/banner-undead.webp',
+        tagline: 'Different State of Being',
+        description: 'How heavy is the burden of knowing you are but a vessel for an immortal soul, reborn only to serve the Gods of Order again and again? The Undead find this unbearable and choose to forsake Life while keeping their Souls, freeing themselves from the Gods\' curse - a sin in the eyes of the living, who despise their immortality and rotting flesh, seeing them as abominations. For the Undead, the loss of family and former friends is tragic, but above all, they demand respect for who they are - a different state of being.',
+        history: 'Thousands of years of war left the Humans disheartened and dreaming of immortality. Princess Nepherimas, heir to the throne, made a pact with the God of Fecundity, Tulcior, who opened the gates of Afterdeath to all, allowing souls to live on in rotting bodies. A civil war over the rights of the Undead erupted, and despite Queen Nepherimas\' cunning and political machinations, she and her followers were eventually forced to sail to Irongarth, establishing their kingdom in the extravagant city of Veltharas. There, the Undead purged the surrounding Human settlements and forged new alliances within the Domination, joining the Infernal Demons, Orcs, and Gronthar to stand united against the Sacred Order.',
+        availableClasses: ['mage', 'ranger', 'warrior', 'assassin', 'necromancer', 'mystic', 'pirate'],
+      },
+      {
+        slug: 'gronthar',
+        name: 'Gronthar',
+        faction: 'domination',
+        image: '/Icons/Races/gronthar.webp',
+        banner: '/Icons/Races/banner-gronthar.webp',
+        tagline: 'Taking Life by the Tusks',
+        description: 'The Gronthar are smelly, noisy, and ferocious, taking life by the tusks in any way they please. Inventively disciplined and audacious, they thrive on a fast-paced lifestyle where slaughtering enemies, guzzling, and lushing reign supreme.',
+        history: 'Not long ago, the wild Gronthars awoke to find they possessed wits, wisdom, and memory. On the night of their birth, a true Goddess stomped across the lands, plucking stars from the clouds, her voice rumbling like thunder. \'Cower before Gronthah, children of Machialfi!\' she declared. \'For I am your Mother.\' She then drew a lightning dagger and split the sky, merging sea, river, and land in a storm of muddy downpour. This is how the Gronthars came to be - at least, according to the legend all newborn Gronthars first hear. They also learn that Grontah is a harsh mistress; mercy should never be expected from the hands of the Chaos Gods, especially from the Quake Mother. Taken from the Machialfi Jungles straight into the Great Human Empire, the Gronthar clans were forced into servitude, absorbing fragments of human culture along the way. They fought for their masters until the Night of the Crimson Leaves, when Chief Violence led them to freedom. Finding new mentors in the fierce Orcs, they became mercenaries for the Domination and later joined the Pact. After the deadly spell of the Demon King, the Gronthars traveled to Irongarth to continue the war against the Sacred Order.',
+        availableClasses: ['druid', 'ranger', 'warrior', 'assassin', 'necromancer', 'mystic', 'pirate'],
+      },
     ],
   },
 };
+
+export const allRaces: Race[] = [
+  ...factions.sacredOrder.races,
+  ...factions.domination.races,
+];

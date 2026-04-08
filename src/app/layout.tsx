@@ -2,25 +2,63 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import GlobalSearch from "@/components/GlobalSearch";
 
-export const metadata: Metadata = {
-  title: "ScarsDB — Scars of Honor Database & Tools",
-  description: "Talent calculator, item database, class guides, and community tools for Scars of Honor MMORPG.",
-};
+import AuthProvider from "@/components/AuthProvider";
+import { getSiteSettings } from "@/lib/sanity";
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings();
+  const title = settings?.defaultSeo?.metaTitle || "ScarsHQ - Scars of Honor Database & Tools";
+  const description = settings?.defaultSeo?.metaDescription || "Talent calculator, item database, class guides, and community tools for Scars of Honor MMORPG.";
+  return {
+    title,
+    description,
+    metadataBase: new URL('https://scars-db.vercel.app'),
+    icons: {
+      icon: '/favicon.ico',
+      apple: '/apple-touch-icon.png',
+    },
+    openGraph: {
+      title,
+      description,
+      siteName: 'ScarsHQ',
+      type: 'website',
+      images: [
+        {
+          url: '/images/og-default.jpg',
+          width: 1920,
+          height: 1080,
+          alt: 'Scars of Honor',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: ['/images/og-default.jpg'],
+    },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await getSiteSettings();
+  const siteName = settings?.siteName || "ScarsHQ";
+  const siteAbbrev = siteName.slice(0, 2).toUpperCase();
+  const socials = settings?.socials;
+
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full flex flex-col">
-        <Header />
-        <GlobalSearch />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Header siteName={siteName} siteAbbrev={siteAbbrev} />
+          <main className="flex-1">{children}</main>
+          <Footer siteName={siteName} siteAbbrev={siteAbbrev} socials={socials} />
+        </AuthProvider>
       </body>
     </html>
   );

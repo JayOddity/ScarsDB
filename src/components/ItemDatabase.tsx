@@ -240,15 +240,21 @@ function HoverPanel({ item, mousePos }: { item: Item; mousePos: { x: number; y: 
 }
 
 // --- Main Component ---
-export default function ItemDatabase() {
+interface InitialData {
+  items: Item[];
+  meta: ApiMeta;
+  filters: { slots: string[]; types: string[]; rarities: string[]; stats: string[] };
+}
+
+export default function ItemDatabase({ initialData }: { initialData?: InitialData }) {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || '';
   const urlCat = searchParams.get('cat') || null;
-  const [items, setItems] = useState<Item[]>([]);
-  const [meta, setMeta] = useState<ApiMeta | null>(null);
-  const [filters, setFilters] = useState<{ slots: string[]; types: string[]; rarities: string[]; stats: string[] } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [ready, setReady] = useState(false);
+  const [items, setItems] = useState<Item[]>(initialData?.items || []);
+  const [meta, setMeta] = useState<ApiMeta | null>(initialData?.meta || null);
+  const [filters, setFilters] = useState<{ slots: string[]; types: string[]; rarities: string[]; stats: string[] } | null>(initialData?.filters || null);
+  const [loading, setLoading] = useState(!initialData);
+  const [ready, setReady] = useState(!!initialData);
   const [search, setSearch] = useState(initialSearch);
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
   const [rarityFilter, setRarityFilter] = useState<string | null>(null);

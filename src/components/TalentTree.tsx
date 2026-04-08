@@ -120,9 +120,10 @@ interface TalentTreeProps {
   readOnly?: boolean;
   initialAllocation?: string;
   buildCode?: string;
+  initialTab?: string;
 }
 
-export default function TalentTree({ gameClass, readOnly = false, initialAllocation, buildCode: buildCodeProp }: TalentTreeProps) {
+export default function TalentTree({ gameClass, readOnly = false, initialAllocation, buildCode: buildCodeProp, initialTab }: TalentTreeProps) {
   const [nodes, setNodes] = useState<TalentNode[]>([]);
   const [edges, setEdges] = useState<TalentEdge[]>([]);
   const [accentColor, setAccentColor] = useState('#c8a84e');
@@ -145,7 +146,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const [isBanned, setIsBanned] = useState(false);
   const [buildEquipment, setBuildEquipment] = useState<EquippedItems>({});
   const [showClassPicker, setShowClassPicker] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>('Talents');
+  const [activeTab, setActiveTab] = useState<string>(initialTab && ['Equipment', 'Talents', 'Scars'].includes(initialTab) ? initialTab : 'Talents');
   const [comingSoonTab, setComingSoonTab] = useState<string | null>(null);
   const [showBuildBrowser, setShowBuildBrowser] = useState<'all' | 'mine' | null>(null);
   const [browserBuilds, setBrowserBuilds] = useState<{ code: string; classSlug: string; name: string; totalPoints: number; createdAt: string; authorName?: string }[]>([]);

@@ -132,7 +132,8 @@ const navItems: NavItem[] = [
     label: 'Tools',
     items: [
       { name: 'Talent Calculator', href: '/talents' },
-      { name: 'Gear Planner', href: '/gear' },
+      { name: 'Gear Planner', href: '/talents?tab=Equipment' },
+      { name: 'Scars', href: '/talents?tab=Scars' },
     ],
   },
   { label: 'Talent Calculator', href: '/talents' },

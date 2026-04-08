@@ -17,10 +17,12 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   });
 }
 
-export default async function TalentPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function TalentPage({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const { slug } = await params;
+  const sp = await searchParams;
   const cls = classes.find((c) => c.slug === slug);
   if (!cls) notFound();
+  const tab = typeof sp.tab === 'string' ? sp.tab : undefined;
 
-  return <TalentTree gameClass={cls} />;
+  return <TalentTree gameClass={cls} initialTab={tab} />;
 }

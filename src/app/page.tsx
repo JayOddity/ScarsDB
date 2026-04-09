@@ -129,7 +129,7 @@ export default async function HomePage() {
         <h2 className="font-heading text-xl text-honor-gold mb-4">Things to Check Out</h2>
         <div className="grid grid-cols-3 gap-4">
           <Link href="/#news" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
-            <Image src="/images/news-bg.avif" alt="News" fill className="object-cover scale-[1.15] group-hover:scale-[1.20] transition-transform duration-300" sizes="33vw" />
+            <Image src="/images/news-bg.avif" alt="News" fill priority className="object-cover scale-[1.15] group-hover:scale-[1.20] transition-transform duration-300" sizes="33vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">News</span>
           </Link>

@@ -53,7 +53,7 @@ export default function PopularItems() {
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
           {Array.from({ length: 10 }).map((_, i) => (
-            <div key={i} className="h-24 bg-card-bg border border-border-subtle rounded-lg animate-pulse" />
+            <div key={i} className="h-[106px] bg-card-bg border border-border-subtle rounded-lg animate-pulse" />
           ))}
         </div>
       ) : items.length > 0 ? (

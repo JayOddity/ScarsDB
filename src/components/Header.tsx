@@ -157,7 +157,7 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
           <div className="flex items-center h-12 gap-4">
             {/* Logo */}
             <Link href="/" className="shrink-0">
-              <img src="/Icons/scars-hq-logo.webp" alt={siteName} className="h-9 hover:brightness-110 transition-all" />
+              <img src="/Icons/scars-hq-logo.webp" alt={siteName} width={94} height={36} className="h-9 hover:brightness-110 transition-all" />
             </Link>
 
             <div className="flex items-center gap-3 ml-auto shrink-0">

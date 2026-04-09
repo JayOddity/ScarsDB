@@ -4,7 +4,6 @@ import { sanityClient } from '@/lib/sanity';
 import { classes } from '@/data/classes';
 import BuildGuideView from '@/components/BuildGuideView';
 import BuildEditButton from '@/components/BuildEditButton';
-import BuildViewTalentEmbed from '@/components/BuildViewTalentEmbed';
 import TalentTree from '@/components/TalentTree';
 import VoteButton from '@/components/VoteButton';
 import BuildViewEquipment from '@/components/BuildViewEquipment';

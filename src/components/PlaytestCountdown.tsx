@@ -35,7 +35,7 @@ export default function PlaytestCountdown() {
         <div className="relative overflow-hidden rounded-xl border border-honor-gold/20" style={{ minHeight: '132px' }}>
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/fbca4c46c3bf3fb7437c5214aac988e9d0895662/ss_fbca4c46c3bf3fb7437c5214aac988e9d0895662.600x338.jpg')" }}
+            style={{ backgroundImage: "url('/images/steam-screenshot-1.jpg')" }}
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/85" />
         </div>
@@ -56,7 +56,7 @@ export default function PlaytestCountdown() {
         {/* Background image */}
         <div
           className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/fbca4c46c3bf3fb7437c5214aac988e9d0895662/ss_fbca4c46c3bf3fb7437c5214aac988e9d0895662.600x338.jpg')" }}
+          style={{ backgroundImage: "url('/images/steam-screenshot-1.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/85" />
 

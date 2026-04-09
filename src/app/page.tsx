@@ -37,10 +37,10 @@ export const revalidate = 300; // revalidate every 5 minutes
 
 // Rotating fallback images from Steam store screenshots so cards without images aren't all identical
 const STEAM_FALLBACK_IMAGES = [
-  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/aaa1fdfd5dd8340a52e24bb77189df6d2b1b17b1/header.jpg',
-  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/fbca4c46c3bf3fb7437c5214aac988e9d0895662/ss_fbca4c46c3bf3fb7437c5214aac988e9d0895662.600x338.jpg',
-  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d/ss_af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d.600x338.jpg',
-  'https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/0b141852523822bf7e1855bc288f4609b6751d79/ss_0b141852523822bf7e1855bc288f4609b6751d79.600x338.jpg',
+  '/images/steam-header.jpg',
+  '/images/steam-screenshot-1.jpg',
+  '/images/steam-screenshot-2.jpg',
+  '/images/steam-screenshot-3.jpg',
 ];
 
 // Extract best thumbnail from Steam post: YouTube > Steam clan image > game screenshot
@@ -134,29 +134,29 @@ export default async function HomePage() {
             <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">News</span>
           </Link>
           <Link href="/classes" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
-            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d/ss_af3af98dd1a4fb53e77e88dc7b3d0b693e1f321d.600x338.jpg" alt="Classes" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <Image src="/images/steam-screenshot-2.jpg" alt="Classes" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Classes</span>
           </Link>
           <Link href="/talents" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
-            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/0b141852523822bf7e1855bc288f4609b6751d79/ss_0b141852523822bf7e1855bc288f4609b6751d79.600x338.jpg" alt="Talent Calculator" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <Image src="/images/steam-screenshot-3.jpg" alt="Talent Calculator" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Talent Calculator</span>
           </Link>
         </div>
         <div className="grid grid-cols-3 gap-4 mt-4">
           <Link href="/scars-of-honor-release-date" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
-            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/fbca4c46c3bf3fb7437c5214aac988e9d0895662/ss_fbca4c46c3bf3fb7437c5214aac988e9d0895662.600x338.jpg" alt="Release Date" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <Image src="/images/steam-screenshot-1.jpg" alt="Release Date" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Release Date</span>
           </Link>
           <Link href="/gameplay" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
-            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/0b141852523822bf7e1855bc288f4609b6751d79/ss_0b141852523822bf7e1855bc288f4609b6751d79.600x338.jpg" alt="Gameplay" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <Image src="/images/steam-screenshot-3.jpg" alt="Gameplay" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">Gameplay</span>
           </Link>
           <a href="https://store.steampowered.com/app/4253010/Scars_of_Honor/" target="_blank" rel="noopener noreferrer" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
-            <Image src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/aaa1fdfd5dd8340a52e24bb77189df6d2b1b17b1/header.jpg" alt="Steam" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
+            <Image src="/images/steam-header.jpg" alt="Steam" fill className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/95 to-black/70" />
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <Image src="/Icons/steam-logo.svg" alt="" width={48} height={48} className="opacity-90 mb-2" />

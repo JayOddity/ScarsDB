@@ -89,7 +89,7 @@ export default function PlaytestPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-honor-gold/10 via-honor-gold/5 to-void-black" />
         <div
           className="absolute inset-0 opacity-20 bg-cover bg-center"
-          style={{ backgroundImage: "url('https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4253010/fbca4c46c3bf3fb7437c5214aac988e9d0895662/ss_fbca4c46c3bf3fb7437c5214aac988e9d0895662.600x338.jpg')" }}
+          style={{ backgroundImage: "url('/images/steam-screenshot-1.jpg')" }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-void-black" />
         <div className="relative max-w-6xl mx-auto">

@@ -1,10 +1,25 @@
 import type { Metadata } from "next";
+import { Cinzel, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 import AuthProvider from "@/components/AuthProvider";
 import { getSiteSettings } from "@/lib/sanity";
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-cinzel",
+  display: "swap",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -52,7 +67,7 @@ export default async function RootLayout({
   const socials = settings?.socials;
 
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={`h-full antialiased ${cinzel.variable} ${dmSans.variable}`}>
       <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"

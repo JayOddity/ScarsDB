@@ -22,7 +22,7 @@ function BgImage() {
   return (
     <>
       <Image
-        src="/images/steam-screenshot-1.jpg"
+        src="/images/steam-screenshot-1.avif"
         alt=""
         fill
         priority

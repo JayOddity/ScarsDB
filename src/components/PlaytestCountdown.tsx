@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const PLAYTEST_DATE = new Date('2026-04-30T00:00:00Z');
@@ -15,6 +16,22 @@ function getTimeLeft() {
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
   return { days, hours, minutes, seconds };
+}
+
+function BgImage() {
+  return (
+    <>
+      <Image
+        src="/images/steam-screenshot-1.jpg"
+        alt=""
+        fill
+        priority
+        className="object-cover"
+        sizes="100vw"
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/85" />
+    </>
+  );
 }
 
 export default function PlaytestCountdown() {
@@ -33,11 +50,7 @@ export default function PlaytestCountdown() {
     return (
       <div className="block mb-10">
         <div className="relative overflow-hidden rounded-xl border border-honor-gold/20" style={{ minHeight: '132px' }}>
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/images/steam-screenshot-1.jpg')" }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/85" />
+          <BgImage />
         </div>
       </div>
     );
@@ -53,12 +66,7 @@ export default function PlaytestCountdown() {
   return (
     <Link href="/playtest" className="block mb-10 group">
       <div className="relative overflow-hidden rounded-xl border border-honor-gold/20 hover:border-honor-gold/40 transition-colors">
-        {/* Background image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/steam-screenshot-1.jpg')" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/70 to-black/85" />
+        <BgImage />
 
         {/* Content */}
         <div className="relative px-6 sm:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">

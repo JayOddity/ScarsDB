@@ -34,6 +34,19 @@ function BgImage() {
   );
 }
 
+function CountdownBox({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="text-center">
+      <div className="bg-black/60 border border-honor-gold/30 rounded-lg w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center backdrop-blur-sm">
+        <span className="font-heading text-2xl sm:text-4xl text-honor-gold tabular-nums">
+          {value}
+        </span>
+      </div>
+      <p className="text-[10px] sm:text-xs text-text-muted uppercase tracking-wider mt-1.5">{label}</p>
+    </div>
+  );
+}
+
 export default function PlaytestCountdown() {
   const [timeLeft, setTimeLeft] = useState<ReturnType<typeof getTimeLeft>>(null);
   const [mounted, setMounted] = useState(false);
@@ -45,60 +58,45 @@ export default function PlaytestCountdown() {
     return () => clearInterval(id);
   }, []);
 
-  // Reserve space before hydration to prevent CLS
-  if (!mounted || !timeLeft) {
-    return (
-      <div className="block mb-10">
-        <div className="relative overflow-hidden rounded-xl border border-honor-gold/20" style={{ minHeight: '132px' }}>
-          <BgImage />
+  const labels = ['Days', 'Hours', 'Minutes', 'Seconds'];
+  const values = timeLeft
+    ? [timeLeft.days, timeLeft.hours, timeLeft.minutes, timeLeft.seconds].map((v) => String(v).padStart(2, '0'))
+    : ['--', '--', '--', '--'];
+
+  const inner = (
+    <div className="relative overflow-hidden rounded-xl border border-honor-gold/20 hover:border-honor-gold/40 transition-colors">
+      <BgImage />
+      <div className="relative px-6 sm:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="text-center sm:text-left">
+          <p className="text-xs uppercase tracking-[0.2em] text-honor-gold/70 mb-1">Steam Playtest</p>
+          <h2 className="font-heading text-2xl sm:text-3xl text-white">
+            The Battle Awaits
+          </h2>
+          <p className="text-sm text-text-muted mt-1">April 30 - May 11, 2026</p>
+        </div>
+        <div className="flex items-center gap-3">
+          {labels.map((label, i) => (
+            <div key={label} className="flex items-center gap-3">
+              <CountdownBox value={values[i]} label={label} />
+              {i < 3 && (
+                <span className="text-honor-gold/40 text-xl sm:text-2xl font-bold -mt-5">:</span>
+              )}
+            </div>
+          ))}
         </div>
       </div>
-    );
+    </div>
+  );
+
+  if (!mounted) {
+    return <div className="block mb-10">{inner}</div>;
   }
 
-  const units = [
-    { value: timeLeft.days, label: 'Days' },
-    { value: timeLeft.hours, label: 'Hours' },
-    { value: timeLeft.minutes, label: 'Minutes' },
-    { value: timeLeft.seconds, label: 'Seconds' },
-  ];
+  if (!timeLeft) return null;
 
   return (
     <Link href="/playtest" className="block mb-10 group">
-      <div className="relative overflow-hidden rounded-xl border border-honor-gold/20 hover:border-honor-gold/40 transition-colors">
-        <BgImage />
-
-        {/* Content */}
-        <div className="relative px-6 sm:px-10 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          {/* Left text */}
-          <div className="text-center sm:text-left">
-            <p className="text-xs uppercase tracking-[0.2em] text-honor-gold/70 mb-1">Steam Playtest</p>
-            <h2 className="font-heading text-2xl sm:text-3xl text-white group-hover:text-honor-gold transition-colors">
-              The Battle Awaits
-            </h2>
-            <p className="text-sm text-text-muted mt-1">April 30 - May 11, 2026</p>
-          </div>
-
-          {/* Countdown boxes */}
-          <div className="flex items-center gap-3">
-            {units.map((unit, i) => (
-              <div key={unit.label} className="flex items-center gap-3">
-                <div className="text-center">
-                  <div className="bg-black/60 border border-honor-gold/30 rounded-lg w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center backdrop-blur-sm">
-                    <span className="font-heading text-2xl sm:text-4xl text-honor-gold tabular-nums">
-                      {String(unit.value).padStart(2, '0')}
-                    </span>
-                  </div>
-                  <p className="text-[10px] sm:text-xs text-text-muted uppercase tracking-wider mt-1.5">{unit.label}</p>
-                </div>
-                {i < units.length - 1 && (
-                  <span className="text-honor-gold/40 text-xl sm:text-2xl font-bold -mt-5">:</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {inner}
     </Link>
   );
 }

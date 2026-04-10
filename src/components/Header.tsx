@@ -157,8 +157,9 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
           <div className="flex items-center h-12 gap-4">
             {/* Logo */}
-            <Link href="/" className="shrink-0">
-              <Image src="/Icons/scars-hq-logo.webp" alt={siteName} width={94} height={36} className="h-9 w-auto hover:brightness-110 transition-all" priority />
+            <Link href="/" className="shrink-0 flex items-center gap-2 group">
+              <Image src="/Icons/scars-hq-logo.webp" alt={siteName} width={36} height={36} className="h-8 w-auto group-hover:brightness-110 transition-all" priority />
+              <span className="text-lg font-heading text-honor-gold group-hover:brightness-110 transition-all">ScarsHQ</span>
             </Link>
 
             <div className="flex items-center gap-3 ml-auto shrink-0">

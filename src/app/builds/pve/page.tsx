@@ -5,6 +5,7 @@ import BuildTagPills from '@/components/BuildTagPills';
 export const metadata: Metadata = {
   title: 'PvE Builds - Scars of Honor Dungeon & Raid Builds | ScarsHQ',
   description: 'Top PvE builds for Scars of Honor. Dungeon, raid, and open world PvE talent builds for every class, rated by the community.',
+  alternates: { canonical: '/builds/pve' },
 };
 
 export default function PvEBuildsPage() {

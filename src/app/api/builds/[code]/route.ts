@@ -15,7 +15,7 @@ export async function GET(
   try {
     const build = await sanityClient.fetch(
       `*[_type == "talentBuild" && code == $code][0]{
-        code, classSlug, allocation, equipment, name, tags, description, guide, patch, totalPoints, upvotes, downvotes, createdAt, "authorName": author->name, "authorImage": author->image
+        code, classSlug, allocation, equipment, name, tags, description, guide, patch, totalPoints, upvotes, downvotes, createdAt, "authorName": author->displayName, "authorImage": author->image
       }`,
       { code },
     );

@@ -30,6 +30,39 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'VideoGame',
+  name: 'Scars of Honor',
+  description: 'Free to play fantasy MMORPG. Available on Steam. Request playtest access to join the next Technical Alpha.',
+  gamePlatform: 'PC',
+  applicationCategory: 'Game',
+  genre: 'MMORPG',
+  operatingSystem: 'Windows',
+  url: 'https://scarshq.com/download',
+  downloadUrl: 'https://store.steampowered.com/app/4253010/Scars_of_Honor/',
+  installUrl: 'https://store.steampowered.com/app/4253010/Scars_of_Honor/',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    availability: 'https://schema.org/PreOrder',
+    url: 'https://store.steampowered.com/app/4253010/Scars_of_Honor/',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Beastburst Entertainment',
+  },
+};
+
 export default function DownloadPage() {
-  return <DownloadContent />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <DownloadContent />
+    </>
+  );
 }

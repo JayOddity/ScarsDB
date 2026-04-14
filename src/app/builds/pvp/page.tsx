@@ -5,6 +5,7 @@ import BuildTagPills from '@/components/BuildTagPills';
 export const metadata: Metadata = {
   title: 'PvP Builds - Scars of Honor PvP Talent Builds | ScarsHQ',
   description: 'Top PvP builds for Scars of Honor. Arena and battleground talent builds for every class, rated by the community.',
+  alternates: { canonical: '/builds/pvp' },
 };
 
 export default function PvPBuildsPage() {

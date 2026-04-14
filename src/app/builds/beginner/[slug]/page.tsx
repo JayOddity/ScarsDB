@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${cls.name} Beginner Guide - Scars of Honor ${cls.name} New Player Build | ScarsHQ`,
     description: `Beginner friendly ${cls.name} builds for Scars of Honor. Simple, effective talent setups for new players learning the ${cls.name}.`,
+    alternates: { canonical: `/builds/beginner/${cls.slug}` },
   };
 }
 

@@ -6,6 +6,7 @@ declare module 'next-auth' {
     user: {
       sanityUserId: string;
       provider: string;
+      displayName?: string | null;
       name?: string | null;
       email?: string | null;
       image?: string | null;
@@ -18,5 +19,6 @@ declare module 'next-auth/jwt' {
     sanityUserId: string;
     provider: string;
     providerAccountId: string;
+    displayName?: string | null;
   }
 }

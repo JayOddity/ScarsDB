@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     }
     filter += ']';
 
-    const fields = '{ code, classSlug, allocation, equipment, name, tags, difficulty, description, guide, patch, totalPoints, upvotes, downvotes, createdAt, "authorName": author->name, "authorImage": author->image, "authorRef": author._ref }';
+    const fields = '{ code, classSlug, allocation, equipment, name, tags, difficulty, description, guide, patch, totalPoints, upvotes, downvotes, createdAt, "authorName": author->displayName, "authorImage": author->image, "authorRef": author._ref }';
 
     if (sort === 'popular') {
       // Fetch all builds, rank by in-memory view counts
@@ -90,37 +90,37 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const ip =
-    request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-
-  // Check auth early so we can apply different rate limits
+  // Public builds require a signed-in account with a chosen display name.
   const session = await auth();
   const authorId = (session?.user as unknown as Record<string, string> | undefined)?.sanityUserId;
+  const displayName = (session?.user as unknown as Record<string, string | null> | undefined)?.displayName;
 
-  // Check if user is banned from creating content
-  if (authorId && isUserBanned(authorId)) {
+  if (!authorId) {
+    return NextResponse.json(
+      { error: 'You must sign in to publish a public build.', code: 'NOT_SIGNED_IN' },
+      { status: 401 },
+    );
+  }
+  if (!displayName) {
+    return NextResponse.json(
+      { error: 'Pick a display name before publishing builds.', code: 'NEED_DISPLAY_NAME' },
+      { status: 403 },
+    );
+  }
+
+  if (isUserBanned(authorId)) {
     return NextResponse.json(
       { error: 'Your account has been restricted from creating builds due to a policy violation.' },
       { status: 403 },
     );
   }
 
-  // Rate limits: everyone = 10/hr, anonymous also capped at 5 per 30 min
-  const { allowed: hourlyAllowed, remaining } = checkRateLimit(`hr-${authorId || ip}`, 10, 3_600_000);
+  const { allowed: hourlyAllowed, remaining } = checkRateLimit(`hr-${authorId}`, 10, 3_600_000);
   if (!hourlyAllowed) {
     return NextResponse.json(
       { error: 'Rate limit exceeded. Max 10 builds per hour.' },
       { status: 429, headers: { 'Retry-After': '3600' } },
     );
-  }
-  if (!authorId) {
-    const { allowed: anonAllowed } = checkRateLimit(`anon-${ip}`, 5, 1_800_000);
-    if (!anonAllowed) {
-      return NextResponse.json(
-        { error: 'Rate limit exceeded. Max 5 builds per 30 minutes. Sign in for higher limits.' },
-        { status: 429, headers: { 'Retry-After': '1800' } },
-      );
-    }
   }
 
   try {
@@ -172,18 +172,15 @@ export async function POST(request: NextRequest) {
       .split(',')
       .reduce((sum, pair) => sum + (parseInt(pair.split(':')[1], 10) || 0), 0);
 
-    // Cap at 50 builds per user
-    if (authorId) {
-      const userBuildCount = await sanityWriteClient.fetch<number>(
-        `count(*[_type == "talentBuild" && author._ref == $authorId])`,
-        { authorId },
+    const userBuildCount = await sanityWriteClient.fetch<number>(
+      `count(*[_type == "talentBuild" && author._ref == $authorId])`,
+      { authorId },
+    );
+    if (userBuildCount >= 50) {
+      return NextResponse.json(
+        { error: 'Build limit reached. Maximum 50 builds per account.' },
+        { status: 403 },
       );
-      if (userBuildCount >= 50) {
-        return NextResponse.json(
-          { error: 'Build limit reached. Maximum 50 builds per account.' },
-          { status: 403 },
-        );
-      }
     }
 
     await sanityWriteClient.create({
@@ -202,29 +199,14 @@ export async function POST(request: NextRequest) {
       totalPoints,
       upvotes: 0,
       downvotes: 0,
-      ...(authorId ? { author: { _type: 'reference', _ref: authorId } } : {}),
+      author: { _type: 'reference', _ref: authorId },
       createdAt: new Date().toISOString(),
     });
 
-    // Set cookie tracking owned build codes
-    const existingOwned = request.cookies.get('scarshq-owned-builds')?.value || '';
-    const ownedCodes = existingOwned ? existingOwned.split(',') : [];
-    if (!ownedCodes.includes(code)) ownedCodes.push(code);
-    // Keep last 100 codes max
-    const trimmedCodes = ownedCodes.slice(-100).join(',');
-
-    const res = NextResponse.json(
+    return NextResponse.json(
       { code },
       { headers: { 'X-RateLimit-Remaining': String(remaining) } },
     );
-    res.cookies.set('scarshq-owned-builds', trimmedCodes, {
-      httpOnly: false, // readable by client JS for edit button
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 365, // 1 year
-      path: '/',
-    });
-    return res;
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to save build', details: String(error) },

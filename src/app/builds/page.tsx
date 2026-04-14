@@ -35,6 +35,8 @@ export default function BuildsPage() {
   const [localBuilds, setLocalBuilds] = useState<SavedBuild[]>([]);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [topBuilds, setTopBuilds] = useState<CloudBuild[]>([]);
+  const [tierPvp, setTierPvp] = useState<Record<string, CloudBuild | null>>({});
+  const [tierPve, setTierPve] = useState<Record<string, CloudBuild | null>>({});
 
   const isLoggedIn = !!session?.user;
 
@@ -57,6 +59,26 @@ export default function BuildsPage() {
       })
       .catch(() => {});
   }, [selectedClass, selectedTags]);
+
+  useEffect(() => {
+    Promise.all([
+      fetch('/api/builds?tag=pvp&sort=top&limit=100').then((r) => r.json()),
+      fetch('/api/builds?tag=pve&sort=top&limit=100').then((r) => r.json()),
+    ])
+      .then(([pvpData, pveData]) => {
+        const pvpBuilds = (pvpData.builds || []) as CloudBuild[];
+        const pveBuilds = (pveData.builds || []) as CloudBuild[];
+        const pvpTop: Record<string, CloudBuild | null> = {};
+        const pveTop: Record<string, CloudBuild | null> = {};
+        for (const cls of classes) {
+          pvpTop[cls.slug] = pvpBuilds.find((b) => b.classSlug === cls.slug) || null;
+          pveTop[cls.slug] = pveBuilds.find((b) => b.classSlug === cls.slug) || null;
+        }
+        setTierPvp(pvpTop);
+        setTierPve(pveTop);
+      })
+      .catch(() => {});
+  }, []);
 
   function handleDelete(id: string) {
     if (confirmDelete === id) {
@@ -298,6 +320,74 @@ export default function BuildsPage() {
             )}
           </>
         )}
+        {/* Tier List (early days) */}
+        <section className="mt-12 pt-8 border-t border-border-subtle">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="font-heading text-xl text-honor-gold">Community Tier List</h2>
+            <Link
+              href="/builds/tier-list"
+              className="text-xs text-text-muted hover:text-honor-gold transition-colors"
+            >
+              Full tier list &rarr;
+            </Link>
+          </div>
+          <p className="text-sm text-text-muted mb-6 max-w-2xl">
+            Way too early for a real tier list. Until we have playtest data and a real pool of builds,
+            this just shows the single highest voted build per class for PvP and PvE. Take it with a boulder of salt.
+          </p>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            {([
+              { label: 'PvP', tag: 'pvp', data: tierPvp },
+              { label: 'PvE', tag: 'pve', data: tierPve },
+            ] as const).map(({ label, tag, data }) => (
+              <div key={tag} className="rounded-lg border border-border-subtle bg-card-bg overflow-hidden">
+                <div className="px-4 py-2 bg-honor-gold/10 border-b border-border-subtle">
+                  <h3 className="font-heading text-sm text-honor-gold">{label} — Top Build per Class</h3>
+                </div>
+                <ul className="divide-y divide-border-subtle">
+                  {classes.map((cls) => {
+                    const build = data[cls.slug];
+                    const score = build ? (build.upvotes || 0) - (build.downvotes || 0) : 0;
+                    return (
+                      <li key={cls.slug}>
+                        {build ? (
+                          <Link
+                            href={`/builds/view/${build.code}`}
+                            className="flex items-center gap-3 px-3 py-2 hover:bg-honor-gold/5 transition-colors"
+                          >
+                            <img src={cls.icon} alt={cls.name} className="w-8 h-8 shrink-0" />
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs text-text-muted w-20 shrink-0">{cls.name}</span>
+                                <span className="text-sm text-text-primary truncate">{build.name || 'Unnamed Build'}</span>
+                              </div>
+                            </div>
+                            {score > 0 && (
+                              <span className="text-[10px] text-emerald-400 shrink-0">+{score}</span>
+                            )}
+                          </Link>
+                        ) : (
+                          <div className="flex items-center gap-3 px-3 py-2 opacity-50">
+                            <img src={cls.icon} alt={cls.name} className="w-8 h-8 shrink-0 grayscale" />
+                            <span className="text-xs text-text-muted w-20 shrink-0">{cls.name}</span>
+                            <span className="text-xs text-text-muted italic">No build yet</span>
+                            <Link
+                              href={`/talents/${cls.slug}`}
+                              className="ml-auto text-[10px] text-honor-gold-dim hover:text-honor-gold shrink-0"
+                            >
+                              Create &rarr;
+                            </Link>
+                          </div>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
       <div className="pb-20" />
     </div>

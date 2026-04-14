@@ -119,8 +119,34 @@ export default async function HomePage() {
   // Sort newest first
   feed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  const videoGameJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'VideoGame',
+    name: 'Scars of Honor',
+    description: 'A free to play fantasy MMORPG where player choice, skill based combat, and meaningful progression shape your legend.',
+    gamePlatform: 'PC',
+    applicationCategory: 'Game',
+    genre: 'MMORPG',
+    operatingSystem: 'Windows',
+    url: 'https://scarshq.com',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/PreOrder',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Beastburst Entertainment',
+    },
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(videoGameJsonLd) }}
+      />
       {/* Playtest Countdown */}
       <PlaytestCountdown />
 

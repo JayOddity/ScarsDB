@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Discord from 'next-auth/providers/discord';
-import { sanityWriteClient } from './sanity';
+import { sanityClient, sanityWriteClient } from './sanity';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google, Discord],
@@ -30,11 +30,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return true;
     },
-    async jwt({ token, account }) {
+    async jwt({ token, account, trigger }) {
       if (account) {
         token.provider = account.provider;
         token.providerAccountId = account.providerAccountId;
         token.sanityUserId = `user-${account.provider}-${account.providerAccountId}`;
+      }
+      // Refresh displayName from Sanity on sign-in and whenever session is explicitly updated
+      if ((account || trigger === 'update') && token.sanityUserId) {
+        try {
+          const dn = await sanityClient.fetch<string | null>(
+            `*[_type == "user" && _id == $id][0].displayName`,
+            { id: token.sanityUserId },
+          );
+          token.displayName = dn || null;
+        } catch {
+          token.displayName = token.displayName ?? null;
+        }
       }
       return token;
     },
@@ -42,6 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user) {
         (session.user as unknown as Record<string, unknown>).sanityUserId = token.sanityUserId;
         (session.user as unknown as Record<string, unknown>).provider = token.provider;
+        (session.user as unknown as Record<string, unknown>).displayName = token.displayName ?? null;
       }
       return session;
     },

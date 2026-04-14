@@ -36,6 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${cls.name} Builds - Scars of Honor ${cls.name} Talent Builds | ScarsHQ`,
     description: `Top ${cls.name} builds for Scars of Honor. PvP, PvE, leveling, and beginner talent builds rated by the community.`,
+    alternates: { canonical: `/builds/${cls.slug}` },
   };
 }
 

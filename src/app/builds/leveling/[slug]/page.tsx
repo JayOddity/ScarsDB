@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${cls.name} Leveling Build - Scars of Honor ${cls.name} Leveling Guide | ScarsHQ`,
     description: `The fastest ${cls.name} leveling builds for Scars of Honor. Efficient talent setups to reach endgame quickly.`,
+    alternates: { canonical: `/builds/leveling/${cls.slug}` },
   };
 }
 

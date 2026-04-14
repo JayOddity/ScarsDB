@@ -5,6 +5,7 @@ import BuildTagPills from '@/components/BuildTagPills';
 export const metadata: Metadata = {
   title: 'Leveling Builds - Scars of Honor Fast Leveling Guides | ScarsHQ',
   description: 'The fastest leveling builds for Scars of Honor. Efficient talent setups for every class to reach endgame quickly.',
+  alternates: { canonical: '/builds/leveling' },
 };
 
 export default function LevelingBuildsPage() {

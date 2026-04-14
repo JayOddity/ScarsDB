@@ -7,6 +7,7 @@ import BuildEditButton from '@/components/BuildEditButton';
 import TalentTree from '@/components/TalentTree';
 import VoteButton from '@/components/VoteButton';
 import BuildViewEquipment from '@/components/BuildViewEquipment';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,6 +29,7 @@ export async function generateMetadata({ params }: PageProps) {
   return {
     title: `${build.name || 'Build'} - ${cls?.name || build.classSlug} Build${tagStr} | ScarsHQ`,
     description: build.description || `A ${cls?.name} talent build for Scars of Honor.`,
+    alternates: { canonical: `/builds/view/${code}` },
   };
 }
 
@@ -38,7 +40,7 @@ export default async function BuildViewPage({ params }: PageProps) {
     `*[_type == "talentBuild" && code == $code][0]{
       code, classSlug, allocation, equipment, name, tags, description, guide, patch,
       totalPoints, upvotes, downvotes, createdAt,
-      "authorName": author->name, "authorImage": author->image, "authorRef": author._ref
+      "authorName": author->displayName, "authorImage": author->image, "authorRef": author._ref
     }`,
     { code },
   );
@@ -49,6 +51,14 @@ export default async function BuildViewPage({ params }: PageProps) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12 text-base-reset">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Builds', url: '/builds' },
+          ...(cls ? [{ name: cls.name, url: `/builds/${cls.slug}` }] : []),
+          { name: build.name || build.code, url: `/builds/view/${build.code}` },
+        ]}
+      />
       {/* Header */}
       <nav className="text-sm text-text-muted mb-4">
         <Link href="/builds" className="hover:text-honor-gold transition-colors">Builds</Link>

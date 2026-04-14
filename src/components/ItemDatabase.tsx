@@ -270,7 +270,7 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
   const [statFilters, setStatFilters] = useState<string[]>([]);
   const [sourceFilter, setSourceFilter] = useState<string>('');
   const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState<'name' | 'rarity' | 'slot_type' | 'tier'>('rarity');
+  const [sortBy, setSortBy] = useState<'name' | 'rarity' | 'slot_type' | 'tier' | 'damage' | 'strength' | 'dexterity' | 'intelligence' | 'vitality' | 'armor'>('rarity');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
@@ -330,6 +330,22 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
       'Helmet': 2, 'Chest Piece': 3, 'Shoulder Pads': 4, 'Gloves': 5, 'Belt': 6, 'Pants': 7, 'Boots': 8, 'Cape': 9,
       'Amulet': 10, 'Ring': 11,
     };
+    const statSortMap: Record<string, string> = {
+      damage: 'Damage', strength: 'Strength', dexterity: 'Dexterity',
+      intelligence: 'Intelligence', vitality: 'Vitality', armor: 'Armor',
+    };
+
+    function getStatMax(item: Item, statName: string): number {
+      if (!item.stat_configuration?.lists?.length) return 0;
+      const allMods = item.stat_configuration.lists.flatMap((l) => l.modifications);
+      if (statName === 'Damage') {
+        const maxDmg = allMods.find((m) => m.stat === 'Weapon Max Damage');
+        return maxDmg ? parseFloat(maxDmg.modif_max_value) || 0 : 0;
+      }
+      const matches = allMods.filter((m) => m.stat === statName);
+      return matches.reduce((sum, m) => sum + (parseFloat(m.modif_max_value) || 0), 0);
+    }
+
     return [...items].sort((a, b) => {
       let cmp = 0;
       if (sortBy === 'name') cmp = a.name.localeCompare(b.name);
@@ -345,6 +361,9 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
         const ta = parseInt(a.name.match(/T(\d+)/i)?.[1] || '0');
         const tb = parseInt(b.name.match(/T(\d+)/i)?.[1] || '0');
         cmp = ta - tb;
+      }
+      else if (statSortMap[sortBy]) {
+        cmp = getStatMax(a, statSortMap[sortBy]) - getStatMax(b, statSortMap[sortBy]);
       }
       return sortDir === 'asc' ? cmp : -cmp;
     });
@@ -621,12 +640,12 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
                       <th className="text-left py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold select-none w-[280px]" onClick={() => toggleSort('name')}>
                         Name{sortArrow('name')}
                       </th>
-                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider hidden xl:table-cell w-20">Dmg</th>
-                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider hidden xl:table-cell w-16">Str</th>
-                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider hidden xl:table-cell w-16">Dex</th>
-                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider hidden xl:table-cell w-16">Int</th>
-                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider hidden xl:table-cell w-16">Vit</th>
-                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider hidden xl:table-cell w-16">Armor</th>
+                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold hidden xl:table-cell select-none w-20" onClick={() => toggleSort('damage')}>Dmg{sortArrow('damage')}</th>
+                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold hidden xl:table-cell select-none w-16" onClick={() => toggleSort('strength')}>Str{sortArrow('strength')}</th>
+                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold hidden xl:table-cell select-none w-16" onClick={() => toggleSort('dexterity')}>Dex{sortArrow('dexterity')}</th>
+                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold hidden xl:table-cell select-none w-16" onClick={() => toggleSort('intelligence')}>Int{sortArrow('intelligence')}</th>
+                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold hidden xl:table-cell select-none w-16" onClick={() => toggleSort('vitality')}>Vit{sortArrow('vitality')}</th>
+                      <th className="text-center py-3 px-2 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold hidden xl:table-cell select-none w-16" onClick={() => toggleSort('armor')}>Armor{sortArrow('armor')}</th>
                       <th className="text-left py-3 px-3 text-text-muted font-medium text-xs uppercase tracking-wider cursor-pointer hover:text-honor-gold hidden sm:table-cell select-none w-24" onClick={() => toggleSort('slot_type')}>
                         Slot{sortArrow('slot_type')}
                       </th>

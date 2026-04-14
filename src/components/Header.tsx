@@ -128,6 +128,7 @@ const navItems: NavItem[] = [
       { name: 'PvE Builds', href: '/builds/pve', children: classChildren('/builds') },
       { name: 'Leveling Builds', href: '/builds/leveling', children: classChildren('/builds/leveling') },
       { name: 'Beginner Guides', href: '/builds/beginner', children: classChildren('/builds/beginner') },
+      { name: 'Class Tier List', href: '/builds/tier-list' },
     ],
   },
   {
@@ -158,8 +159,8 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
           <div className="flex items-center h-12 gap-4">
             {/* Logo */}
             <Link href="/" className="shrink-0 flex items-center gap-2 group">
-              <Image src="/Icons/scars-hq-logo.webp" alt={siteName} width={36} height={36} className="h-8 w-auto group-hover:brightness-110 transition-all" priority />
-              <span className="text-lg font-heading text-honor-gold group-hover:brightness-110 transition-all">ScarsHQ</span>
+              <Image src="/favicon.ico" alt={siteName} width={24} height={24} className="h-6 w-6 group-hover:brightness-110 transition-all" priority />
+              <span className="text-lg font-heading group-hover:brightness-110 transition-all"><span className="text-honor-gold">Scars</span><span className="text-sky-400">HQ</span></span>
             </Link>
 
             <div className="flex items-center gap-3 ml-auto shrink-0">

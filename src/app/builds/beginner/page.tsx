@@ -5,6 +5,7 @@ import BuildTagPills from '@/components/BuildTagPills';
 export const metadata: Metadata = {
   title: 'Beginner Builds - Scars of Honor New Player Guides | ScarsHQ',
   description: 'Beginner friendly builds for Scars of Honor. Simple, effective talent setups for new players learning each class.',
+  alternates: { canonical: '/builds/beginner' },
 };
 
 export default function BeginnerBuildsPage() {

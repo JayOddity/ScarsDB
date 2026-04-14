@@ -3,6 +3,23 @@ import Link from 'next/link';
 import { sanityClient } from '@/lib/sanity';
 import type { Item } from '@/lib/api';
 import TrackView from '@/components/TrackView';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const item = await sanityClient.fetch<{ name?: string; rarity?: string; itemType?: string } | null>(
+    `*[_type == "item" && externalId == $id][0]{ name, rarity, itemType }`,
+    { id },
+  );
+  if (!item?.name) return { title: 'Item - ScarsHQ' };
+  const rarity = item.rarity ? `${item.rarity} ` : '';
+  const type = item.itemType ? ` ${item.itemType}` : '';
+  return {
+    title: `${item.name} - ${rarity}Scars of Honor${type} | ScarsHQ`,
+    description: `${item.name} — ${rarity}${item.itemType || 'item'} in Scars of Honor. View stats, rarity, and related builds.`,
+    alternates: { canonical: `/items/${id}` },
+  };
+}
 
 const rarityColorClass: Record<string, string> = {
   Common: 'rarity-common',
@@ -66,6 +83,13 @@ export default async function ItemPage({ params }: { params: Promise<{ id: strin
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Items', url: '/items' },
+          { name: item.name, url: `/items/${id}` },
+        ]}
+      />
       <TrackView itemId={id} />
       {/* Breadcrumb */}
       <nav className="text-sm text-text-muted mb-8 flex items-center gap-2">

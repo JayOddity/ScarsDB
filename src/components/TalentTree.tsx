@@ -400,7 +400,21 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     try {
       const res = await fetch('/api/builds', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ classSlug: gameClass.slug, allocation: enc, equipment: equipmentJson || undefined, name: saveName.trim() || undefined, tags: saveTags.length > 0 ? saveTags : undefined, difficulty: saveDifficulty || undefined, description: saveDescription.trim() || undefined, guide: saveGuide.trim() || undefined, patch: 'Spring 2026 Playtest' }) });
       const data = await res.json();
-      if (res.ok && data.code) { setCloudCode(data.code); } else { setCloudError(data.error || 'Failed to save'); setSaving(false); return; }
+      if (res.ok && data.code) {
+        setCloudCode(data.code);
+      } else {
+        if (data.code === 'NOT_SIGNED_IN') {
+          window.location.href = `/login?callbackUrl=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+          return;
+        }
+        if (data.code === 'NEED_DISPLAY_NAME') {
+          window.location.href = `/onboarding?returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+          return;
+        }
+        setCloudError(data.error || 'Failed to save');
+        setSaving(false);
+        return;
+      }
     } catch { setCloudError('Network error'); setSaving(false); return; }
     // Local save
     saveBuildToStorage({

@@ -22,7 +22,14 @@ export const user = defineType({
     }),
     defineField({
       name: 'name',
-      title: 'Display Name',
+      title: 'OAuth Name (private)',
+      description: 'Real name from OAuth provider. Never shown publicly.',
+      type: 'string',
+    }),
+    defineField({
+      name: 'displayName',
+      title: 'Display Name (public)',
+      description: 'Unique public username chosen on first sign in. Used on builds and votes.',
       type: 'string',
     }),
     defineField({
@@ -44,7 +51,7 @@ export const user = defineType({
     }),
   ],
   preview: {
-    select: { title: 'name', subtitle: 'provider', media: 'image' },
+    select: { title: 'displayName', subtitle: 'provider', media: 'image' },
     prepare({ title, subtitle }) {
       return {
         title: title || 'Unknown User',

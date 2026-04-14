@@ -5,6 +5,7 @@ import BuildTagPills from '@/components/BuildTagPills';
 export const metadata: Metadata = {
   title: 'Best Scars of Honor Builds - Top Rated Builds | ScarsHQ',
   description: 'The highest rated Scars of Honor builds voted by the community. Find the best talent builds for every class, updated for the latest patch.',
+  alternates: { canonical: '/builds/best' },
 };
 
 export default function BestBuildsPage() {

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { classes, allRaces } from '@/data/classes';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 
 export function generateStaticParams() {
   return classes.map((cls) => ({ slug: cls.slug }));
@@ -14,6 +15,7 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
     return {
       title: `${cls.name} Class Guide - ScarsHQ`,
       description: cls.description,
+      alternates: { canonical: `/classes/${cls.slug}` },
     };
   });
 }
@@ -25,6 +27,13 @@ export default async function ClassPage({ params }: { params: Promise<{ slug: st
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Classes', url: '/classes' },
+          { name: cls.name, url: `/classes/${cls.slug}` },
+        ]}
+      />
       {/* Breadcrumb */}
       <nav className="text-sm text-text-muted mb-8 flex items-center gap-2">
         <Link href="/" className="hover:text-honor-gold transition-colors">Home</Link>

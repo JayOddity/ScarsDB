@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { allRaces, factions } from '@/data/classes';
+import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 
 export function generateStaticParams() {
   return allRaces.map((race) => ({ slug: race.slug }));
@@ -14,6 +15,7 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
     return {
       title: `${race.name} - ScarsHQ`,
       description: race.description,
+      alternates: { canonical: `/races/${race.slug}` },
     };
   });
 }
@@ -29,6 +31,13 @@ export default async function RacePage({ params }: { params: Promise<{ slug: str
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <BreadcrumbJsonLd
+        items={[
+          { name: 'Home', url: '/' },
+          { name: 'Races', url: '/races' },
+          { name: race.name, url: `/races/${race.slug}` },
+        ]}
+      />
       {/* Breadcrumb */}
       <nav className="text-sm text-text-muted mb-8 flex items-center gap-2">
         <Link href="/" className="hover:text-honor-gold transition-colors">Home</Link>

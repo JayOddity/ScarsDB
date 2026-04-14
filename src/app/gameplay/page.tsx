@@ -118,6 +118,7 @@ const jsonLd = {
   name: 'Scars of Honor',
   description:
     'A free to play fantasy MMORPG with two factions, 10 classes, talent trees, permanent Scars progression, PvP, procedural dungeons, and crafting professions.',
+  image: 'https://scarshq.com/images/og-default.jpg',
   gamePlatform: 'PC',
   applicationCategory: 'Game',
   genre: 'MMORPG',

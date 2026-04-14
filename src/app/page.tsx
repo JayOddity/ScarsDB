@@ -124,6 +124,7 @@ export default async function HomePage() {
     '@type': 'VideoGame',
     name: 'Scars of Honor',
     description: 'A free to play fantasy MMORPG where player choice, skill based combat, and meaningful progression shape your legend.',
+    image: 'https://scarshq.com/images/og-default.jpg',
     gamePlatform: 'PC',
     applicationCategory: 'Game',
     genre: 'MMORPG',

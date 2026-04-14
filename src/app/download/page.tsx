@@ -35,6 +35,7 @@ const jsonLd = {
   '@type': 'VideoGame',
   name: 'Scars of Honor',
   description: 'Free to play fantasy MMORPG. Available on Steam. Request playtest access to join the next Technical Alpha.',
+  image: 'https://scarshq.com/images/og-download.jpg',
   gamePlatform: 'PC',
   applicationCategory: 'Game',
   genre: 'MMORPG',

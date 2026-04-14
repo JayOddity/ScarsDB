@@ -17,6 +17,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const classSlug = searchParams.get('class');
     const tag = searchParams.get('tag');
+    const patch = searchParams.get('patch');
     const sort = searchParams.get('sort') || 'newest';
     const mine = searchParams.get('mine') === 'true';
     const page = Math.max(1, parseInt(searchParams.get('page') || '1', 10));
@@ -32,6 +33,10 @@ export async function GET(request: NextRequest) {
     if (tag && ['pvp', 'pve', 'leveling', 'beginner'].includes(tag)) {
       filter += ' && $tag in tags';
       params.tag = tag;
+    }
+    if (patch && patch.length > 0 && patch.length < 50) {
+      filter += ' && patch == $patch';
+      params.patch = patch;
     }
     if (mine) {
       const session = await auth();

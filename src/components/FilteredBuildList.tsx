@@ -69,6 +69,15 @@ export default function FilteredBuildList({
   const [sort, setSort] = useState(externalSort || defaultSort);
   const [filterClass, setFilterClass] = useState(externalClass ?? initialClass ?? 'all');
   const [filterTags, setFilterTags] = useState<string[]>(externalTags || (initialTag ? [initialTag] : []));
+  const [filterPatch, setFilterPatch] = useState<string>('all');
+  const [availablePatches, setAvailablePatches] = useState<string[]>([]);
+
+  useEffect(() => {
+    fetch('/api/builds/patches')
+      .then((r) => r.json())
+      .then((data) => setAvailablePatches(data.patches || []))
+      .catch(() => {});
+  }, []);
 
   // Sync external class/sort when parent changes them
   useEffect(() => {
@@ -89,12 +98,13 @@ export default function FilteredBuildList({
     }
   }, [externalTags]);
 
-  const fetchBuilds = useCallback(async (p: number, s: string, cls: string, tags: string[]) => {
+  const fetchBuilds = useCallback(async (p: number, s: string, cls: string, tags: string[], patch: string) => {
     setLoading(true);
     try {
       const params = new URLSearchParams({ page: String(p), sort: s, limit: '50' });
       if (tags.length === 1) params.set('tag', tags[0]);
       if (cls && cls !== 'all') params.set('class', cls);
+      if (patch && patch !== 'all') params.set('patch', patch);
       if (mine) params.set('mine', 'true');
       const res = await fetch(`/api/builds?${params}`);
       const data = await res.json();
@@ -116,11 +126,11 @@ export default function FilteredBuildList({
   }, []);
 
   useEffect(() => {
-    fetchBuilds(1, sort, filterClass, filterTags);
-  }, [sort, filterClass, filterTags, fetchBuilds]);
+    fetchBuilds(1, sort, filterClass, filterTags, filterPatch);
+  }, [sort, filterClass, filterTags, filterPatch, fetchBuilds]);
 
   function handlePageChange(newPage: number) {
-    fetchBuilds(newPage, sort, filterClass, filterTags);
+    fetchBuilds(newPage, sort, filterClass, filterTags, filterPatch);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -157,6 +167,18 @@ export default function FilteredBuildList({
             <option value="pve">PvE</option>
             <option value="leveling">Leveling</option>
             <option value="beginner">Beginner</option>
+          </select>
+        )}
+        {availablePatches.length > 1 && (
+          <select
+            value={filterPatch}
+            onChange={(e) => { setFilterPatch(e.target.value); setPage(1); }}
+            className="bg-dark-surface border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-secondary focus:outline-none focus:border-honor-gold-dim"
+          >
+            <option value="all">All Patches</option>
+            {availablePatches.map((p) => (
+              <option key={p} value={p}>{p}</option>
+            ))}
           </select>
         )}
         <span className="text-xs text-text-muted ml-auto">
@@ -287,7 +309,7 @@ export default function FilteredBuildList({
                             Calculator
                           </a>
                           <BuildEditButton buildCode={build.code} authorRef={build.authorRef} />
-                          <AdminBuildControls buildCode={build.code} onDeleted={() => fetchBuilds(page, sort, filterClass, filterTags)} onVotesReset={() => fetchBuilds(page, sort, filterClass, filterTags)} />
+                          <AdminBuildControls buildCode={build.code} onDeleted={() => fetchBuilds(page, sort, filterClass, filterTags, filterPatch)} onVotesReset={() => fetchBuilds(page, sort, filterClass, filterTags, filterPatch)} />
                         </div>
                       </div>
 
@@ -362,7 +384,7 @@ export default function FilteredBuildList({
                             Calculator
                           </a>
                           <BuildEditButton buildCode={build.code} authorRef={build.authorRef} />
-                          <AdminBuildControls buildCode={build.code} onDeleted={() => fetchBuilds(page, sort, filterClass, filterTags)} onVotesReset={() => fetchBuilds(page, sort, filterClass, filterTags)} />
+                          <AdminBuildControls buildCode={build.code} onDeleted={() => fetchBuilds(page, sort, filterClass, filterTags, filterPatch)} onVotesReset={() => fetchBuilds(page, sort, filterClass, filterTags, filterPatch)} />
                         </div>
                         <VoteButton buildCode={build.code} initialUpvotes={build.upvotes} initialDownvotes={build.downvotes} />
                       </div>

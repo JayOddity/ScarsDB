@@ -34,7 +34,7 @@ async function fetchTopByTag(tag: 'pvp' | 'pve'): Promise<Record<string, TopBuil
     `*[_type == "talentBuild" && $tag in tags] | order((coalesce(upvotes,0) - coalesce(downvotes,0)) desc, createdAt desc) [0...200] {
       code, classSlug, name, upvotes, downvotes, tags
     }`,
-    { tag },
+    { tag } as Record<string, string>,
     { next: { revalidate: 300 } },
   );
   const byClass: Record<string, TopBuild | null> = {};

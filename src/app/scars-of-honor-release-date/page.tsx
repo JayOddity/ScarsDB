@@ -97,6 +97,7 @@ const jsonLd = [
     '@type': 'VideoGame',
     name: 'Scars of Honor',
     description: 'A free to play fantasy MMORPG where player choice, skill based combat, and meaningful progression shape your legend.',
+    image: 'https://scarshq.com/images/og-release-date.jpg',
     gamePlatform: 'PC',
     applicationCategory: 'Game',
     genre: 'MMORPG',
@@ -140,7 +141,9 @@ export default function ReleaseDatePage() {
             description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. Next playtest: April 30 to May 11, 2026.',
             author: { '@type': 'Organization', name: 'ScarsHQ', url: 'https://scarshq.com' },
             publisher: { '@type': 'Organization', name: 'ScarsHQ', url: 'https://scarshq.com' },
-            dateModified: new Date().toISOString().split('T')[0],
+            image: 'https://scarshq.com/images/og-release-date.jpg',
+            datePublished: '2026-04-08T00:00:00+00:00',
+            dateModified: new Date().toISOString(),
             mainEntityOfPage: 'https://scarshq.com/scars-of-honor-release-date',
           }),
         }}

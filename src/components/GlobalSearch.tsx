@@ -33,7 +33,6 @@ const staticResults: SearchResult[] = [
   { type: 'page', name: 'Races & Factions', description: 'Sacred Order vs. Domination', href: '/races' },
   { type: 'page', name: 'All Classes', description: '10 playable classes overview', href: '/classes' },
   { type: 'page', name: 'Talent Calculator', description: 'Choose a class to build', href: '/talents' },
-  { type: 'page', name: 'News', description: 'Latest Scars of Honor news', href: '/news' },
   { type: 'page', name: 'Articles', description: 'Guides, lore, and in-depth articles', href: '/articles' },
   { type: 'page', name: 'Info Pages', description: 'General information about the site', href: '/pages' },
   { type: 'page', name: 'Professions', description: 'Gathering and crafting professions', href: '/professions' },

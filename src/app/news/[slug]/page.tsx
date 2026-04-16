@@ -44,7 +44,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         <h1 className="font-heading text-3xl text-scar-red mb-4">Post Not Found</h1>
-        <Link href="/news" className="text-honor-gold hover:text-honor-gold-light">← Back to News</Link>
+        <Link href="/" className="text-honor-gold hover:text-honor-gold-light">← Back to Home</Link>
       </div>
     );
   }
@@ -53,8 +53,6 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <nav className="text-sm text-text-muted mb-8 flex items-center gap-2">
         <Link href="/" className="hover:text-honor-gold transition-colors">Home</Link>
-        <span>/</span>
-        <Link href="/news" className="hover:text-honor-gold transition-colors">News</Link>
         <span>/</span>
         <span className="text-text-secondary">{post.title}</span>
       </nav>
@@ -78,8 +76,8 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
         )}
       </article>
 
-      <Link href="/news" className="inline-block mt-6 text-honor-gold hover:text-honor-gold-light text-sm transition-colors">
-        ← Back to News
+      <Link href="/" className="inline-block mt-6 text-honor-gold hover:text-honor-gold-light text-sm transition-colors">
+        ← Back to Home
       </Link>
     </div>
   );

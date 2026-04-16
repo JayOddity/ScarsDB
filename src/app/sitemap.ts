@@ -1,9 +1,10 @@
 import type { MetadataRoute } from 'next';
 import { classes, allRaces } from '@/data/classes';
 
+const now = new Date().toISOString();
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://scarshq.com';
-  const now = new Date().toISOString();
 
   // Static pages with priorities
   const staticPages: MetadataRoute.Sitemap = [

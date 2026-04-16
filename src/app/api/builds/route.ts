@@ -6,11 +6,9 @@ import { getBuildViewCounts } from '@/lib/buildViewTracker';
 import { auth } from '@/lib/auth';
 import { validateText } from '@/lib/profanityFilter';
 import { isUserBanned } from '@/lib/bannedUsers';
+import { classes } from '@/data/classes';
 
-const VALID_CLASS_SLUGS = [
-  'warrior', 'paladin', 'mage', 'priest', 'ranger',
-  'druid', 'assassin', 'necromancer', 'pirate', 'mystic',
-];
+const VALID_CLASS_SLUGS = classes.map((c) => c.slug);
 
 export async function GET(request: NextRequest) {
   try {

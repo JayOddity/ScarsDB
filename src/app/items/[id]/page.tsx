@@ -5,6 +5,7 @@ import type { Item } from '@/lib/api';
 import TrackView from '@/components/TrackView';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 import { classes } from '@/data/classes';
+import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
 
 const classMap = new Map(classes.map((c) => [c.slug, c]));
 
@@ -18,11 +19,18 @@ interface BuildMatch {
   equipment?: string;
 }
 
+// Equipment is stored as a JSON string on talentBuild, so GROQ can't filter
+// by itemId server-side without a schema change. We fetch all builds with
+// equipment and filter in memory. Cached for 5 minutes so every item page
+// view doesn't re-fetch the whole list. Revisit with a structured equipment
+// schema if build count grows past a few thousand.
 async function fetchBuildsUsingItem(itemId: string): Promise<BuildMatch[]> {
   const builds = await sanityClient.fetch<BuildMatch[]>(
     `*[_type == "talentBuild" && defined(equipment) && equipment != ""] {
       code, classSlug, name, upvotes, downvotes, tags, equipment
     }`,
+    {},
+    { next: { revalidate: 300, tags: ['talentBuild'] } },
   );
   const matching = builds.filter((b) => {
     if (!b.equipment) return false;
@@ -55,19 +63,6 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     alternates: { canonical: `/items/${id}` },
   };
 }
-
-const rarityColorClass: Record<string, string> = {
-  Common: 'rarity-common',
-  Rare: 'rarity-rare',
-  Epic: 'rarity-epic',
-  Legendary: 'rarity-legendary',
-};
-const rarityBorderClass: Record<string, string> = {
-  Common: 'rarity-border-common',
-  Rare: 'rarity-border-rare',
-  Epic: 'rarity-border-epic',
-  Legendary: 'rarity-border-legendary',
-};
 
 export default async function ItemPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

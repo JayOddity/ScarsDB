@@ -23,7 +23,6 @@ const footerLinks = [
   {
     title: 'Guides',
     links: [
-      { name: 'News', href: '/news' },
       { name: 'Articles', href: '/articles' },
       { name: 'FAQ', href: '/faq' },
       { name: 'Creators', href: '/creators' },

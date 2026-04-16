@@ -103,7 +103,6 @@ const navItems: NavItem[] = [
       { name: 'Mounts', href: '/mounts' },
       { name: 'Skills & Abilities', href: '/skills' },
       { name: 'Cosmetics', href: '/cosmetics' },
-      { name: 'Maps & Zones', href: '/maps' },
     ],
   },
   {
@@ -137,6 +136,7 @@ const navItems: NavItem[] = [
       { name: 'Talent Calculator', href: '/talents' },
       { name: 'Gear Planner', href: '/talents?tab=Equipment' },
       { name: 'Scars', href: '/talents?tab=Scars' },
+      { name: 'Maps & Zones', href: '/map' },
     ],
   },
   { label: 'Talent Calculator', href: '/talents' },

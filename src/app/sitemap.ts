@@ -37,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/system-requirements`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${base}/playtest`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/scars-of-honor-release-date`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/map`, lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
   ];
 
   // Dynamic class pages

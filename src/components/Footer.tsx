@@ -17,7 +17,7 @@ const footerLinks = [
       { name: 'All Items', href: '/items' },
       { name: 'NPCs & Bestiary', href: '/npcs' },
       { name: 'Skills', href: '/skills' },
-      { name: 'Maps & Zones', href: '/maps' },
+      { name: 'Maps & Zones', href: '/map' },
     ],
   },
   {

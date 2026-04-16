@@ -5,32 +5,9 @@ import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Item, StatModification } from '@/lib/api';
+import { rarityColorClass, rarityBorderClass, rarityGlowClass, rarityBgClass } from '@/lib/rarityStyles';
 
 const RARITIES = ['Common', 'Rare', 'Epic', 'Legendary'] as const;
-const rarityColorClass: Record<string, string> = {
-  Common: 'rarity-common',
-  Rare: 'rarity-rare',
-  Epic: 'rarity-epic',
-  Legendary: 'rarity-legendary',
-};
-const rarityBorderClass: Record<string, string> = {
-  Common: 'rarity-border-common',
-  Rare: 'rarity-border-rare',
-  Epic: 'rarity-border-epic',
-  Legendary: 'rarity-border-legendary',
-};
-const rarityGlowClass: Record<string, string> = {
-  Common: 'rarity-glow-common',
-  Rare: 'rarity-glow-rare',
-  Epic: 'rarity-glow-epic',
-  Legendary: 'rarity-glow-legendary',
-};
-const rarityBgClass: Record<string, string> = {
-  Common: 'bg-[#9d9d9d]/10',
-  Rare: 'bg-[#4a8ff7]/10',
-  Epic: 'bg-[#a855f7]/10',
-  Legendary: 'bg-[#f59e0b]/10',
-};
 
 interface ApiMeta {
   total: number;

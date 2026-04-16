@@ -33,14 +33,6 @@ export function isClean(text: string): boolean {
 }
 
 /**
- * Replace profanity with asterisks.
- */
-export function censorText(text: string): string {
-  if (!text) return text;
-  return filter.clean(text);
-}
-
-/**
  * Validate user-submitted text. Returns an error message if profanity detected, null if clean.
  */
 export function validateText(text: string, fieldName: string = 'Text'): string | null {

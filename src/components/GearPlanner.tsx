@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import type { Item } from '@/lib/api';
+import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
 
 const EQUIPMENT_ROWS = [
   [
@@ -42,18 +43,6 @@ const POTIONS = [
   { label: 'Potion 3', icon: '/Icons/Slots/potion.avif' },
 ];
 
-const rarityColorClass: Record<string, string> = {
-  Common: 'rarity-common',
-  Rare: 'rarity-rare',
-  Epic: 'rarity-epic',
-  Legendary: 'rarity-legendary',
-};
-const rarityBorderClass: Record<string, string> = {
-  Common: 'border-rarity-common',
-  Rare: 'border-rarity-rare',
-  Epic: 'border-rarity-epic',
-  Legendary: 'border-rarity-legendary',
-};
 const rarityBg: Record<string, string> = {
   Common: 'rgba(157,157,157,0.1)',
   Rare: 'rgba(74,143,247,0.1)',

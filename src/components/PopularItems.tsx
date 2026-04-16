@@ -3,19 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const rarityColorClass: Record<string, string> = {
-  Common: 'rarity-common',
-  Rare: 'rarity-rare',
-  Epic: 'rarity-epic',
-  Legendary: 'rarity-legendary',
-};
-const rarityBorderClass: Record<string, string> = {
-  Common: 'rarity-border-common',
-  Rare: 'rarity-border-rare',
-  Epic: 'rarity-border-epic',
-  Legendary: 'rarity-border-legendary',
-};
+import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
 
 interface PopularItem {
   id: string;

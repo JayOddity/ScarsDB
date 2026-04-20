@@ -301,16 +301,26 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   }, [allocated, adj, startCount, totalPts]);
 
   const canDealloc = useCallback((node: TalentNode): boolean => {
-    const cur = allocated[node.id] || 0;
-    if (cur <= 0) return false; if (cur > 1) return true;
-    for (const nid of (adj[node.id] || [])) {
-      if ((allocated[nid] || 0) > 0) {
-        const otherAlloc = (adj[nid] || []).filter((x) => x !== node.id && (allocated[x] || 0) > 0);
-        if (otherAlloc.length === 0 && nodeMap.get(nid)?.nodeType !== 'start') return false;
+    return (allocated[node.id] || 0) > 0;
+  }, [allocated]);
+
+  const pruneOrphans = useCallback((alloc: Record<number, number>): Record<number, number> => {
+    const allocIds = new Set(Object.keys(alloc).filter((k) => alloc[Number(k)] > 0).map(Number));
+    const startIds = nodes.filter((n) => n.nodeType === 'start' && allocIds.has(n.id)).map((n) => n.id);
+    if (startIds.length === 0) return {};
+    const reachable = new Set<number>(startIds);
+    const queue: number[] = [...startIds];
+    while (queue.length > 0) {
+      const cur = queue.shift()!;
+      for (const nb of (adj[cur] || [])) {
+        if (!allocIds.has(nb) || reachable.has(nb)) continue;
+        reachable.add(nb); queue.push(nb);
       }
     }
-    return true;
-  }, [allocated, adj, nodeMap]);
+    const next: Record<number, number> = {};
+    for (const id of reachable) next[id] = alloc[id];
+    return next;
+  }, [adj, nodes]);
 
   const findShortestPath = useCallback((targetId: number): number[] => {
     if ((allocated[targetId] || 0) > 0) return [];
@@ -375,9 +385,15 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     if (nid === null) return;
     const node = nodeMap.get(nid);
     if (node && canDealloc(node)) {
-      setAllocated((p) => { const n = { ...p }; const c = (n[nid] || 0) - 1; if (c <= 0) delete n[nid]; else n[nid] = c; return n; });
+      setAllocated((p) => {
+        const n = { ...p };
+        const c = (n[nid] || 0) - 1;
+        if (c <= 0) { delete n[nid]; return pruneOrphans(n); }
+        n[nid] = c;
+        return n;
+      });
     }
-  }, [nodeMap, canDealloc]);
+  }, [nodeMap, canDealloc, pruneOrphans]);
 
   const handleNodeHover = useCallback((e: React.MouseEvent) => {
     const nid = getNodeId(e.target as Element);

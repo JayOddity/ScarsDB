@@ -11,6 +11,7 @@ import GearPlanner, { type EquippedItems } from './GearPlanner';
 import { checkProfanity } from '@/lib/profanityClient';
 
 const MAX_POINTS = 70;
+const MAX_STARTS = 2;
 import { hasRealData, type RealTalentData } from '@/lib/talentData';
 
 interface TalentNode {
@@ -286,14 +287,18 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   }, [nodes, edges]);
 
   const totalPts = useMemo(() => Object.values(allocated).reduce((s, v) => s + v, 0), [allocated]);
-  const hasStartAlloc = useMemo(() => nodes.some((n) => n.nodeType === 'start' && (allocated[n.id] || 0) > 0), [nodes, allocated]);
+  const startCount = useMemo(() => nodes.filter((n) => n.nodeType === 'start' && (allocated[n.id] || 0) > 0).length, [nodes, allocated]);
+  const hasStartAlloc = startCount > 0;
 
   const canAlloc = useCallback((node: TalentNode): boolean => {
     if ((allocated[node.id] || 0) >= node.maxRank) return false;
     if (totalPts >= MAX_POINTS) return false;
-    if (node.nodeType === 'start') return true;
+    if (node.nodeType === 'start') {
+      if ((allocated[node.id] || 0) === 0 && startCount >= MAX_STARTS) return false;
+      return true;
+    }
     return (adj[node.id] || []).some((nid) => (allocated[nid] || 0) > 0);
-  }, [allocated, adj, hasStartAlloc]);
+  }, [allocated, adj, startCount, totalPts]);
 
   const canDealloc = useCallback((node: TalentNode): boolean => {
     const cur = allocated[node.id] || 0;
@@ -309,6 +314,10 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
   const findShortestPath = useCallback((targetId: number): number[] => {
     if ((allocated[targetId] || 0) > 0) return [];
+    const targetNode = nodeMap.get(targetId);
+    if (targetNode?.nodeType === 'start') {
+      return startCount >= MAX_STARTS ? [] : [targetId];
+    }
     const allocatedIds = new Set(Object.keys(allocated).filter((k) => allocated[Number(k)] > 0).map(Number));
     const sourceSet = allocatedIds.size > 0 ? allocatedIds : new Set(nodes.filter((n) => n.nodeType === 'start').map((n) => n.id));
     if (sourceSet.size === 0) return [];
@@ -332,7 +341,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       }
     }
     return [];
-  }, [allocated, adj, nodes]);
+  }, [allocated, adj, nodes, nodeMap, startCount]);
 
   const hoveredPath = useMemo(() => {
     if (hoveredId === null || (allocated[hoveredId] || 0) > 0) return new Set<number>();

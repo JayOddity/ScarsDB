@@ -685,7 +685,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     <div className={`flex flex-col ${readOnly ? 'h-full' : 'h-[calc(100vh-64px)]'}`}>
 
       {/* Sub-header: Tabs (hidden in read-only) */}
-      {!readOnly && <div className="bg-[#0a0a16] border-b border-border-subtle flex items-center justify-center px-4 sm:px-6">
+      {!readOnly && <div className="bg-[#14141a] border-b border-border-subtle flex items-center justify-center px-4 sm:px-6">
         <div className="inline-grid grid-cols-[1fr_auto_1fr]">
           {['Equipment', 'Talents', 'Scars'].map((tab, i) => {
             const active = activeTab === tab;
@@ -927,7 +927,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
         {/* Read-only Bottom Panel — sits half in, half out */}
         {readOnly && (
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 bg-[#0a0a16] border border-border-subtle rounded-full px-7 py-3 flex items-center gap-4 shadow-2xl whitespace-nowrap">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 bg-[#14141a] border border-border-subtle rounded-full px-7 py-3 flex items-center gap-4 shadow-2xl whitespace-nowrap">
             <img src={gameClass.icon} alt={gameClass.name} className="w-8 h-8" />
             <span style={{ color: col }} className="font-heading text-lg">{gameClass.name}</span>
             <span className="text-text-muted text-sm">|</span>
@@ -938,7 +938,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
         )}
 
         {/* Floating Bottom Panel */}
-        {!readOnly && <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 bg-[#0a0a16]/90 backdrop-blur-md border border-border-subtle rounded-xl px-3 py-2 flex items-center gap-3 shadow-2xl">
+        {!readOnly && <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 bg-[#14141a]/90 backdrop-blur-md border border-border-subtle rounded-xl px-3 py-2 flex items-center gap-3 shadow-2xl">
           {/* Class dropdown */}
           <div className="relative">
             <button onClick={() => setShowClassDropdown(!showClassDropdown)} className="flex items-center gap-2 px-4 py-2 bg-dark-surface border border-border-subtle rounded-lg text-sm hover:border-honor-gold-dim transition-colors">
@@ -947,7 +947,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               <span className="text-text-muted text-xs">▼</span>
             </button>
             {showClassDropdown && (
-              <div className="absolute bottom-full mb-2 left-0 bg-[#0a0a16]/95 border border-border-subtle rounded-lg py-1.5 shadow-2xl backdrop-blur-md w-48">
+              <div className="absolute bottom-full mb-2 left-0 bg-[#14141a]/95 border border-border-subtle rounded-lg py-1.5 shadow-2xl backdrop-blur-md w-48">
                 {classes.map((c) => (
                   <Link key={c.slug} href={`/talents/${c.slug}`} onClick={() => setShowClassDropdown(false)}
                     className={`flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-honor-gold/10 transition-colors ${c.slug === gameClass.slug ? 'text-honor-gold' : 'text-text-secondary'}`}>

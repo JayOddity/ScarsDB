@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --void-black: #0a0a0f;
-  --deep-night: #12121a;
-  --dark-surface: #1a1a2e;
-  --card-bg: #16162a;
-  --border-subtle: #2a2a4a;
+  --void-black: #1c1c22;
+  --deep-night: #24242c;
+  --dark-surface: #2c2c3e;
+  --card-bg: #28283a;
+  --border-subtle: #3a3a5a;
   --honor-gold: #c8a84e;
   --honor-gold-light: #e0c068;
   --honor-gold-dim: #8a6e2f;
@@ -13,9 +13,9 @@
   --scar-red-light: #e05555;
   --parchment: #e8e0d0;
   --parchment-dim: #a89880;
-  --text-primary: #f0ece4;
-  --text-secondary: #f0ece4;
-  --text-muted: #a8a8bc;
+  --text-primary: #ffffff;
+  --text-secondary: #ffffff;
+  --text-muted: #ededed;
   --rarity-common: #9d9d9d;
   --rarity-rare: #4a8ff7;
   --rarity-epic: #a855f7;

@@ -47,7 +47,7 @@ const systemSpotlights = [
     title: 'The Scars System',
     eyebrow: 'Permanent upgrades',
     description:
-      'Scars are permanent changes to your character that go beyond talents and gear. They stack over time and make your build truly different from everyone else.',
+      'Scars are permanent changes to your character that go beyond talents and gear. They stack over time and make your build different from everyone else.',
     href: '/scars',
     cta: 'See how Scars work',
     accent: 'bg-scar-red',

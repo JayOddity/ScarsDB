@@ -152,7 +152,7 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
 
   return (
     <>
-    <header className="sticky top-0 z-50 bg-void-black/95 backdrop-blur">
+    <header className="sticky top-0 z-50 bg-[#14141a]/95 backdrop-blur">
       {/* Top bar: Logo, Auth, Search */}
       <div className="border-b border-border-subtle">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -235,7 +235,7 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
       {/* Bottom bar: Navigation */}
       <div className="border-b border-border-subtle hidden md:block">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">
-          <nav className="flex items-center justify-between">
+          <nav className="flex items-center justify-start gap-1">
             {navItems.map((nav) =>
               !nav.items ? (
                 <Link

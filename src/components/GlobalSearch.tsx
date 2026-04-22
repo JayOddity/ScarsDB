@@ -27,7 +27,7 @@ const staticResults: SearchResult[] = [
     href: `/talents/${cls.slug}`,
     icon: cls.icon,
   })),
-  { type: 'page', name: 'Item Database', description: 'Browse all 1,603 items', href: '/items' },
+  { type: 'page', name: 'Item Database', description: 'Browse all 1,603 items', href: '/database' },
   { type: 'page', name: 'Gear Planner', description: 'Plan your loadout', href: '/gear' },
   { type: 'page', name: 'Playtest Info', description: 'Spring 2026 playtest details', href: '/playtest' },
   { type: 'page', name: 'Races & Factions', description: 'Sacred Order vs. Domination', href: '/races' },
@@ -102,7 +102,7 @@ export default function GlobalSearch() {
       type: 'item',
       name: `View all items matching "${query}"`,
       description: 'Open item database with this search',
-      href: `/items?search=${encodeURIComponent(query)}`,
+      href: `/database?search=${encodeURIComponent(query)}`,
     });
 
     setResults(matched.slice(0, 10));
@@ -130,7 +130,7 @@ export default function GlobalSearch() {
 
         if (itemData.items?.length) {
           for (const item of itemData.items) {
-            const href = `/items/${item.id}`;
+            const href = item.slug ? `/database/${item.slug}` : `/items/${item.id}`;
             if (!existing.has(href)) {
               newResults.push({
                 type: 'item',

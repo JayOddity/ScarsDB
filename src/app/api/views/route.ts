@@ -37,6 +37,7 @@ export async function GET() {
       const fallback = await sanityClient.fetch(
         `*[_type == "item" && defined(icon) && icon != ""] | order(_updatedAt desc) [0...10] {
           "id": externalId,
+          "slug": slug.current,
           name,
           rarity,
           icon,
@@ -46,6 +47,7 @@ export async function GET() {
       );
       const items = fallback.map((item: Record<string, string>) => ({
         id: item.id,
+        slug: item.slug,
         name: item.name,
         rarity: item.rarity,
         icon: item.icon,
@@ -61,6 +63,7 @@ export async function GET() {
     const items = await sanityClient.fetch(
       `*[_type == "item" && externalId in $ids] {
         "id": externalId,
+        "slug": slug.current,
         name,
         rarity,
         icon,

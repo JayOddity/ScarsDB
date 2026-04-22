@@ -20,6 +20,7 @@ export interface StatConfiguration {
 
 export interface Item {
   id: string;
+  slug: string;
   name: string;
   description_key: number | null;
   type: string;

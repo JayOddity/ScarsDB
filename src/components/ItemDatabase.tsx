@@ -87,7 +87,7 @@ function ItemDetailPanel({ item }: { item: Item }) {
           </div>
           <div className="min-w-0">
             <Link
-              href={`/items/${item.id}`}
+              href={item.slug ? `/database/${item.slug}` : `/items/${item.id}`}
               className={`font-heading text-lg leading-tight hover:underline block ${rarityColorClass[item.rarity]}`}
             >
               {item.name}
@@ -651,7 +651,7 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
                           className="border-b border-border-subtle/30 hover:bg-dark-surface/30 transition-colors"
                         >
                           <td className="py-2.5 px-3">
-                            <Link href={`/items/${item.id}`} className="flex items-center gap-3">
+                            <Link href={item.slug ? `/database/${item.slug}` : `/items/${item.id}`} className="flex items-center gap-3">
                               <div className={`w-9 h-9 rounded border ${rarityBorderClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}>
                                 {item.icon && !item.icon.includes('placehold') ? (
                                   <Image src={item.icon} alt={item.name} width={36} height={36} className="object-cover" />

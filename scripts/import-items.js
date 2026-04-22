@@ -12,6 +12,42 @@ const sanityClient = createClient({
 const API_BASE = process.env.BEASTBURST_API_URL || 'https://developers.beastburst.com/api/community';
 const API_TOKEN = process.env.BEASTBURST_API_TOKEN;
 
+function slugify(name) {
+  return name
+    .replace(/['\u2018\u2019]/g, '')
+    .replace(/[^A-Za-z0-9 ]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+function assignSlugs(items, existing) {
+  const result = new Map();
+  const used = new Set();
+  for (const item of items) {
+    const prior = existing.get(item.id);
+    if (prior) {
+      result.set(item.id, prior);
+      used.add(prior);
+    }
+  }
+  const toAssign = items.filter((i) => !result.has(i.id));
+  toAssign.sort((a, b) => a.id.localeCompare(b.id));
+  for (const item of toAssign) {
+    const base = slugify(item.name);
+    if (!base) continue;
+    let slug = base;
+    let n = 2;
+    while (used.has(slug)) {
+      slug = `${base}-${n}`;
+      n++;
+    }
+    used.add(slug);
+    result.set(item.id, slug);
+  }
+  return result;
+}
+
 async function fetchPage(page) {
   const res = await fetch(`${API_BASE}/items?page=${page}`, {
     headers: {
@@ -26,7 +62,7 @@ async function fetchPage(page) {
   return res.json();
 }
 
-function mapItem(item) {
+function mapItem(item, slug) {
   const doc = {
     _type: 'item',
     _id: 'item-' + item.id,
@@ -39,6 +75,7 @@ function mapItem(item) {
     isDestructible: item.is_destructible,
     sellValue: item.sell_value,
     externalId: item.id,
+    ...(slug ? { slug: { _type: 'slug', current: slug } } : {}),
   };
 
   if (
@@ -93,9 +130,21 @@ async function main() {
   }
 
   console.log(`\nTotal items fetched: ${allItems.length}`);
-  console.log('Mapping items to Sanity documents...');
+  console.log('Resolving slugs against existing Sanity data...');
 
-  const docs = allItems.map(mapItem);
+  const existingRows = await sanityClient.fetch(
+    `*[_type == "item" && defined(slug.current)]{ externalId, "slug": slug.current }`,
+  );
+  const existing = new Map();
+  for (const r of existingRows) existing.set(r.externalId, r.slug);
+
+  const slugMap = assignSlugs(
+    allItems.map((i) => ({ id: i.id, name: i.name })),
+    existing,
+  );
+
+  console.log('Mapping items to Sanity documents...');
+  const docs = allItems.map((i) => mapItem(i, slugMap.get(i.id)));
 
   const BATCH_SIZE = 20;
   let written = 0;

@@ -5,7 +5,7 @@ import ItemDatabase from '@/components/ItemDatabase';
 export const metadata = {
   title: 'Item Database - ScarsHQ',
   description: 'Browse every blade, shield, and relic forged in Aragon. Filter by slot, rarity, and type.',
-  alternates: { canonical: '/items' },
+  alternates: { canonical: '/database' },
 };
 
 async function getInitialItems() {
@@ -32,7 +32,7 @@ async function getInitialItems() {
   };
 }
 
-export default async function ItemsPage() {
+export default async function DatabasePage() {
   const initialData = await getInitialItems();
   return <ItemDatabase initialData={initialData} />;
 }

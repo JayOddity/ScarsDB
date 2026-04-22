@@ -21,7 +21,7 @@ export default function NotFound() {
             Return Home
           </Link>
           <Link
-            href="/items"
+            href="/database"
             className="px-6 py-3 border border-border-subtle text-text-secondary font-heading rounded-lg hover:border-honor-gold-dim hover:text-honor-gold transition-colors"
           >
             Browse Items

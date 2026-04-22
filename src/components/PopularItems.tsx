@@ -7,6 +7,7 @@ import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
 
 interface PopularItem {
   id: string;
+  slug?: string;
   name: string;
   rarity: string;
   icon?: string;
@@ -33,7 +34,7 @@ export default function PopularItems() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-heading text-2xl text-honor-gold">Popular Items</h2>
-        <Link href="/items" className="text-honor-gold hover:text-honor-gold-light text-sm font-medium transition-colors">
+        <Link href="/database" className="text-honor-gold hover:text-honor-gold-light text-sm font-medium transition-colors">
           All Items →
         </Link>
       </div>
@@ -49,7 +50,7 @@ export default function PopularItems() {
           {items.map((item) => (
             <Link
               key={item.id}
-              href={`/items/${item.id}`}
+              href={item.slug ? `/database/${item.slug}` : `/items/${item.id}`}
               className={`flex flex-col items-center gap-2 p-3 bg-card-bg border rounded-lg hover:border-honor-gold-dim transition-colors glow-gold-hover group ${rarityBorderClass[item.rarity] || 'border-border-subtle'}`}
             >
               <div className="w-10 h-10 rounded bg-dark-surface overflow-hidden flex items-center justify-center flex-shrink-0">

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sanityWriteClient } from '@/lib/sanity';
+import { assignSlugs } from '@/lib/itemSlug';
 
 const API_BASE = process.env.BEASTBURST_API_URL || 'https://developers.beastburst.com/api/community';
 const API_TOKEN = process.env.BEASTBURST_API_TOKEN || '';
@@ -40,7 +41,7 @@ interface BeastBurstItem {
   };
 }
 
-function mapItem(item: BeastBurstItem) {
+function mapItem(item: BeastBurstItem, slug: string | undefined) {
   const doc: { _id: string; _type: string; [key: string]: unknown } = {
     _type: 'item',
     _id: 'item-' + item.id,
@@ -53,6 +54,7 @@ function mapItem(item: BeastBurstItem) {
     isDestructible: item.is_destructible,
     sellValue: item.sell_value,
     externalId: item.id,
+    ...(slug ? { slug: { _type: 'slug', current: slug } } : {}),
   };
 
   const mods = item.stat_configuration?.lists?.[0]?.modifications;
@@ -92,8 +94,19 @@ export async function GET(request: NextRequest) {
       allItems = allItems.concat(data.data.items);
     }
 
+    // Resolve slugs (preserve existing, assign new)
+    const existingRows = await sanityWriteClient.fetch<Array<{ externalId: string; slug: string }>>(
+      `*[_type == "item" && defined(slug.current)]{ externalId, "slug": slug.current }`,
+    );
+    const existing = new Map<string, string>();
+    for (const r of existingRows) existing.set(r.externalId, r.slug);
+    const slugMap = assignSlugs(
+      allItems.map((i) => ({ id: i.id, name: i.name })),
+      existing,
+    );
+
     // Write to Sanity in batches
-    const docs = allItems.map(mapItem);
+    const docs = allItems.map((i) => mapItem(i, slugMap.get(i.id)));
     const BATCH_SIZE = 20;
     let written = 0;
 

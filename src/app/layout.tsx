@@ -80,7 +80,7 @@ export default async function RootLayout({
               description: 'Talent calculator, item database, class guides, and community tools for Scars of Honor MMORPG.',
               potentialAction: {
                 '@type': 'SearchAction',
-                target: 'https://scarshq.com/items?search={search_term_string}',
+                target: 'https://scarshq.com/database?search={search_term_string}',
                 'query-input': 'required name=search_term_string',
               },
             }),

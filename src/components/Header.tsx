@@ -37,15 +37,15 @@ const classChildren = (prefix: string): SubMenuItem[] =>
 const navItems: NavItem[] = [
   {
     label: 'Database',
-    href: '/items',
+    href: '/database',
     items: [
-      { name: 'All Items', href: '/items' },
-      { name: 'Weapons', href: '/items?cat=weapons' },
-      { name: 'Armor', href: '/items?cat=armor' },
-      { name: 'Accessories', href: '/items?cat=accessories' },
-      { name: 'Tools', href: '/items?cat=tools' },
-      { name: 'Consumables', href: '/items?cat=consumables' },
-      { name: 'Materials', href: '/items?cat=materials' },
+      { name: 'All Items', href: '/database' },
+      { name: 'Weapons', href: '/database?cat=weapons' },
+      { name: 'Armor', href: '/database?cat=armor' },
+      { name: 'Accessories', href: '/database?cat=accessories' },
+      { name: 'Tools', href: '/database?cat=tools' },
+      { name: 'Consumables', href: '/database?cat=consumables' },
+      { name: 'Materials', href: '/database?cat=materials' },
     ],
   },
   {

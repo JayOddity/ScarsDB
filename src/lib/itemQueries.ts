@@ -22,6 +22,7 @@ export const ITEM_SORT_ORDER = `| order(
 
 export const ITEM_PROJECTION = `{
   "id": externalId,
+  "slug": slug.current,
   name,
   "type": itemType,
   rarity,

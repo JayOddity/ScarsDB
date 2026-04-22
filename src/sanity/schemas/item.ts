@@ -6,6 +6,13 @@ export const item = defineType({
   type: 'document',
   fields: [
     defineField({ name: 'name', title: 'Name', type: 'string', validation: (r) => r.required() }),
+    defineField({
+      name: 'slug',
+      title: 'URL Slug',
+      type: 'slug',
+      options: { source: 'name', maxLength: 120 },
+      description: 'Auto-generated on import. Collisions get a numeric suffix.',
+    }),
     defineField({ name: 'patch', title: 'Patch', type: 'string', initialValue: 'Pre Spring Playtest' }),
     defineField({ name: 'externalId', title: 'BeastBurst ID', type: 'string', readOnly: true }),
     defineField({

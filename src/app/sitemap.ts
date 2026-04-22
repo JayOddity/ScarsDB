@@ -13,7 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/classes`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${base}/races`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/talents`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${base}/items`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${base}/database`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
     { url: `${base}/gear`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${base}/builds`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${base}/builds/pvp`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },

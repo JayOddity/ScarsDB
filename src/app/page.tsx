@@ -111,7 +111,7 @@ export default async function HomePage() {
       excerpt: stripSteamMarkup(item.contents).slice(0, 200),
       date: new Date(item.date * 1000).toISOString(),
       source: 'steam',
-      href: item.url,
+      href: `/news/steam/${item.gid}`,
       image: getSteamImage(item.contents, i),
     });
   });

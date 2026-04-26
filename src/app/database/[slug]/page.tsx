@@ -155,16 +155,11 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
         </div>
       </div>
 
-      {/* Stat Pools */}
+      {/* Stats */}
       {item.stat_configuration?.lists?.length ? (
         <div className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-8">
-          <h2 className="font-heading text-lg text-honor-gold mb-4">Stat Configuration</h2>
+          <h2 className="font-heading text-lg text-honor-gold mb-4">Stats</h2>
           {item.stat_configuration.lists.map((list, li) => {
-            const poolLabel = ['Base Stats', 'Stat Pool 2', 'Stat Pool 3', 'Stat Pool 4'][li] || `Stat Pool ${li + 1}`;
-            const poolBarColor = ['bg-honor-gold', 'bg-rarity-rare', 'bg-rarity-epic', 'bg-rarity-legendary'][li] || 'bg-honor-gold';
-            const poolBarDim = ['bg-honor-gold/30', 'bg-rarity-rare/30', 'bg-rarity-epic/30', 'bg-rarity-legendary/30'][li] || 'bg-honor-gold/30';
-
-            // Combine weapon damage
             const minDmg = list.modifications.find((m) => m.stat === 'Weapon Min Damage');
             const maxDmg = list.modifications.find((m) => m.stat === 'Weapon Max Damage');
             const rest = list.modifications.filter((m) => m.stat !== 'Weapon Min Damage' && m.stat !== 'Weapon Max Damage');
@@ -177,7 +172,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
                 label: 'Damage',
                 min: parseFloat(minDmg.modif_min_value) || 0,
                 max: parseFloat(maxDmg.modif_max_value) || 0,
-                type: 'Flat',
+                type: 'Damage',
               });
             } else {
               if (minDmg) rest.unshift(minDmg);
@@ -193,43 +188,45 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
               });
             }
 
-            const maxVal = Math.max(...processed.map((s) => s.max), 1);
+            const totalPools = item.stat_configuration?.lists.length || 1;
+            const isFirstPool = li === 0;
+            const poolLabel = totalPools === 1 ? 'Stats' : isFirstPool ? 'Base Stats' : `Bonus Pool ${li}`;
+            const totalStats = list.modifications.length;
+            const rollLabel =
+              list.min_stat_count === list.max_stat_count
+                ? list.min_stat_count === totalStats
+                  ? 'All guaranteed'
+                  : `Rolls ${list.min_stat_count} of ${totalStats}`
+                : `Rolls ${list.min_stat_count}–${list.max_stat_count} of ${totalStats}`;
+
+            const formatValue = (val: number, type: string) => {
+              const isPercent = type === 'Percentage' || type === 'Percent';
+              const rounded = Number.isInteger(val) ? val : Math.round(val * 100) / 100;
+              return `${rounded}${isPercent ? '%' : ''}`;
+            };
+            const formatRange = (stat: ProcessedStat) => {
+              if (stat.type === 'Damage') {
+                return `${formatValue(stat.min, 'Flat')} – ${formatValue(stat.max, 'Flat')}`;
+              }
+              const sign = stat.min >= 0 ? '+' : '';
+              if (stat.min === stat.max) return `${sign}${formatValue(stat.min, stat.type)}`;
+              return `${sign}${formatValue(stat.min, stat.type)} – ${formatValue(stat.max, stat.type)}`;
+            };
 
             return (
-              <div key={li} className={`${li > 0 ? 'mt-5 pt-5 border-t border-border-subtle/50' : ''}`}>
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm text-text-secondary font-medium">{poolLabel}</span>
-                  <span className="text-xs text-text-muted">
-                    {list.min_stat_count === list.max_stat_count
-                      ? `${list.min_stat_count} fixed`
-                      : `Rolls ${list.min_stat_count}–${list.max_stat_count}`}
-                  </span>
+              <div key={li} className={li > 0 ? 'mt-6 pt-6 border-t border-border-subtle/50' : ''}>
+                <div className="flex items-baseline justify-between mb-3">
+                  <span className="text-sm text-text-secondary font-heading uppercase tracking-wider">{poolLabel}</span>
+                  <span className="text-xs text-text-muted">{rollLabel}</span>
                 </div>
-                <div className="space-y-2">
-                  {processed.map((stat, si) => {
-                    const fillPercent = (stat.max / maxVal) * 100;
-                    const minPercent = (stat.min / maxVal) * 100;
-                    return (
-                      <div key={si}>
-                        <div className="flex items-center justify-between py-2 px-4 bg-dark-surface/50 rounded-t">
-                          <div className="flex items-center gap-3">
-                            <span className="text-sm text-text-primary font-medium">{stat.label}</span>
-                            <span className="text-xs text-text-muted">{stat.type}</span>
-                          </div>
-                          <span className="text-sm text-honor-gold font-medium">
-                            {stat.min === stat.max ? `+${stat.min}` : `${stat.min} – ${stat.max}`}
-                          </span>
-                        </div>
-                        <div className="px-4 pb-2 bg-dark-surface/50 rounded-b">
-                          <div className="h-1.5 bg-void-black/50 rounded-full overflow-hidden relative">
-                            <div className={`absolute inset-y-0 left-0 ${poolBarDim} rounded-full`} style={{ width: `${fillPercent}%` }} />
-                            <div className={`absolute inset-y-0 left-0 ${poolBarColor} rounded-full`} style={{ width: `${minPercent}%` }} />
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                <ul className="divide-y divide-border-subtle/40">
+                  {processed.map((stat, si) => (
+                    <li key={si} className="flex items-center justify-between py-2.5">
+                      <span className="text-sm text-text-primary">{stat.label}</span>
+                      <span className="text-sm text-honor-gold font-medium tabular-nums">{formatRange(stat)}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             );
           })}

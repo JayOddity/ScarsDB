@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { allRaces, factions } from '@/data/classes';
+import { allRaces, classes, factions } from '@/data/classes';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 
 export function generateStaticParams() {
@@ -28,6 +28,9 @@ export default async function RacePage({ params }: { params: Promise<{ slug: str
   const isOrder = race.faction === 'sacred-order';
   const faction = isOrder ? factions.sacredOrder : factions.domination;
   const otherRaces = faction.races.filter((r) => r.slug !== race.slug);
+  const playableClasses = race.availableClasses
+    .map((slug) => classes.find((c) => c.slug === slug))
+    .filter((c): c is NonNullable<typeof c> => Boolean(c));
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
@@ -77,6 +80,29 @@ export default async function RacePage({ params }: { params: Promise<{ slug: str
         <h2 className="font-heading text-2xl text-honor-gold mb-4">History</h2>
         <div className="bg-card-bg border border-border-subtle rounded-xl p-6 md:p-8">
           <p className="text-text-secondary leading-loose">{race.history}</p>
+        </div>
+      </section>
+
+      {/* Playable classes */}
+      <section className="mb-12">
+        <h2 className="font-heading text-2xl text-honor-gold mb-2">Playable Classes</h2>
+        <p className="text-sm text-text-muted mb-4">
+          {race.name}s can play {playableClasses.length} of the 10 classes.
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {playableClasses.map((c) => (
+            <Link
+              key={c.slug}
+              href={`/classes/${c.slug}`}
+              className={`flex items-center gap-3 p-3 bg-card-bg border rounded-lg transition-all hover:translate-y-[-1px] ${isOrder ? 'border-honor-gold/15 hover:border-honor-gold/40' : 'border-scar-red/15 hover:border-scar-red/40'}`}
+            >
+              <Image src={c.icon} alt={c.name} width={36} height={36} className="rounded flex-shrink-0" />
+              <div className="min-w-0">
+                <div className={`font-heading text-sm ${isOrder ? 'text-honor-gold' : 'text-scar-red-light'}`}>{c.name}</div>
+                <div className="text-xs text-text-muted truncate">{c.subtitle}</div>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 

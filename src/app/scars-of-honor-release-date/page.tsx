@@ -41,7 +41,7 @@ const timeline = [
   {
     date: 'April 30 - May 11, 2026',
     title: 'Public Technical Alpha',
-    description: 'Public Technical Alpha on Steam. 4 races (Human, Dwarf, Infernal Demon, Undead), 4 classes (Paladin, Ranger, Mage, Druid), dungeons, and PvP across 3 content drops.',
+    description: 'Public Technical Alpha on Steam. 6 races (Human, Dwarf, Infernal Demon, Undead, Bearan, Gronthar) and all 10 classes available to both factions. Ondall\'s Fall region, world bosses including The Lord of Shadows, and PvP across 3 content waves. Dungeons not included this time.',
     status: 'upcoming' as const,
   },
   {

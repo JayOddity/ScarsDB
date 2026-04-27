@@ -1,14 +1,13 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import type { Metadata } from 'next';
 import PlaytestCountdown from '@/components/PlaytestCountdown';
 
 export const metadata: Metadata = {
   title: 'Scars of Honor Playtest: April 30 – May 11, 2026 | Dates & Access | ScarsHQ',
-  description: 'Scars of Honor playtest runs April 30 to May 11, 2026 on Steam. 4 classes and 4 races confirmed. Request access via Steam. Dungeons and PvP dropping mid test.',
+  description: 'Scars of Honor playtest runs April 30 to May 11, 2026 on Steam. All 10 classes, 6 races (Bearan and Gronthar added), Ondall\'s Fall region, world bosses, and PvP. Dungeons not included.',
   openGraph: {
     title: 'Scars of Honor Playtest: April 30 – May 11, 2026',
-    description: 'Free Steam playtest with 4 classes, dungeons, and PvP. Request access now. Content drops in 3 stages over 12 days.',
+    description: 'Free Steam playtest with all 10 classes, 6 races, world bosses, and PvP. Request access now. Content rolls out in 3 waves.',
     url: '/playtest',
     siteName: 'ScarsHQ',
     type: 'website',
@@ -24,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Scars of Honor Playtest: April 30 – May 11, 2026',
-    description: 'Free Steam playtest. 4 classes, dungeons, PvP. Request access on Steam now.',
+    description: 'Free Steam playtest. 10 classes, 6 races, world bosses, PvP. Request access on Steam now.',
   },
   alternates: {
     canonical: '/playtest',
@@ -34,30 +33,30 @@ export const metadata: Metadata = {
 const features = [
   {
     title: 'Classes & Races',
-    description: '4 classes (Paladin, Ranger, Mage, Druid) and 4 races (Human, Dwarf, Infernal Demon, Undead) confirmed for the test.',
+    description: '6 races (Human, Dwarf, Infernal Demon, Undead, plus Bearan and Gronthar for the first time) and all 10 classes — both factions get every class.',
   },
   {
-    title: 'Combat & Crafting',
-    description: 'Combat, respec support, gathering minigames, and crafting professions.',
+    title: 'World & Progression',
+    description: 'Ondall\'s Fall region, character progression, combat leveling, Talents, and the Scar System.',
   },
   {
-    title: 'Dungeons (2nd Drop)',
-    description: '"The Crypt of the Fallen" — a procedural dungeon that changes between runs.',
+    title: 'World Bosses (Wave 2)',
+    description: 'World bosses including "The Lord of Shadows" plus faction bosses in main cities. Resource gathering and crafting also live.',
   },
   {
-    title: 'PvP (3rd Drop)',
-    description: 'Open world PvP, Mourning Pass 5v5 battleground, and Thallan\'s Ring arena (1v1v1, 2v2v2).',
+    title: 'PvP & Arenas (Waves 2 and 3)',
+    description: 'Battlegrounds open in Wave 2. Arena modes follow in Wave 3.',
   },
 ];
 
 const faqs = [
   {
     q: 'When is the playtest?',
-    a: 'April 30 to May 11, 2026. Content will be released in three drops during this period.',
+    a: 'April 30 to May 11, 2026. Content rolls out in three waves over the event.',
   },
   {
     q: 'How do I get access?',
-    a: 'Request access through the Scars of Honor Steam page and keep an eye on official updates. Access may be granted in waves.',
+    a: 'Request access through the Scars of Honor Steam page. Entry is granted progressively throughout the event, so getting in on day one is not guaranteed.',
   },
   {
     q: 'Is it free to play?',
@@ -65,11 +64,15 @@ const faqs = [
   },
   {
     q: 'What classes and races can I play?',
-    a: 'The playtest features 4 classes (Paladin, Mage, Ranger, Druid) and 4 races (Human, Dwarf, Infernal Demon, Undead).',
+    a: 'Six races are playable: Human, Dwarf, Infernal Demon, Undead, plus Bearan and Gronthar for the first time. Both factions have access to all 10 classes.',
   },
   {
     q: 'What content is available?',
-    a: 'Content releases in 3 drops: Drop 1 = Classes, races, and open world. Drop 2 = Dungeons. Drop 3 = PvP.',
+    a: 'Wave 1 brings core systems — combat, leveling, Talents, the Scar System, gathering, crafting, and exploration of Ondall\'s Fall. Wave 2 adds world bosses (including The Lord of Shadows), faction bosses in main cities, and PvP battlegrounds. Wave 3 adds arena modes.',
+  },
+  {
+    q: 'Are dungeons in the playtest?',
+    a: 'No. The developers confirmed dungeons will not be available this time while they keep refining the system for quality and replayability.',
   },
   {
     q: 'Can I keep my progress?',
@@ -99,7 +102,7 @@ export default function PlaytestPage() {
           </h1>
           <p className="text-2xl text-parchment font-heading mb-2">April 30 - May 11, 2026</p>
           <p className="text-text-secondary max-w-3xl mx-auto mb-5">
-            Experience Scars of Honor before launch. This public test is built around early combat, classes, races, world exploration, dungeons, and PvP as the event rolls out in stages.
+            All 10 classes and 6 races (including Bearan and Gronthar for the first time) are playable. Ondall&apos;s Fall opens for exploration, with world bosses and PvP rolling in across three content waves. Dungeons sit this one out.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -120,7 +123,7 @@ export default function PlaytestPage() {
             </a>
           </div>
           <p className="text-xs text-text-muted mt-5">
-            Source: <a href="https://steamcommunity.com/app/4253010/?curator_clanid=4777282" target="_blank" rel="noopener noreferrer" className="text-honor-gold hover:text-honor-gold-light transition-colors">Steam Community updates</a>
+            Source: <Link href="/news/steam/1830797770242763" className="text-honor-gold hover:text-honor-gold-light transition-colors">Official Playtest Announcement (Apr 27, 2026)</Link>
           </p>
         </div>
       </section>
@@ -187,15 +190,34 @@ export default function PlaytestPage() {
           <span className="diamond" />
         </div>
         <h2 className="font-heading text-2xl text-honor-gold text-center mb-3">Playtest Races & Classes</h2>
-        <p className="text-text-muted text-sm text-center mb-3">4 classes (Paladin, Ranger, Mage, Druid) and 4 races (Human, Dwarf, Infernal Demon, Undead) are confirmed for the playtest.</p>
-        <div className="rounded-xl overflow-hidden border border-border-subtle">
-          <Image
-            src="/Icons/playtest-races-classes.webp"
-            alt="Playtest races and classes - Human, Dwarf, Infernal Demon, and Undead with the planned test class lineup"
-            width={1920}
-            height={1080}
-            className="w-full h-auto"
-          />
+        <p className="text-text-muted text-sm text-center mb-6">Six playable races and all 10 classes — both factions get every class.</p>
+        <div className="grid sm:grid-cols-2 gap-6">
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-6">
+            <h3 className="font-heading text-lg text-honor-gold-light mb-3">Races (6)</h3>
+            <ul className="text-sm text-text-secondary space-y-1.5">
+              <li>Human</li>
+              <li>Dwarf</li>
+              <li>Bearan <span className="text-honor-gold/70 text-xs">— new</span></li>
+              <li>Infernal Demon</li>
+              <li>Undead</li>
+              <li>Gronthar <span className="text-honor-gold/70 text-xs">— new</span></li>
+            </ul>
+          </div>
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-6">
+            <h3 className="font-heading text-lg text-honor-gold-light mb-3">Classes (10)</h3>
+            <ul className="text-sm text-text-secondary grid grid-cols-2 gap-y-1.5 gap-x-4">
+              <li>Warrior</li>
+              <li>Paladin</li>
+              <li>Mage</li>
+              <li>Priest</li>
+              <li>Ranger</li>
+              <li>Druid</li>
+              <li>Assassin</li>
+              <li>Necromancer</li>
+              <li>Pirate</li>
+              <li>Mystic</li>
+            </ul>
+          </div>
         </div>
       </section>
 

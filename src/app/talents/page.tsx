@@ -1,7 +1,9 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { classes } from '@/data/classes';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+import TalentsHubRedirect from './TalentsHubRedirect';
 
 export const metadata: Metadata = {
   title: 'Scars of Honor Talent Tree — Calculator & Build Planner | ScarsHQ',
@@ -29,6 +31,9 @@ const sortedClasses = [...classes].sort((a, b) => a.name.localeCompare(b.name));
 export default function TalentsHubPage() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8">
+      <Suspense fallback={null}>
+        <TalentsHubRedirect />
+      </Suspense>
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: '/' },

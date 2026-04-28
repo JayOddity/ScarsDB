@@ -1,4 +1,4 @@
-// All 10 classes now have real talent data from scarshead.com
+// Talent calculator currently WIP — node data archived, not served.
 export const REAL_DATA_CLASSES = [
   'warrior', 'ranger', 'mage', 'paladin', 'assassin',
   'priest', 'druid', 'necromancer', 'pirate', 'mystic',

@@ -11,9 +11,24 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   return params.then(({ slug }) => {
     const cls = classes.find((c) => c.slug === slug);
     if (!cls) return { title: 'Not Found' };
+    const subs = cls.subclasses.map((s) => s.name).join(', ');
+    const title = `Scars of Honor ${cls.name} Talent Tree | ScarsHQ`;
+    const description = `Plan a ${cls.name} talent tree for Scars of Honor. ScarsHQ calculator with 240+ nodes across the ${subs} paths. Save and share builds with a 6-char code.`;
     return {
-      title: `${cls.name} Talent Calculator - ScarsHQ`,
-      description: `Build your ${cls.name} talent tree. 240+ nodes across ${cls.subclasses.map((s) => s.name).join(', ')} paths.`,
+      title,
+      description,
+      openGraph: {
+        title: `Scars of Honor ${cls.name} Talent Tree`,
+        description,
+        url: `/talents/${cls.slug}`,
+        siteName: 'ScarsHQ',
+        type: 'website',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `Scars of Honor ${cls.name} Talent Tree`,
+        description,
+      },
       alternates: { canonical: `/talents/${cls.slug}` },
     };
   });

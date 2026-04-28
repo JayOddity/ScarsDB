@@ -28,7 +28,7 @@ export default function ProfessionsPage() {
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           {gathering.map((prof) => (
-            <div key={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-green-500/30 transition-colors glow-gold-hover">
+            <div key={prof.slug} id={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-green-500/30 transition-colors glow-gold-hover scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
                 <div>
@@ -70,7 +70,7 @@ export default function ProfessionsPage() {
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           {crafting.map((prof) => (
-            <div key={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
+            <div key={prof.slug} id={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
                 <div>

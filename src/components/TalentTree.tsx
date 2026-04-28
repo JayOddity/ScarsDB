@@ -1307,12 +1307,12 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       )}
 
       {/* Class Picker Overlay */}
-      {showClassPicker && createPortal(
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowClassPicker(false)}>
-          <div className="bg-deep-night border border-border-subtle rounded-lg p-6 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-heading text-xl text-honor-gold mb-5 text-center">Choose Your Class</h3>
+      {showClassPicker && (
+        <div className="fixed top-[109px] left-0 right-0 bottom-0 z-50 bg-black/40" onClick={() => setShowClassPicker(false)}>
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-deep-night border border-border-subtle rounded-lg p-6 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-heading text-xl text-honor-gold mb-5 text-center">Talent Calculator</h3>
             <div className="grid grid-cols-5 gap-4">
-              {classes.map((cls) => (
+              {[...classes].sort((a, b) => a.name.localeCompare(b.name)).map((cls) => (
                 <button
                   key={cls.slug}
                   onClick={() => {
@@ -1332,10 +1332,8 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                 </button>
               ))}
             </div>
-            <button onClick={() => setShowClassPicker(false)} className="mt-4 w-full py-1.5 text-xs text-text-muted hover:text-text-secondary transition-colors">Cancel</button>
           </div>
-        </div>,
-        document.body
+        </div>
       )}
     </div>
   );

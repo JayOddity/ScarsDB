@@ -1,30 +1,92 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import Image from 'next/image';
 import type { Item } from '@/lib/api';
 import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
 
+const SLOT_SVGS: Record<string, ReactNode> = {
+  helmet: (
+    <>
+      <path d="M5 14a7 7 0 0 1 14 0v3H5z" />
+      <path d="M9 14h6" />
+    </>
+  ),
+  shoulders: <path d="M3 10c2-3 5-5 9-5s7 2 9 5l-1 6H4z" />,
+  cape: <path d="M6 4h12l-1 16-5-3-5 3z" />,
+  chest: (
+    <>
+      <path d="M7 4l5-1 5 1 1 4v12l-6 4-6-4V8z" />
+      <path d="M12 3v18" />
+    </>
+  ),
+  sword: <path d="M12 3v14M8 13h8M11 17v4h2v-4" />,
+  shield: <path d="M5 5h14v6c0 5-4 8-7 10-3-2-7-5-7-10z" />,
+  gloves: (
+    <>
+      <path d="M9 4v3M11 4v3M13 4v3M15 4v3" />
+      <path d="M8 7h8v8c0 3-2 5-4 5s-4-2-4-5z" />
+    </>
+  ),
+  belt: (
+    <>
+      <path d="M3 10h18v4H3z" />
+      <path d="M10 8h4v8h-4z" />
+    </>
+  ),
+  pants: <path d="M8 4h8l1 7-2 10h-3l-1-9-1 9H7l-1-10z" />,
+  boots: <path d="M10 4h3v9h6v6H7v-6h3z" />,
+  amulet: (
+    <>
+      <path d="M7 4l5 8 5-8" />
+      <circle cx="12" cy="16" r="4" />
+    </>
+  ),
+  ring: (
+    <>
+      <circle cx="12" cy="15" r="5" />
+      <path d="M9 8l3-4 3 4z" />
+    </>
+  ),
+};
+
+function SlotIcon({ name, className }: { name: string; className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {SLOT_SVGS[name]}
+    </svg>
+  );
+}
+
 const EQUIPMENT_ROWS = [
   [
-    { key: 'Helmet', label: 'Helmet', icon: '/Icons/Slots/helmet.avif' },
-    { key: 'Shoulder Pads', label: 'Shoulders', icon: '/Icons/Slots/shoulder-pads.avif' },
-    { key: 'Cape', label: 'Cape', icon: '/Icons/Slots/cape.avif' },
+    { key: 'Helmet', label: 'Helmet', icon: 'helmet' },
+    { key: 'Shoulder Pads', label: 'Shoulders', icon: 'shoulders' },
+    { key: 'Cape', label: 'Cape', icon: 'cape' },
   ],
   [
-    { key: 'Chest Piece', label: 'Chest', icon: '/Icons/Slots/chest-piece.avif' },
-    { key: 'Main Hand', label: 'Main Hand', icon: '/Icons/Slots/main-hand.avif' },
-    { key: 'Off Hand', label: 'Off Hand', icon: '/Icons/Slots/off-hand.avif' },
+    { key: 'Chest Piece', label: 'Chest', icon: 'chest' },
+    { key: 'Main Hand', label: 'Main Hand', icon: 'sword' },
+    { key: 'Off Hand', label: 'Off Hand', icon: 'shield' },
   ],
   [
-    { key: 'Gloves', label: 'Gloves', icon: '/Icons/Slots/gloves.avif' },
-    { key: 'Belt', label: 'Belt', icon: '/Icons/Slots/belt.avif' },
-    { key: 'Pants', label: 'Pants', icon: '/Icons/Slots/pants.avif' },
+    { key: 'Gloves', label: 'Gloves', icon: 'gloves' },
+    { key: 'Belt', label: 'Belt', icon: 'belt' },
+    { key: 'Pants', label: 'Pants', icon: 'pants' },
   ],
   [
-    { key: 'Boots', label: 'Boots', icon: '/Icons/Slots/boots.avif' },
-    { key: 'Amulet', label: 'Amulet', icon: '/Icons/Slots/amulet.avif' },
-    { key: 'Ring', label: 'Ring', icon: '/Icons/Slots/ring.avif' },
+    { key: 'Boots', label: 'Boots', icon: 'boots' },
+    { key: 'Amulet', label: 'Amulet', icon: 'amulet' },
+    { key: 'Ring', label: 'Ring', icon: 'ring' },
   ],
 ];
 
@@ -179,7 +241,7 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
                               <span className={`text-xs font-bold ${rarityColorClass[item.rarity]}`}>{item.name.substring(0, 3)}</span>
                             )
                           ) : (
-                            <Image src={slot.icon} alt={slot.label} width={48} height={48} className="object-contain opacity-30" />
+                            <SlotIcon name={slot.icon} className="w-12 h-12 text-text-secondary opacity-40" />
                           )}
                           {item && (
                             <div className={`absolute -top-1 -right-1 w-4 h-4 bg-scar-red rounded-full flex items-center justify-center transition-opacity ${readOnly ? 'hidden' : 'opacity-0 group-hover:opacity-100'}`}>

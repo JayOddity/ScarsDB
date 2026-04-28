@@ -59,7 +59,7 @@ Keep the Vercel URL redirects too (both can work at the same time).
 
 ## Post-Launch TODO (not blocking deploy)
 
-- [ ] **Item detail pages** — redesign `/items/[id]` to look polished (reference scarshead.com for inspiration). Better stat layout, rarity colours, icon rendering, overall polish
+- [ ] **Item detail pages** — redesign `/items/[id]`: better stat layout, rarity colours, icon rendering, overall polish
 - [ ] SEO — sitemap.xml, robots.txt, JSON-LD
 - [ ] OG images for social sharing
 - [ ] Equipment/Skills/Scars/Stats tabs on talent tree (currently placeholder)

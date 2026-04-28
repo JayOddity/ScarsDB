@@ -28,9 +28,7 @@ export default async function RacePage({ params }: { params: Promise<{ slug: str
   const isOrder = race.faction === 'sacred-order';
   const faction = isOrder ? factions.sacredOrder : factions.domination;
   const otherRaces = faction.races.filter((r) => r.slug !== race.slug);
-  const playableClasses = race.availableClasses
-    .map((slug) => classes.find((c) => c.slug === slug))
-    .filter((c): c is NonNullable<typeof c> => Boolean(c));
+  const availableSet = new Set(race.availableClasses);
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
@@ -85,24 +83,40 @@ export default async function RacePage({ params }: { params: Promise<{ slug: str
 
       {/* Playable classes */}
       <section className="mb-12">
-        <h2 className="font-heading text-2xl text-honor-gold mb-2">Playable Classes</h2>
-        <p className="text-sm text-text-muted mb-4">
-          {race.name}s can play {playableClasses.length} of the 10 classes.
-        </p>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {playableClasses.map((c) => (
-            <Link
-              key={c.slug}
-              href={`/classes/${c.slug}`}
-              className={`flex items-center gap-3 p-3 bg-card-bg border rounded-lg transition-all hover:translate-y-[-1px] ${isOrder ? 'border-honor-gold/15 hover:border-honor-gold/40' : 'border-scar-red/15 hover:border-scar-red/40'}`}
-            >
-              <Image src={c.icon} alt={c.name} width={36} height={36} className="rounded flex-shrink-0" />
-              <div className="min-w-0">
-                <div className={`font-heading text-sm ${isOrder ? 'text-honor-gold' : 'text-scar-red-light'}`}>{c.name}</div>
-                <div className="text-xs text-text-muted truncate">{c.subtitle}</div>
+        <div className="flex items-baseline justify-between mb-4 flex-wrap gap-2">
+          <h2 className="font-heading text-2xl text-honor-gold">Playable Classes</h2>
+          <span className="text-xs text-text-muted">
+            <span className={isOrder ? 'text-honor-gold' : 'text-scar-red-light'}>{availableSet.size}</span> of 10 available
+          </span>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          {classes.map((c) => {
+            const available = availableSet.has(c.slug);
+            if (available) {
+              return (
+                <Link
+                  key={c.slug}
+                  href={`/classes/${c.slug}`}
+                  className={`group relative flex flex-col items-center text-center p-4 bg-card-bg border rounded-lg transition-all hover:-translate-y-0.5 ${isOrder ? 'border-honor-gold/20 hover:border-honor-gold/60' : 'border-scar-red/20 hover:border-scar-red/60'}`}
+                >
+                  <Image src={c.icon} alt={c.name} width={56} height={56} className="mb-2 object-contain transition-transform group-hover:scale-110" />
+                  <div className={`font-heading text-sm ${isOrder ? 'text-honor-gold' : 'text-scar-red-light'}`}>{c.name}</div>
+                  <div className="text-[11px] text-text-muted mt-1 leading-tight">{c.subtitle}</div>
+                </Link>
+              );
+            }
+            return (
+              <div
+                key={c.slug}
+                title={`${c.name} is not playable as ${race.name}`}
+                className="relative flex flex-col items-center text-center p-4 bg-card-bg/30 border border-border-subtle/30 rounded-lg overflow-hidden"
+              >
+                <Image src={c.icon} alt="" width={56} height={56} className="mb-2 object-contain grayscale opacity-30" />
+                <div className="font-heading text-sm text-text-muted/60">{c.name}</div>
+                <div className="text-[11px] text-text-muted/50 mt-1 leading-tight uppercase tracking-wider">Locked</div>
               </div>
-            </Link>
-          ))}
+            );
+          })}
         </div>
       </section>
 

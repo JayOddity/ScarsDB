@@ -76,12 +76,6 @@ const resources = [
     url: 'https://scars-of-honor.fandom.com/',
     tag: 'Wiki',
   },
-  {
-    name: 'Scarshead',
-    description: 'Fan site with talent data and class information.',
-    url: 'https://scarshead.com/',
-    tag: 'Fan Site',
-  },
 ];
 
 export default function CommunityPage() {

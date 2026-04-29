@@ -191,12 +191,13 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     }).catch(() => {});
   }, [readOnly]);
 
-  // Auto-open class picker when navigating from /talents hub
+  // Strip stale ?pick=true if present (legacy hub redirect)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('pick') === 'true') {
-      setShowClassPicker(true);
-      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+    if (params.has('pick')) {
+      params.delete('pick');
+      const qs = params.toString();
+      window.history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : '') + window.location.hash);
     }
   }, []);
   const [importCode, setImportCode] = useState('');
@@ -739,13 +740,13 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
         <div className="flex items-center gap-5 py-2 text-[#fffede]">
           <div className="flex items-center gap-2">
             <span className="font-heading text-xs uppercase tracking-wider text-white">Key Passives</span>
-            <img src="/icons/talents/scars icon 1.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
-            <img src="/icons/talents/scars icon 1.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
           </div>
           <div className="flex items-center gap-2">
             <span className="font-heading text-xs uppercase tracking-wider text-white">Active Talents</span>
-            <img src="/icons/talents/scars icon 2.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
-            <img src="/icons/talents/scars icon 2.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
           </div>
         </div>
         <div className="inline-grid grid-cols-3">

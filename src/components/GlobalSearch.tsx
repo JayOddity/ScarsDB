@@ -172,7 +172,7 @@ export default function GlobalSearch() {
       {/* Search input bar */}
       <div
         onClick={() => setOpen(true)}
-        className={`flex items-center gap-2 px-4 py-2 min-w-[480px] bg-dark-surface border rounded-lg text-sm cursor-text transition-colors ${
+        className={`flex items-center gap-2 px-4 py-[7px] min-w-[432px] bg-dark-surface border rounded-lg text-sm cursor-text transition-colors ${
           open ? 'border-honor-gold-dim' : 'border-border-subtle hover:border-honor-gold-dim'
         }`}
       >

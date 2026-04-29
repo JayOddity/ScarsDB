@@ -1,10 +1,11 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Discord from 'next-auth/providers/discord';
+import Twitch from 'next-auth/providers/twitch';
 import { sanityClient, sanityWriteClient } from './sanity';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google, Discord],
+  providers: [Google, Discord, Twitch],
   callbacks: {
     async signIn({ user, account }) {
       if (!account) return false;

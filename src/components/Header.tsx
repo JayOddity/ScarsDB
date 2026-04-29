@@ -46,6 +46,7 @@ const navItems: NavItem[] = [
       { name: 'Tools', href: '/database?cat=tools' },
       { name: 'Consumables', href: '/database?cat=consumables' },
       { name: 'Materials', href: '/database?cat=materials' },
+      { name: 'Spells', href: '/database/spells' },
     ],
   },
   {
@@ -371,6 +372,15 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
             <h3 className="font-heading text-xl text-honor-gold mb-2 text-center">Sign In</h3>
             <p className="text-text-muted text-xs text-center mb-6">Sign in to save builds and share with the community.</p>
             <div className="space-y-3">
+              <button
+                onClick={() => { setShowSignIn(false); signIn('twitch', { callbackUrl: window.location.href }); }}
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-[#9146FF] text-white font-medium rounded-lg hover:bg-[#772ce8] transition-colors"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M2.149 0L.537 4.119v16.836h5.731V24h3.224l3.045-3.045h4.657L23.463 14.7V0H2.149zm19.164 13.612l-3.582 3.582h-5.731l-3.045 3.045v-3.045H4.119V1.791h17.194v11.821zM17.731 5.343h-1.791v5.373h1.791V5.343zm-4.836 0h-1.791v5.373h1.791V5.343z"/>
+                </svg>
+                Continue with Twitch
+              </button>
               <button
                 onClick={() => { setShowSignIn(false); signIn('google', { callbackUrl: window.location.href }); }}
                 className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-gray-800 font-medium rounded-lg hover:bg-gray-100 transition-colors"

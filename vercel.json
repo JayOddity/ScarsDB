@@ -3,6 +3,10 @@
     {
       "path": "/api/import-items",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/import-spells",
+      "schedule": "15 6 * * *"
     }
   ]
 }

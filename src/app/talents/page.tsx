@@ -33,13 +33,15 @@ const sortedClasses = [...classes].sort((a, b) => a.name.localeCompare(b.name));
 export default async function TalentsHubPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const sp = await searchParams;
   const tab = typeof sp.tab === 'string' ? sp.tab : undefined;
-  const skipRedirect = tab === 'Equipment' || tab === 'Scars';
-  if (!skipRedirect) {
-    const cookieStore = await cookies();
-    const lastClass = cookieStore.get('scarshq-last-class')?.value;
-    if (lastClass && classes.some((c) => c.slug === lastClass)) {
-      redirect(`/talents/${lastClass}`);
-    }
+  const cookieStore = await cookies();
+  const lastClassCookie = cookieStore.get('scarshq-last-class')?.value;
+  const lastClass = lastClassCookie && classes.some((c) => c.slug === lastClassCookie) ? lastClassCookie : null;
+
+  if (tab === 'Equipment' || tab === 'Scars') {
+    redirect(`/talents/${lastClass ?? 'paladin'}?tab=${encodeURIComponent(tab)}`);
+  }
+  if (lastClass) {
+    redirect(`/talents/${lastClass}`);
   }
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8">

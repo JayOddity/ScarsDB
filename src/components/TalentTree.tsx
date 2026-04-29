@@ -102,10 +102,6 @@ const ROUND_ICON_PLACEHOLDER = '/Icons/Talents/scars%20icon%201.avif';
 const SQUARE_ICON_PLACEHOLDER = '/Icons/Talents/scars%20icon%202.avif';
 
 
-// Test ability icon - swap in a CDN item icon on a few nodes to preview how real icons will look
-const TEST_ABILITY_ICON = 'https://bb-game.b-cdn.net/game-items/Rings/Legendary/BraceletOfNature_icon_60059.png';
-const TEST_ABILITY_NODE_IDS = new Set([7, 8, 9, 10, 11, 12]); // first ring of non-start nodes
-
 // Find the node ID from a DOM event target by walking up to the <g data-nid> element
 function getNodeId(target: Element): number | null {
   let el: Element | null = target;
@@ -733,20 +729,20 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   }, [edges, nodeMap, allocated, hoveredPath]);
 
   return (
-    <div className={`flex flex-col ${readOnly ? 'h-full' : 'h-[calc(100vh-49px)] md:h-[calc(100vh-95px)]'}`}>
+    <div className={`flex flex-col ${readOnly ? 'h-full' : 'h-[calc(100vh-47px)] md:h-[calc(100vh-93px)]'}`}>
 
       {/* Sub-header: Tabs (hidden in read-only) */}
       {!readOnly && <div className="relative z-20 bg-[#171b24] border-b border-border-subtle grid grid-cols-[1fr_auto_1fr] items-center px-8 sm:px-12 gap-4">
         <div className="flex items-center gap-5 py-2 text-[#fffede]">
           <div className="flex items-center gap-2">
             <span className="font-heading text-xs uppercase tracking-wider text-white">Key Passives</span>
-            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
-            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
+            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
           </div>
           <div className="flex items-center gap-2">
             <span className="font-heading text-xs uppercase tracking-wider text-white">Active Talents</span>
-            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
-            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
+            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
           </div>
         </div>
         <div className="inline-grid grid-cols-3">
@@ -1007,7 +1003,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                       {isA && <rect x={-r * 0.9} y={-r * 0.9} width={r * 1.8} height={r * 1.8} fill={PG} opacity={0.2} pointerEvents="none" />}
                     </>
                   ) : (() => {
-                    const abilityIcon = node.iconUrl || (TEST_ABILITY_NODE_IDS.has(node.id) ? TEST_ABILITY_ICON : null);
+                    const abilityIcon = node.iconUrl || null;
                     return (
                       <>
                         <circle r={r} fill="transparent" />

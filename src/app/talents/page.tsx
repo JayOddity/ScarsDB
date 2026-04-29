@@ -1,5 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { classes } from '@/data/classes';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
@@ -28,7 +30,17 @@ export const metadata: Metadata = {
 
 const sortedClasses = [...classes].sort((a, b) => a.name.localeCompare(b.name));
 
-export default function TalentsHubPage() {
+export default async function TalentsHubPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const sp = await searchParams;
+  const tab = typeof sp.tab === 'string' ? sp.tab : undefined;
+  const skipRedirect = tab === 'Equipment' || tab === 'Scars';
+  if (!skipRedirect) {
+    const cookieStore = await cookies();
+    const lastClass = cookieStore.get('scarshq-last-class')?.value;
+    if (lastClass && classes.some((c) => c.slug === lastClass)) {
+      redirect(`/talents/${lastClass}`);
+    }
+  }
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8">
       <Suspense fallback={null}>

@@ -122,15 +122,36 @@ interface TalentTreeProps {
   initialAllocation?: string;
   buildCode?: string;
   initialTab?: string;
+  initialData?: RealTalentData | null;
 }
 
-export default function TalentTree({ gameClass, readOnly = false, initialAllocation, buildCode: buildCodeProp, initialTab }: TalentTreeProps) {
-  const [nodes, setNodes] = useState<TalentNode[]>([]);
-  const [edges, setEdges] = useState<TalentEdge[]>([]);
-  const [accentColor, setAccentColor] = useState('#c8a84e');
-  const [loading, setLoading] = useState(true);
+function processTalentData(data: RealTalentData) {
+  const startNds = data.nodes.filter((n) => n.nodeType === 'start');
+  const cx0 = startNds.reduce((s, n) => s + n.dx, 0) / (startNds.length || 1);
+  const cy0 = startNds.reduce((s, n) => s + n.dy, 0) / (startNds.length || 1);
+  const nodes = data.nodes.map((n) => {
+    if (n.nodeType === 'start') return n;
+    const dx = n.dx - cx0, dy = n.dy - cy0, dist = Math.hypot(dx, dy);
+    if (dist === 0) return n;
+    return { ...n, dx: n.dx + (dx / dist) * 100, dy: n.dy + (dy / dist) * 100 };
+  });
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  for (const n of data.nodes) { minX = Math.min(minX, n.dx); maxX = Math.max(maxX, n.dx); minY = Math.min(minY, n.dy); maxY = Math.max(maxY, n.dy); }
+  const bounds = { minX, maxX, minY, maxY };
+  const camera = { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, zoom: Math.min(4000 / (maxX - minX + 400), 3000 / (maxY - minY + 400)) };
+  return { nodes, edges: data.connections, accentColor: data.accentColor, bounds, camera };
+}
+
+export default function TalentTree({ gameClass, readOnly = false, initialAllocation, buildCode: buildCodeProp, initialTab, initialData }: TalentTreeProps) {
+  const initial = useMemo(() => initialData ? processTalentData(initialData) : null, [initialData]);
+  const [nodes, setNodes] = useState<TalentNode[]>(() => initial?.nodes ?? []);
+  const [edges, setEdges] = useState<TalentEdge[]>(() => initial?.edges ?? []);
+  const [accentColor, setAccentColor] = useState(() => initial?.accentColor ?? '#c8a84e');
+  const [loading, setLoading] = useState(!initial);
   const [allocated, setAllocated] = useState<Record<number, number>>({});
+  const [history, setHistory] = useState<Record<number, number>[]>([]);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
+  const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [copied, setCopied] = useState(false);
   const [savedBuildExists, setSavedBuildExists] = useState(false);
   const [cloudCode, setCloudCode] = useState<string | null>(null);
@@ -157,6 +178,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const [browserLoading, setBrowserLoading] = useState(false);
   const [browserClass, setBrowserClass] = useState(gameClass.slug);
   const [browserSort, setBrowserSort] = useState<'newest' | 'popular'>('newest');
+  const [showTalentSearch, setShowTalentSearch] = useState(false);
+  const [talentSearch, setTalentSearch] = useState('');
+  const [showRefundConfirm, setShowRefundConfirm] = useState(false);
   const talentRouter = useRouter();
 
   // Check ban status (skip in read-only)
@@ -183,9 +207,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const [importError, setImportError] = useState<string | null>(null);
   const svgRef = useRef<SVGSVGElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const boundsRef = useRef<{ minX: number; maxX: number; minY: number; maxY: number } | null>(null);
+  const boundsRef = useRef<{ minX: number; maxX: number; minY: number; maxY: number } | null>(initial?.bounds ?? null);
 
-  const [camera, setCamera] = useState({ cx: 0, cy: 0, zoom: 1 });
+  const [camera, setCamera] = useState(() => initial?.camera ?? { cx: 0, cy: 0, zoom: 1 });
   const [panning, setPanning] = useState(false);
   const panRef = useRef({ mx: 0, my: 0, cx: 0, cy: 0 });
   const cameraRef = useRef(camera);
@@ -245,39 +269,53 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   }, [nodes]);
 
   // Load data
+  const initialDataClass = initialData?.class;
   useEffect(() => {
+    if (initial && initial.nodes.length > 0 && initialDataClass === gameClass.slug) {
+      setNodes(initial.nodes);
+      setEdges(initial.edges);
+      setAccentColor(initial.accentColor);
+      boundsRef.current = initial.bounds;
+      setCamera(initial.camera);
+      setAllocated({});
+      setHistory([]);
+      setLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setLoading(true);
+    setNodes([]);
+    setEdges([]);
+    setAllocated({});
+    setHistory([]);
     async function load() {
       if (hasRealData(gameClass.slug)) {
         try {
           const res = await fetch(`/data/talents/${gameClass.slug}.json`);
           const data: RealTalentData = await res.json();
-          const startNds = data.nodes.filter((n: TalentNode) => n.nodeType === 'start');
-          const cx0 = startNds.reduce((s: number, n: TalentNode) => s + n.dx, 0) / (startNds.length || 1);
-          const cy0 = startNds.reduce((s: number, n: TalentNode) => s + n.dy, 0) / (startNds.length || 1);
-          const pushed = data.nodes.map((n: TalentNode) => {
-            if (n.nodeType === 'start') return n;
-            const dx = n.dx - cx0, dy = n.dy - cy0, dist = Math.hypot(dx, dy);
-            if (dist === 0) return n;
-            return { ...n, dx: n.dx + (dx / dist) * 100, dy: n.dy + (dy / dist) * 100 };
-          });
-          setNodes(pushed);
-          setEdges(data.connections);
-          setAccentColor(data.accentColor);
-          let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-          for (const n of data.nodes) { minX = Math.min(minX, n.dx); maxX = Math.max(maxX, n.dx); minY = Math.min(minY, n.dy); maxY = Math.max(maxY, n.dy); }
-          boundsRef.current = { minX, maxX, minY, maxY };
-          setCamera({ cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, zoom: Math.min(4000 / (maxX - minX + 400), 3000 / (maxY - minY + 400)) });
+          if (cancelled) return;
+          const processed = processTalentData(data);
+          setNodes(processed.nodes);
+          setEdges(processed.edges);
+          setAccentColor(processed.accentColor);
+          boundsRef.current = processed.bounds;
+          setCamera(processed.camera);
         } catch { /* empty */ }
       }
-      setLoading(false);
+      if (!cancelled) setLoading(false);
     }
     load();
-  }, [gameClass]);
+    return () => { cancelled = true; };
+  }, [gameClass, initial, initialDataClass]);
 
   useEffect(() => { if (nodes.length === 0) return; const h = window.location.hash.slice(1); if (h) setAllocated(decodeAlloc(h)); }, [nodes]);
   useEffect(() => { if (readOnly || nodes.length === 0) return; const enc = encodeAlloc(allocated); const search = window.location.search; window.history.replaceState(null, '', `${window.location.pathname}${search}${enc ? '#' + enc : ''}`); }, [allocated, nodes, readOnly]);
   useEffect(() => { if (readOnly) return; try { setSavedBuildExists(!!localStorage.getItem(`scarshq-talent-${gameClass.slug}`)); } catch {} }, [gameClass.slug, readOnly]);
-  useEffect(() => { if (readOnly) return; try { localStorage.setItem('scarshq-last-class', gameClass.slug); } catch {} }, [gameClass.slug, readOnly]);
+  useEffect(() => {
+    if (readOnly) return;
+    try { localStorage.setItem('scarshq-last-class', gameClass.slug); } catch {}
+    try { document.cookie = `scarshq-last-class=${gameClass.slug}; path=/; max-age=31536000; SameSite=Lax`; } catch {}
+  }, [gameClass.slug, readOnly]);
 
   const adj = useMemo(() => {
     const m: Record<number, number[]> = {};
@@ -370,10 +408,14 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     if (!node) return;
     if ((allocatedRef.current[nid] || 0) > 0) {
       // Already allocated - increment
-      if (canAlloc(node)) setAllocated((p) => ({ ...p, [nid]: (p[nid] || 0) + 1 }));
+      if (canAlloc(node)) {
+        setHistory((h) => [...h, allocatedRef.current].slice(-100));
+        setAllocated((p) => ({ ...p, [nid]: (p[nid] || 0) + 1 }));
+      }
     } else {
       const path = findShortestPath(nid);
       if (path.length === 0) return;
+      setHistory((h) => [...h, allocatedRef.current].slice(-100));
       setAllocated((prev) => { const next = { ...prev }; for (const id of path) next[id] = Math.max(next[id] || 0, 1); return next; });
     }
   }, [nodeMap, canAlloc, findShortestPath]);
@@ -385,6 +427,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     if (nid === null) return;
     const node = nodeMap.get(nid);
     if (node && canDealloc(node)) {
+      setHistory((h) => [...h, allocatedRef.current].slice(-100));
       setAllocated((p) => {
         const n = { ...p };
         const c = (n[nid] || 0) - 1;
@@ -395,9 +438,27 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     }
   }, [nodeMap, canDealloc, pruneOrphans]);
 
+  function undo() {
+    setHistory((h) => {
+      if (h.length === 0) return h;
+      const prev = h[h.length - 1];
+      setAllocated(prev);
+      return h.slice(0, -1);
+    });
+  }
+
   const handleNodeHover = useCallback((e: React.MouseEvent) => {
     const nid = getNodeId(e.target as Element);
     setHoveredId(nid);
+    if (nid != null && containerRef.current) {
+      const r = containerRef.current.getBoundingClientRect();
+      setMousePos({ x: e.clientX - r.left, y: e.clientY - r.top });
+    }
+  }, []);
+  const handleNodeMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!containerRef.current) return;
+    const r = containerRef.current.getBoundingClientRect();
+    setMousePos({ x: e.clientX - r.left, y: e.clientY - r.top });
   }, []);
 
   function reset() { setAllocated({}); setBuildEquipment({}); }
@@ -670,41 +731,109 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     return lines.join('');
   }, [edges, nodeMap, allocated, hoveredPath]);
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-screen bg-void-black">
-        <div className="relative">
-          <div className="w-16 h-16 border-4 border-border-subtle rounded-full" />
-          <div className="absolute top-0 left-0 w-16 h-16 border-4 border-honor-gold rounded-full border-t-transparent animate-spin" />
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className={`flex flex-col ${readOnly ? 'h-full' : 'h-[calc(100vh-64px)]'}`}>
+    <div className={`flex flex-col ${readOnly ? 'h-full' : 'h-[calc(100vh-49px)] md:h-[calc(100vh-95px)]'}`}>
 
       {/* Sub-header: Tabs (hidden in read-only) */}
-      {!readOnly && <div className="bg-[#14141a] border-b border-border-subtle flex items-center justify-center px-4 sm:px-6">
-        <div className="inline-grid grid-cols-[1fr_auto_1fr]">
-          {['Equipment', 'Talents', 'Scars'].map((tab, i) => {
+      {!readOnly && <div className="relative z-20 bg-[#171b24] border-b border-border-subtle grid grid-cols-[1fr_auto_1fr] items-center px-8 sm:px-12 gap-4">
+        <div className="flex items-center gap-5 py-2 text-[#fffede]">
+          <div className="flex items-center gap-2">
+            <span className="font-heading text-xs uppercase tracking-wider text-white">Key Passives</span>
+            <img src="/icons/talents/scars icon 1.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/icons/talents/scars icon 1.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-heading text-xs uppercase tracking-wider text-white">Active Talents</span>
+            <img src="/icons/talents/scars icon 2.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+            <img src="/icons/talents/scars icon 2.avif" alt="" aria-hidden className="w-9 h-9 select-none" />
+          </div>
+        </div>
+        <div className="inline-grid grid-cols-3">
+          {['Equipment', 'Talents', 'Scars'].map((tab) => {
             const active = activeTab === tab;
-            const justify = i === 0 ? 'justify-end' : i === 1 ? 'justify-center' : 'justify-start';
             return (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`flex items-center ${justify} px-5 py-3 text-sm font-heading transition-colors relative ${
-                  active
-                    ? 'text-honor-gold bg-honor-gold/5'
-                    : 'text-text-muted hover:text-text-secondary hover:bg-white/5'
-                } ${i > 0 ? 'border-l border-border-subtle' : ''}`}
+                className={`flex items-center justify-center w-[141px] pt-[13px] pb-[10px] text-[17px] font-heading transition-colors relative text-[#fffede] ${
+                  active ? '' : 'opacity-60 hover:opacity-100'
+                }`}
               >
-                {tab}
-                {active && <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-honor-gold" />}
+                {active && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 pointer-events-none z-0"
+                    style={{ background: 'radial-gradient(ellipse 60% 100% at 50% 0%, #347ba9 0%, rgba(52,123,169,0.5) 30%, transparent 70%)' }}
+                  />
+                )}
+                {active && (
+                  <img
+                    src="/Icons/UI/category-highlighter-bg.png"
+                    alt=""
+                    aria-hidden
+                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[65%] max-w-none pointer-events-none select-none opacity-40"
+                  />
+                )}
+                <span className="relative z-10">{tab}</span>
+                {active && (
+                  <img
+                    src="/Icons/UI/category-highlighter.png"
+                    alt=""
+                    aria-hidden
+                    className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[50%] w-[82%] max-w-none pointer-events-none select-none opacity-95 z-30"
+                  />
+                )}
               </button>
             );
           })}
+        </div>
+        <div className="flex justify-end items-center gap-3 pr-1 relative">
+          <button
+            type="button"
+            onClick={() => { if (totalPts > 0) setShowRefundConfirm(true); }}
+            className="px-4 py-2 text-xs font-heading uppercase tracking-wider text-[#fffede] bg-dark-surface/60 border border-border-subtle rounded hover:bg-dark-surface transition-colors"
+          >
+            Refund Build
+          </button>
+          <div className="relative w-72">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35m1.85-5.4a7.25 7.25 0 11-14.5 0 7.25 7.25 0 0114.5 0z" />
+            </svg>
+            <input
+              type="text"
+              value={talentSearch}
+              onChange={(e) => { setTalentSearch(e.target.value); setShowTalentSearch(true); }}
+              onFocus={() => setShowTalentSearch(true)}
+              placeholder="Search Talents..."
+              className="w-full bg-dark-surface/60 border border-border-subtle rounded pl-9 pr-3 py-2 text-sm text-[#fffede] placeholder:text-text-muted focus:outline-none focus:border-honor-gold"
+            />
+          </div>
+          {showTalentSearch && talentSearch.trim() && (
+            <div className="absolute top-full right-0 mt-2 w-72 bg-[#171b24] border border-border-subtle rounded-lg shadow-xl p-2 z-40 max-h-64 overflow-y-auto">
+              {nodes
+                .filter((n) => n.name && n.name.toLowerCase().includes(talentSearch.trim().toLowerCase()))
+                .slice(0, 30)
+                .map((n) => (
+                  <button
+                    key={n.id}
+                    type="button"
+                    onClick={() => {
+                      animateZoom({ cx: n.dx, cy: n.dy, zoom: 2 });
+                      setHoveredId(n.id);
+                      setShowTalentSearch(false);
+                      setTalentSearch('');
+                    }}
+                    className="w-full text-left px-3 py-2 text-sm text-[#fffede] hover:bg-white/5 rounded transition-colors"
+                  >
+                    <div className="font-heading">{n.name}</div>
+                    <div className="text-xs text-text-muted capitalize">{n.nodeType}</div>
+                  </button>
+                ))}
+              {nodes.filter((n) => n.name && n.name.toLowerCase().includes(talentSearch.trim().toLowerCase())).length === 0 && (
+                <div className="px-3 py-2 text-sm text-text-muted">No talents found.</div>
+              )}
+            </div>
+          )}
         </div>
       </div>}
 
@@ -852,7 +981,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
           ); })()}
 
           {/* Nodes - event delegation via parent g */}
-          <g onClick={handleNodeClick} onContextMenu={handleNodeContext} onMouseOver={handleNodeHover} onMouseOut={() => setHoveredId(null)}>
+          <g onClick={handleNodeClick} onContextMenu={handleNodeContext} onMouseOver={handleNodeHover} onMouseMove={handleNodeMouseMove} onMouseOut={() => setHoveredId(null)}>
             {nodes.map((node) => {
               const cur = allocated[node.id] || 0;
               const isA = cur > 0, isM = cur >= node.maxRank;
@@ -909,7 +1038,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
         {/* Tooltip */}
         {hovered && (
-          <div className="absolute bottom-20 left-4 bg-[#12122a]/95 border border-border-subtle rounded-lg p-3 shadow-xl max-w-xs pointer-events-none z-10 backdrop-blur-sm">
+          <div className="absolute bg-[#12122a]/95 border border-border-subtle rounded-lg p-3 shadow-xl max-w-xs pointer-events-none z-10 backdrop-blur-sm" style={{ left: mousePos.x + 16, top: mousePos.y + 16 }}>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-sm font-bold text-text-primary">{hovered.name}</span>
               <span className="text-[10px] px-1.5 py-0.5 rounded capitalize" style={{ backgroundColor: col + '20', color: col }}>{hovered.nodeType}</span>
@@ -918,11 +1047,44 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             <span className="text-[10px]" style={{ color: col }}>Rank {allocated[hovered.id] || 0}/{hovered.maxRank}</span>
           </div>
         )}
-        <div className="absolute top-3 right-3 flex flex-col gap-1">
-          <button onClick={zoomIn} className="w-8 h-8 bg-[#12122a]/90 border border-border-subtle rounded text-text-muted hover:text-honor-gold text-lg flex items-center justify-center">+</button>
-          <button onClick={zoomOut} className="w-8 h-8 bg-[#12122a]/90 border border-border-subtle rounded text-text-muted hover:text-honor-gold text-lg flex items-center justify-center">−</button>
-          <button onClick={resetView} className="w-8 h-8 bg-[#12122a]/90 border border-border-subtle rounded text-text-muted hover:text-honor-gold text-[10px] flex items-center justify-center" title="Fit to view">⊡</button>
-        </div>
+        {(() => {
+          const minZ = 0.15, maxZ = 15;
+          const t = Math.max(0, Math.min(1, (Math.log(camera.zoom) - Math.log(minZ)) / (Math.log(maxZ) - Math.log(minZ))));
+          const fillOpacity = 0.25 + t * 0.75;
+          return (
+            <>
+              <div className="absolute bottom-3 right-3 flex items-center gap-0">
+                <button
+                  onClick={zoomOut}
+                  aria-label="Zoom out"
+                  className="w-7 h-7 rotate-45 bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold transition-colors flex items-center justify-center"
+                >
+                  <span className="-rotate-45 text-text-muted text-base leading-none">−</span>
+                </button>
+                <div className="relative w-20 h-[3px] bg-dark-surface mx-1.5 overflow-hidden">
+                  <div
+                    className="absolute top-0 bottom-0 left-0 transition-all duration-200"
+                    style={{ width: `${t * 100}%`, background: '#c8a84e', opacity: fillOpacity, boxShadow: `0 0 ${4 + t * 8}px rgba(200,168,78,${fillOpacity})` }}
+                  />
+                </div>
+                <button
+                  onClick={zoomIn}
+                  aria-label="Zoom in"
+                  className="w-7 h-7 rotate-45 bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold transition-colors flex items-center justify-center"
+                >
+                  <span className="-rotate-45 text-text-muted text-base leading-none">+</span>
+                </button>
+              </div>
+              <button
+                onClick={resetView}
+                title="Fit to view"
+                className="absolute bottom-3 left-3 w-7 h-7 rotate-45 bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold transition-colors flex items-center justify-center"
+              >
+                <span className="-rotate-45 text-text-muted text-[10px] leading-none">⊡</span>
+              </button>
+            </>
+          );
+        })()}
       </div>
 
         {/* Read-only Bottom Panel — sits half in, half out */}
@@ -938,16 +1100,16 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
         )}
 
         {/* Floating Bottom Panel */}
-        {!readOnly && <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 bg-[#14141a]/90 backdrop-blur-md border border-border-subtle rounded-xl px-3 py-2 flex items-center gap-3 shadow-2xl">
+        {!readOnly && <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 bg-[#171b24] backdrop-blur-md border border-black rounded-xl px-3 py-2 flex items-center gap-3 shadow-2xl">
           {/* Class dropdown */}
           <div className="relative">
-            <button onClick={() => setShowClassDropdown(!showClassDropdown)} className="flex items-center gap-2 px-4 py-2 bg-dark-surface border border-border-subtle rounded-lg text-sm hover:border-honor-gold-dim transition-colors">
+            <button onClick={() => setShowClassDropdown(!showClassDropdown)} className="flex items-center gap-2 px-4 py-2 bg-[#0f1f2c] border border-[#2a4a64] rounded-lg text-sm hover:border-honor-gold-dim transition-colors">
               <img src={gameClass.icon} alt={gameClass.name} className="w-7 h-7" />
               <span style={{ color: col }} className="font-heading">{gameClass.name}</span>
               <span className="text-text-muted text-xs">▼</span>
             </button>
             {showClassDropdown && (
-              <div className="absolute bottom-full mb-2 left-0 bg-[#14141a]/95 border border-border-subtle rounded-lg py-1.5 shadow-2xl backdrop-blur-md w-48">
+              <div className="absolute bottom-full mb-2 left-0 bg-[#171b24]/95 border border-[#2a4a64] rounded-lg py-1.5 shadow-2xl backdrop-blur-md w-48">
                 {[...classes].sort((a, b) => a.name.localeCompare(b.name)).map((c) => (
                   <Link key={c.slug} href={`/talents/${c.slug}`} onClick={() => setShowClassDropdown(false)}
                     className={`flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-honor-gold/10 transition-colors ${c.slug === gameClass.slug ? 'text-honor-gold' : 'text-text-secondary'}`}>
@@ -958,7 +1120,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             )}
           </div>
 
-          <div className="w-px h-8 bg-border-subtle" />
+          <div className="w-px h-8 bg-[#2a4a64]/60" />
 
           {/* Points */}
           <div className="flex items-center gap-1.5 px-2">
@@ -967,12 +1129,12 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             <span className="text-text-muted text-sm">/{MAX_POINTS}</span>
           </div>
 
-          <div className="w-px h-8 bg-border-subtle" />
+          <div className="w-px h-8 bg-[#2a4a64]/60" />
 
           {/* Actions */}
-          <button onClick={() => { if (totalPts > 0) { setSaveName(''); setSaveTags([]); setSaveDifficulty(''); setSaveDescription(''); setSaveGuide(''); setShowGuideEditor(false); setProfanityWarning(null); setShowSaveModal(true); } }} className={`px-4 py-2 rounded-lg text-sm transition-colors border ${totalPts > 0 ? 'bg-dark-surface border-border-subtle text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim' : 'bg-dark-surface border-border-subtle text-text-muted cursor-not-allowed opacity-50'}`} disabled={totalPts === 0}>Save</button>
-          <button onClick={() => { setImportError(null); setShowLoadModal(true); }} className="px-4 py-2 bg-dark-surface border border-border-subtle rounded-lg text-sm text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim transition-colors">Load</button>
-          <button onClick={reset} className="px-4 py-2 bg-dark-surface border border-scar-red/30 rounded-lg text-sm text-scar-red-light hover:bg-scar-red/10 hover:border-scar-red/50 transition-colors">Reset</button>
+          <button onClick={() => { if (totalPts > 0) { setSaveName(''); setSaveTags([]); setSaveDifficulty(''); setSaveDescription(''); setSaveGuide(''); setShowGuideEditor(false); setProfanityWarning(null); setShowSaveModal(true); } }} className={`px-4 py-2 rounded-lg text-sm transition-colors border ${totalPts > 0 ? 'bg-[#0f1f2c] border-[#2a4a64] text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim' : 'bg-[#0f1f2c] border-[#2a4a64] text-text-muted cursor-not-allowed opacity-50'}`} disabled={totalPts === 0}>Save</button>
+          <button onClick={() => { setImportError(null); setShowLoadModal(true); }} className="px-4 py-2 bg-[#0f1f2c] border border-[#2a4a64] rounded-lg text-sm text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim transition-colors">Load</button>
+          <button onClick={undo} disabled={history.length === 0} className={`px-4 py-2 rounded-lg text-sm transition-colors border ${history.length > 0 ? 'bg-[#0f1f2c] border-[#2a4a64] text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim' : 'bg-[#0f1f2c] border-[#2a4a64] text-text-muted cursor-not-allowed opacity-50'}`}>Undo</button>
         </div>}
 
       {/* Save Modal */}
@@ -1176,6 +1338,31 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               <button onClick={importBuild} disabled={!importCode.trim()} className="w-full py-2 bg-honor-gold text-void-black font-heading font-semibold rounded hover:bg-honor-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm">Load Build</button>
             </div>
             <button onClick={() => { setShowImportModal(false); setImportError(null); setImportCode(''); }} className="mt-4 w-full py-1.5 text-xs text-text-muted hover:text-text-secondary transition-colors">Back</button>
+          </div>
+        </div>
+      )}
+
+      {showRefundConfirm && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowRefundConfirm(false)}>
+          <div className="bg-deep-night border border-border-subtle rounded-lg p-6 w-full max-w-sm shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-heading text-lg text-[#fffede] mb-2">Refund Build?</h3>
+            <p className="text-sm text-text-muted mb-5">All {totalPts} allocated point{totalPts === 1 ? '' : 's'} will be reset and your equipment cleared. This can&apos;t be undone.</p>
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setShowRefundConfirm(false)}
+                className="px-4 py-2 text-xs font-heading uppercase tracking-wider text-text-muted hover:text-[#fffede] transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => { reset(); setShowRefundConfirm(false); }}
+                className="px-4 py-2 text-xs font-heading uppercase tracking-wider text-[#fffede] bg-scar-red/80 hover:bg-scar-red rounded transition-colors"
+              >
+                Refund
+              </button>
+            </div>
           </div>
         </div>
       )}

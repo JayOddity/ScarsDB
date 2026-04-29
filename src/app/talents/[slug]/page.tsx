@@ -1,7 +1,10 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import { notFound } from 'next/navigation';
 import { classes } from '@/data/classes';
 import TalentTree from '@/components/TalentTree';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+import { hasRealData, type RealTalentData } from '@/lib/talentData';
 
 export function generateStaticParams() {
   return classes.map((cls) => ({ slug: cls.slug }));
@@ -41,6 +44,14 @@ export default async function TalentPage({ params, searchParams }: { params: Pro
   if (!cls) notFound();
   const tab = typeof sp.tab === 'string' ? sp.tab : undefined;
 
+  let initialData: RealTalentData | null = null;
+  if (hasRealData(cls.slug)) {
+    try {
+      const raw = await readFile(path.join(process.cwd(), 'public', 'data', 'talents', `${cls.slug}.json`), 'utf-8');
+      initialData = JSON.parse(raw) as RealTalentData;
+    } catch {}
+  }
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -50,7 +61,7 @@ export default async function TalentPage({ params, searchParams }: { params: Pro
           { name: cls.name, url: `/talents/${cls.slug}` },
         ]}
       />
-      <TalentTree gameClass={cls} initialTab={tab} />
+      <TalentTree gameClass={cls} initialTab={tab} initialData={initialData} />
     </>
   );
 }

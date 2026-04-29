@@ -152,7 +152,7 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
 
   return (
     <>
-    <header className="sticky top-0 z-50 bg-[#14141a]/95 backdrop-blur">
+    <header className="sticky top-0 z-50 bg-[#171b24]/95 backdrop-blur">
       {/* Top bar: Logo, Auth, Search */}
       <div className="border-b border-border-subtle">
         <div className="max-w-6xl mx-auto px-4 sm:px-6">

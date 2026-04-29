@@ -1,4 +1,5 @@
 import { item } from './item';
+import { spell } from './spell';
 import { article } from './article';
 import { newsPost } from './newsPost';
 import { page } from './page';
@@ -8,4 +9,4 @@ import { newsletter } from './newsletter';
 import { user } from './user';
 import { buildVote } from './buildVote';
 
-export const schemaTypes = [item, article, newsPost, page, siteSettings, talentBuild, buildVote, newsletter, user];
+export const schemaTypes = [item, spell, article, newsPost, page, siteSettings, talentBuild, buildVote, newsletter, user];

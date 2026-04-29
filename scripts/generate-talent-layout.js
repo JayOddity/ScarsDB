@@ -478,7 +478,7 @@ const CLASSES = [
   { slug: 'warrior',     name: 'Warrior',     accentColor: '#d4a44e', seed: 1001, template: 'melee' },
   { slug: 'paladin',     name: 'Paladin',     accentColor: '#e8c432', seed: 1002, template: 'melee' },
   { slug: 'ranger',      name: 'Ranger',      accentColor: '#7ac74c', seed: 1003, template: 'melee' },
-  { slug: 'assassin',    name: 'Assassin',    accentColor: '#8c2a3a', seed: 1004, template: 'melee' },
+  { slug: 'assassin',    name: 'Assassin',    accentColor: '#d63b54', seed: 1004, template: 'melee' },
   { slug: 'pirate',      name: 'Pirate',      accentColor: '#ff8c42', seed: 1005, template: 'melee' },
   { slug: 'mage',        name: 'Mage',        accentColor: '#6ea8ff', seed: 2001, template: 'caster' },
   { slug: 'priest',      name: 'Priest',      accentColor: '#e0e8f0', seed: 2002, template: 'caster' },

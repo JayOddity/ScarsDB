@@ -252,6 +252,13 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [counts, setCounts] = useState<{ items: number; spells: number } | null>(null);
+
+  useEffect(() => {
+    fetch('/api/counts').then((r) => r.json()).then((d) => {
+      if (typeof d?.items === 'number' && typeof d?.spells === 'number') setCounts(d);
+    }).catch(() => { /* ignore */ });
+  }, []);
 
   // Category definitions (static, defined outside would be ideal but kept here for locality — use stable ref via `category` key)
   const activeCategory = category ? CATEGORIES_MAP[category] : null;
@@ -458,11 +465,19 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-2">Item Database</h1>
-      <p className="text-text-secondary mb-8">
-        Every Item in Scars Of Honor
-        {meta && <> - <span className="text-honor-gold">{meta.total.toLocaleString()}</span> items found</>}.
-      </p>
+      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-6">Item Database</h1>
+
+      <div className="flex gap-2 mb-6">
+        <span className="px-4 py-2 rounded-lg text-sm font-medium bg-honor-gold text-void-black">
+          Items {meta && <span className="ml-1 opacity-70">({meta.total.toLocaleString()})</span>}
+        </span>
+        <Link
+          href="/database/spells"
+          className="px-4 py-2 rounded-lg text-sm font-medium bg-dark-surface text-text-muted hover:text-text-primary transition-all"
+        >
+          Spells {counts && <span className="ml-1 opacity-60">({counts.spells.toLocaleString()})</span>}
+        </Link>
+      </div>
 
       {/* Filters */}
       <div className="bg-card-bg border border-border-subtle rounded-lg p-4 sm:p-5 mb-6 space-y-3">

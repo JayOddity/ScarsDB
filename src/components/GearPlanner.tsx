@@ -69,35 +69,35 @@ function SlotIcon({ name, className }: { name: string; className?: string }) {
 
 const EQUIPMENT_ROWS = [
   [
-    { key: 'Helmet', label: 'Helmet', icon: 'helmet' },
-    { key: 'Shoulder Pads', label: 'Shoulders', icon: 'shoulders' },
-    { key: 'Cape', label: 'Cape', icon: 'cape' },
+    { key: 'Helmet', label: 'Helmet', icon: 'helmet', emptyIcon: '/Icons/Slots/empty/helm.png' },
+    { key: 'Shoulder Pads', label: 'Shoulders', icon: 'shoulders', emptyIcon: '/Icons/Slots/empty/shoulders.png' },
+    { key: 'Amulet', label: 'Amulet', icon: 'amulet', emptyIcon: '/Icons/Slots/empty/Amulet.png' },
   ],
   [
-    { key: 'Chest Piece', label: 'Chest', icon: 'chest' },
-    { key: 'Main Hand', label: 'Main Hand', icon: 'sword' },
-    { key: 'Off Hand', label: 'Off Hand', icon: 'shield' },
+    { key: 'Chest Piece', label: 'Chest', icon: 'chest', emptyIcon: '/Icons/Slots/empty/chest.png' },
+    { key: 'Main Hand', label: 'Main Hand', icon: 'sword', emptyIcon: '/Icons/Slots/empty/weapon.png' },
+    { key: 'Off Hand', label: 'Off Hand', icon: 'shield', emptyIcon: '/Icons/Slots/empty/Off Hand.png' },
   ],
   [
-    { key: 'Gloves', label: 'Gloves', icon: 'gloves' },
-    { key: 'Belt', label: 'Belt', icon: 'belt' },
-    { key: 'Pants', label: 'Pants', icon: 'pants' },
+    { key: 'Gloves', label: 'Gloves', icon: 'gloves', emptyIcon: '/Icons/Slots/empty/gloves.png' },
+    { key: 'Belt', label: 'Belt', icon: 'belt', emptyIcon: '/Icons/Slots/empty/waist.png' },
+    { key: 'Pants', label: 'Pants', icon: 'pants', emptyIcon: '/Icons/Slots/empty/pants.png' },
   ],
   [
-    { key: 'Boots', label: 'Boots', icon: 'boots' },
-    { key: 'Amulet', label: 'Amulet', icon: 'amulet' },
-    { key: 'Ring', label: 'Ring', icon: 'ring' },
+    { key: 'Ring 1', label: 'Ring', icon: 'ring', emptyIcon: '/Icons/Slots/empty/Ring.png' },
+    { key: 'Boots', label: 'Boots', icon: 'boots', emptyIcon: '/Icons/Slots/empty/boots.png' },
+    { key: 'Ring 2', label: 'Ring', icon: 'ring', emptyIcon: '/Icons/Slots/empty/Ring.png' },
   ],
 ];
 
 const ALL_SLOTS = EQUIPMENT_ROWS.flat();
 
 const GATHERING_TOOLS = [
-  { label: 'Mining', icon: '/Icons/Slots/mining.avif' },
-  { label: 'Herbalism', icon: '/Icons/Slots/herbalism.avif' },
-  { label: 'Cooking', icon: '/Icons/Slots/cooking.avif' },
-  { label: 'Woodcutting', icon: '/Icons/Slots/woodcutting.avif' },
-  { label: 'Fishing', icon: '/Icons/Slots/fishing.avif' },
+  { label: 'Mining', icon: '/Icons/Slots/empty/mining.png' },
+  { label: 'Woodcutting', icon: '/Icons/Slots/empty/woodcutting.png' },
+  { label: 'Herbalism', icon: '/Icons/Slots/empty/herbalism.png' },
+  { label: 'Fishing', icon: '/Icons/Slots/empty/fishing.png' },
+  { label: 'Skinning', icon: '/Icons/Slots/empty/skinning.png' },
 ];
 const POTIONS = [
   { label: 'Potion 1', icon: '/Icons/Slots/potion.avif' },
@@ -142,8 +142,9 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
 
   const fetchSlotItems = useCallback(async (slot: string) => {
     setLoadingSlot(true);
+    const apiSlot = slot === 'Ring 1' || slot === 'Ring 2' ? 'Ring' : slot;
     try {
-      const res = await fetch(`/api/items?slot=${encodeURIComponent(slot)}&per_page=200`);
+      const res = await fetch(`/api/items?slot=${encodeURIComponent(apiSlot)}&per_page=200`);
       const data = await res.json();
       setSlotItems(data.items || []);
     } catch {
@@ -195,10 +196,7 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-12">
-      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-2">Gear Planner</h1>
-      <p className="text-text-secondary mb-8">
-        Equip items to each slot and see your total stats. Click a slot to browse available items.
-      </p>
+      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-3">Gear Planner</h1>
 
       <div className="flex gap-6">
         {/* Paper Doll */}
@@ -240,6 +238,8 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
                             ) : (
                               <span className={`text-xs font-bold ${rarityColorClass[item.rarity]}`}>{item.name.substring(0, 3)}</span>
                             )
+                          ) : slot.emptyIcon ? (
+                            <Image src={slot.emptyIcon} alt={slot.label} width={56} height={56} className="object-contain opacity-60" />
                           ) : (
                             <SlotIcon name={slot.icon} className="w-12 h-12 text-text-secondary opacity-40" />
                           )}
@@ -272,7 +272,7 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
                   className="w-12 h-12 rounded border-2 border-[#2a2a35] bg-[#12121a] flex items-center justify-center"
                   title={tool.label}
                 >
-                  <Image src={tool.icon} alt={tool.label} width={36} height={36} className="object-contain opacity-30" />
+                  <Image src={tool.icon} alt={tool.label} width={36} height={36} className="object-contain opacity-60" />
                 </div>
               ))}
             </div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const PLAYTEST_DATE = new Date('2026-04-30T12:00:00Z');
+const PLAYTEST_DATE = new Date('2026-04-30T11:00:00Z');
 
 function getTimeLeft() {
   const now = Date.now();

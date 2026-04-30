@@ -79,7 +79,7 @@ export default function OnboardingPage() {
             minLength={3}
             maxLength={20}
             pattern="[a-zA-Z0-9_\-]{3,20}"
-            placeholder="e.g. JayOddity"
+            placeholder="e.g. Stormbreaker_42"
             className="w-full px-4 py-3 rounded-lg bg-dark-surface border border-border-subtle text-text-primary focus:outline-none focus:border-honor-gold"
           />
           <p className="text-xs text-text-muted mt-2">

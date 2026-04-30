@@ -15,7 +15,7 @@ export const classes: GameClass[] = [
   {
     slug: 'warrior',
     name: 'Warrior',
-    icon: '/Icons/Class%20Icons/class-warrior-CKO7Mqhr.webp',
+    icon: '/Icons/Class%20Icons/official/warrior.png',
     subtitle: 'Frontline Fighter',
     description: 'The backbone of every army, Warriors are disciplined melee fighters built to endure the chaos of battle. Versatile with weapons and resilient in close combat, they thrive on the front lines, taking and dealing heavy damage in equal measure. Whether as a seasoned Pathfinder, a stalwart Vanguard, or a relentless Berserker, Warriors embody strength, discipline, and unyielding resolve.',
     subclasses: [
@@ -27,7 +27,7 @@ export const classes: GameClass[] = [
   {
     slug: 'paladin',
     name: 'Paladin',
-    icon: '/Icons/Class%20Icons/class-paladin-iqJcYEYK.webp',
+    icon: '/Icons/Class%20Icons/official/paladin.png',
     subtitle: 'Frontline Holy Fighter',
     description: 'Steadfast and unyielding, the Paladin endures on the front lines, wielding holy power and fire to strike down foes while sustaining themselves in battle. Whether as a zealous Inquisitor, a protective Templar, or an inspiring Justicar, Paladins embody faith, resilience, and unbreakable conviction.',
     subclasses: [
@@ -39,7 +39,7 @@ export const classes: GameClass[] = [
   {
     slug: 'mage',
     name: 'Mage',
-    icon: '/Icons/Class%20Icons/class-mage-Bj82a76r.webp',
+    icon: '/Icons/Class%20Icons/official/mage.png',
     subtitle: 'Ranged Damage Dealer',
     description: 'Masters of the arcane, Mages wield fire, lightning, ice, and cosmic power to devastate enemies from afar. Fragile but unmatched in destructive potential, they control the battlefield through raw damage, crowd control, and mobility. Whether as a resilient Battle Mage, a versatile Runeweaver, or a long-range Wizard, Mages embody the deadly art of disciplined spellcraft.',
     subclasses: [
@@ -51,7 +51,7 @@ export const classes: GameClass[] = [
   {
     slug: 'priest',
     name: 'Priest',
-    icon: '/Icons/Class%20Icons/class-priest-DOee8xLC.webp',
+    icon: '/Icons/Class%20Icons/official/priest.png',
     subtitle: 'Healer, Damage Dealer',
     description: 'Devout and unwavering, Priests channel divine power to heal allies, shield the faithful, and smite their enemies with holy wrath. Stronger when their faith is tested, they stand as both protectors and punishers on the battlefield. Whether as a blessing Cleric, a god-empowered Worshipper, or a relentless Exorcist, Priests embody devotion, discipline, and divine retribution.',
     subclasses: [
@@ -63,7 +63,7 @@ export const classes: GameClass[] = [
   {
     slug: 'ranger',
     name: 'Ranger',
-    icon: '/Icons/Class%20Icons/class-ranger-D_RUMGxg.webp',
+    icon: '/Icons/Class%20Icons/official/ranger.png',
     subtitle: 'Ranged Damage Dealer',
     description: 'Swift and deadly, Rangers strike from afar with precision shots, elemental power, and clever traps, cutting down foes before they reach the front lines. Fragile but highly mobile, they excel at sustained damage and battlefield control. Whether as a long-range Sharpshooter, a cunning Trapper, or an inventive Artificier, Rangers embody agility, ingenuity, and lethal aim.',
     subclasses: [
@@ -75,7 +75,7 @@ export const classes: GameClass[] = [
   {
     slug: 'druid',
     name: 'Druid',
-    icon: '/Icons/Class%20Icons/class-druid-C7poOgBq.webp',
+    icon: '/Icons/Class%20Icons/official/druid.png',
     subtitle: 'Summoner, Shapeshifter',
     description: 'Druids channel the raw balance of nature, summoning beasts, healing allies, and shifting forms to strike with elemental fury or primal strength. Whether as a prophetic Oracle, a beast-leading Beastmaster, or a versatile Shapeshifter, Druids embody the wild\'s harmony of nurture and ferocity.',
     subclasses: [
@@ -87,7 +87,7 @@ export const classes: GameClass[] = [
   {
     slug: 'assassin',
     name: 'Assassin',
-    icon: '/Icons/Class%20Icons/class-assasin-DD1zK8fd.webp',
+    icon: '/Icons/Class%20Icons/official/assassin.png',
     subtitle: 'Mobile, Finesse Fighter',
     description: 'Swift and lethal, the Assassin trades resilience for speed, striking with blades, poison, or lightning before slipping back into the shadows. Whether as a relentless Bladedancer, a mage-slaying Spellbane, or a solitary Bounty Hunter, Assassins embody precision, cunning, and decisive execution.',
     subclasses: [
@@ -99,7 +99,7 @@ export const classes: GameClass[] = [
   {
     slug: 'necromancer',
     name: 'Necromancer',
-    icon: '/Icons/Class%20Icons/class-necromancer-BTMHgViB.webp',
+    icon: '/Icons/Class%20Icons/official/necromancer.png',
     subtitle: 'Spirit Fighter, Caster',
     description: 'Masters of forbidden arts, Necromancers command the dead and wield elemental, spiritual, and cosmic powers at a terrible price. Twisting life and death itself, they summon servants, drain vitality, and spread decay in service to the Doomfather. Whether as a shielded Voidlord, an army-raising Lich, or a blood-fueled Blood Mage, Necromancers embody corruption, sacrifice, and relentless domination.',
     subclasses: [
@@ -111,7 +111,7 @@ export const classes: GameClass[] = [
   {
     slug: 'pirate',
     name: 'Pirate',
-    icon: '/Icons/Class%20Icons/class-pirate-CfMg84JT.webp',
+    icon: '/Icons/Class%20Icons/official/pirate.png',
     subtitle: 'Melee & Ranged Hybrid',
     description: 'Unpredictable and versatile, Pirates fight with blades, pistols, and cunning tricks, supported by their loyal parrots and a taste for poison and plunder. Dangerous in both close and mid-range combat, they overwhelm enemies with ruthless strikes and relentless pressure. Whether as a dueling Swashbuckler, an oath-broken Cursed, or a firepower-driven Cannoneer, Pirates embody chaos, greed, and deadly adaptability.',
     subclasses: [
@@ -123,7 +123,7 @@ export const classes: GameClass[] = [
   {
     slug: 'mystic',
     name: 'Mystic',
-    icon: '/Icons/Class%20Icons/class-witch-C_nuwL-T.webp',
+    icon: '/Icons/Class%20Icons/official/mystic.png',
     subtitle: 'Debuffer, Damage Dealer',
     description: 'Wielders of forbidden arts, Mystics spread curses, plagues, and spiritual afflictions to weaken and destroy their foes. Masters of control and damage over time, they embody the darker side of magic - draining strength and sowing despair. Whether as a star-forged Celestial, a poison-weaving Plague Doctor, or a curse-driven Acolyte, Mystics bring inevitable ruin to the battlefield.',
     subclasses: [

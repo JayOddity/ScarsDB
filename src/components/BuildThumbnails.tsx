@@ -2,12 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import type { RealTalentData, RealTalentNode } from '@/lib/talentData';
-import { getFeaturedNodes } from '@/lib/buildThumbnails';
+import { getStartNodes } from '@/lib/buildThumbnails';
 
-const FRAME_ROUND = '/Icons/Talents/scars%20icon%201.avif';
-const FRAME_SQUARE = '/Icons/Talents/scars%20icon%202.avif';
-
-// Cache loaded talent data per class
 const talentCache = new Map<string, RealTalentData>();
 
 interface BuildThumbnailsProps {
@@ -17,58 +13,51 @@ interface BuildThumbnailsProps {
 }
 
 export default function BuildThumbnails({ classSlug, allocation, size = 36 }: BuildThumbnailsProps) {
-  const [nodes, setNodes] = useState<{ early: RealTalentNode[]; late: RealTalentNode[] }>({ early: [], late: [] });
+  const [starts, setStarts] = useState<RealTalentNode[]>([]);
 
   useEffect(() => {
-    if (!classSlug || !allocation) return;
-
+    if (!classSlug || !allocation) { setStarts([]); return; }
     const cached = talentCache.get(classSlug);
     if (cached) {
-      setNodes(getFeaturedNodes(allocation, cached.nodes));
+      setStarts(getStartNodes(allocation, cached.nodes));
       return;
     }
-
     fetch(`/data/talents/${classSlug}.json`)
       .then((r) => r.json())
       .then((data: RealTalentData) => {
         talentCache.set(classSlug, data);
-        setNodes(getFeaturedNodes(allocation, data.nodes));
+        setStarts(getStartNodes(allocation, data.nodes));
       })
       .catch(() => {});
   }, [classSlug, allocation]);
 
-  const all = [...nodes.early, ...nodes.late];
-  if (all.length === 0) return null;
+  if (starts.length === 0) return null;
 
   return (
     <div className="flex items-center gap-1">
-      {all.map((node) => {
-        const frame = node.nodeType === 'active' ? FRAME_SQUARE : FRAME_ROUND;
-        const iconUrl = node.iconUrl;
-        return (
-          <div
-            key={node.id}
-            className="relative shrink-0"
-            style={{ width: size, height: size }}
-            title={node.name}
-          >
-            {/* Frame */}
+      {starts.map((node) => (
+        <div
+          key={node.id}
+          className="relative shrink-0"
+          style={{ width: size, height: size }}
+          title={node.name.replace(/<[^>]+>/g, '')}
+        >
+          {node.iconUrl && (
             <img
-              src={frame}
+              src={node.iconUrl}
               alt=""
-              className="absolute inset-0 w-full h-full object-contain"
+              aria-hidden
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full object-cover"
+              style={{ width: '55%', height: '55%' }}
             />
-            {/* Ability icon overlay */}
-            {iconUrl && (
-              <img
-                src={iconUrl}
-                alt={node.name}
-                className="absolute inset-[18%] w-[64%] h-[64%] object-cover rounded-full"
-              />
-            )}
-          </div>
-        );
-      })}
+          )}
+          <img
+            src="/Icons/Talents/frames/start.png"
+            alt={node.name.replace(/<[^>]+>/g, '')}
+            className="absolute inset-0 w-full h-full object-contain pointer-events-none"
+          />
+        </div>
+      ))}
     </div>
   );
 }

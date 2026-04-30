@@ -12,7 +12,16 @@ import { checkProfanity } from '@/lib/profanityClient';
 
 const MAX_POINTS = 70;
 const MAX_STARTS = 2;
-import { hasRealData, type RealTalentData } from '@/lib/talentData';
+const PENDING_BUILD_KEY = 'scarshq-pending-build';
+import { hasRealData, isClassImplemented, type RealTalentData } from '@/lib/talentData';
+
+function sanitizeTalentText(s: string): string {
+  let out = s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  out = out.replace(/&lt;\/?(b|strong|i|em)&gt;/gi, (m) => m.replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
+  out = out.replace(/&lt;color=#?([0-9a-f]{3,8})&gt;/gi, (_m, hex) => `<span style="color:#${hex}">`);
+  out = out.replace(/&lt;\/color&gt;/gi, '</span>');
+  return out;
+}
 
 interface TalentNode {
   id: number;
@@ -98,8 +107,22 @@ const STARS: { x: number; y: number; r: number; o: number }[] = (() => {
   }
   return stars;
 })();
-const ROUND_ICON_PLACEHOLDER = '/Icons/Talents/scars%20icon%201.avif';
-const SQUARE_ICON_PLACEHOLDER = '/Icons/Talents/scars%20icon%202.avif';
+const ROUND_ICON_PLACEHOLDER = '/Icons/Talents/frames/minor.png';
+const SQUARE_ICON_PLACEHOLDER = '/Icons/Talents/frames/active.png';
+const FRAME_BY_TYPE: Record<string, string> = {
+  start: '/Icons/Talents/frames/start.png',
+  minor: '/Icons/Talents/frames/minor.png',
+  major: '/Icons/Talents/frames/major.png',
+  keystone: '/Icons/Talents/frames/keystone.png',
+  active: '/Icons/Talents/frames/active.png',
+};
+const INNER_FRAC: Record<string, number> = {
+  start: 0.55,
+  minor: 0.66,
+  major: 0.62,
+  keystone: 0.55,
+  active: 0.74,
+};
 
 
 // Find the node ID from a DOM event target by walking up to the <g data-nid> element
@@ -152,6 +175,12 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const [savedBuildExists, setSavedBuildExists] = useState(false);
   const [cloudCode, setCloudCode] = useState<string | null>(null);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [exportText, setExportText] = useState('');
+  const [exportCopied, setExportCopied] = useState(false);
+  const [showJsonImportModal, setShowJsonImportModal] = useState(false);
+  const [jsonImportText, setJsonImportText] = useState('');
+  const [jsonImportError, setJsonImportError] = useState<string | null>(null);
   const [showLoadModal, setShowLoadModal] = useState(false);
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [saveName, setSaveName] = useState('');
@@ -474,6 +503,100 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     return Object.keys(map).length > 0 ? JSON.stringify(map) : '';
   }
 
+  function buildExportObject() {
+    return {
+      scarshq: 'build/v1',
+      classSlug: gameClass.slug,
+      className: gameClass.name,
+      allocation: encodeAlloc(allocated),
+      totalPoints: 0, // computed below
+      name: saveName.trim() || undefined,
+      tags: saveTags.length > 0 ? saveTags : undefined,
+      difficulty: saveDifficulty || undefined,
+      description: saveDescription.trim() || undefined,
+      guide: saveGuide.trim() || undefined,
+      equipment: encodeEquipment(buildEquipment) || undefined,
+      exportedAt: new Date().toISOString(),
+    };
+  }
+
+  function openExportModal() {
+    if (!encodeAlloc(allocated)) return;
+    const obj = buildExportObject();
+    obj.totalPoints = Object.values(allocated).reduce((s, v) => s + (v || 0), 0);
+    setExportText(JSON.stringify(obj, null, 2));
+    setExportCopied(false);
+    setShowExportModal(true);
+  }
+
+  function copyExport() {
+    navigator.clipboard.writeText(exportText).then(
+      () => { setExportCopied(true); setTimeout(() => setExportCopied(false), 1800); },
+      () => {},
+    );
+  }
+
+  function downloadExport() {
+    const blob = new Blob([exportText], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeName = (saveName.trim() || `${gameClass.slug}-build`).replace(/[^a-z0-9_-]+/gi, '-').toLowerCase();
+    a.href = url;
+    a.download = `${safeName}.scarshq.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function applyImportedBuild(json: string): string | null {
+    let obj: Record<string, unknown>;
+    try {
+      obj = JSON.parse(json) as Record<string, unknown>;
+    } catch {
+      return 'That isn\'t valid JSON.';
+    }
+    if (typeof obj.scarshq !== 'string' || !obj.scarshq.startsWith('build/')) {
+      return 'Doesn\'t look like a ScarsHQ build export.';
+    }
+    if (typeof obj.allocation !== 'string' || !obj.allocation) {
+      return 'Build is missing allocation data.';
+    }
+    if (typeof obj.classSlug === 'string' && obj.classSlug !== gameClass.slug) {
+      try { sessionStorage.setItem('scarshq-pending-import', json); } catch {}
+      window.location.href = `/talents/${obj.classSlug}`;
+      return null;
+    }
+    setAllocated(decodeAlloc(obj.allocation));
+    if (typeof obj.name === 'string') setSaveName(obj.name);
+    if (Array.isArray(obj.tags)) setSaveTags(obj.tags.filter((t): t is string => typeof t === 'string'));
+    if (typeof obj.difficulty === 'string') setSaveDifficulty(obj.difficulty);
+    if (typeof obj.description === 'string') setSaveDescription(obj.description);
+    if (typeof obj.guide === 'string') setSaveGuide(obj.guide);
+    if (typeof obj.equipment === 'string' && obj.equipment) loadEquipmentFromJson(obj.equipment);
+    return null;
+  }
+
+  function submitJsonImport() {
+    const err = applyImportedBuild(jsonImportText.trim());
+    if (err) { setJsonImportError(err); return; }
+    setShowJsonImportModal(false);
+    setJsonImportText('');
+    setJsonImportError(null);
+  }
+
+  function handleJsonFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = String(reader.result || '');
+      setJsonImportText(text);
+      const err = applyImportedBuild(text);
+      if (err) setJsonImportError(err);
+      else { setShowJsonImportModal(false); setJsonImportText(''); }
+    };
+    reader.readAsText(file);
+  }
+
   async function handleSaveBuild() {
     const enc = encodeAlloc(allocated);
     if (!enc) return;
@@ -733,18 +856,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
       {/* Sub-header: Tabs (hidden in read-only) */}
       {!readOnly && <div className="relative z-20 bg-[#171b24] border-b border-border-subtle grid grid-cols-[1fr_auto_1fr] items-center px-8 sm:px-12 gap-4">
-        <div className="flex items-center gap-5 py-2 text-[#fffede]">
-          <div className="flex items-center gap-2">
-            <span className="font-heading text-xs uppercase tracking-wider text-white">Key Passives</span>
-            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
-            <img src="/Icons/Talents/scars%20icon%201.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="font-heading text-xs uppercase tracking-wider text-white">Active Talents</span>
-            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
-            <img src="/Icons/Talents/scars%20icon%202.avif" alt="" aria-hidden className="w-9 h-9 select-none opacity-60" />
-          </div>
-        </div>
+        <div />{/* spacer (left column) */}
         <div className="inline-grid grid-cols-3">
           {['Equipment', 'Talents', 'Scars'].map((tab) => {
             const active = activeTab === tab;
@@ -942,6 +1054,12 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             <filter id="tint-green" colorInterpolationFilters="sRGB">
               <feColorMatrix type="matrix" values="0.3 0 0 0 0.2  0 0.6 0 0 0.55  0 0 0.3 0 0.4  0 0 0 1 0" />
             </filter>
+            <filter id="brighten-allocated" colorInterpolationFilters="sRGB">
+              <feColorMatrix type="matrix" values="1.265 0 0 0 0  0 1.265 0 0 0  0 0 1.265 0 0  0 0 0 1 0" />
+            </filter>
+            <filter id="darken-locked" colorInterpolationFilters="sRGB">
+              <feColorMatrix type="matrix" values="0.9 0 0 0 0  0 0.9 0 0 0  0 0 0.9 0 0  0 0 0 1 0" />
+            </filter>
             {/* Shared icon clip paths per node type */}
             {Object.entries(SIZE).filter(([t]) => t !== 'active').map(([type, r]) => (
               <clipPath key={type} id={`icon-clip-${type}`}><circle r={r * 0.46} /></clipPath>
@@ -972,10 +1090,37 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
           {/* Edges - raw innerHTML for perf */}
           <g dangerouslySetInnerHTML={{ __html: edgeSvg }} />
 
-          {/* Class icon in center - above edges, below nodes */}
-          {startCircle && (() => { const s = startCircle.r * 1.2; return (
-            <image href={gameClass.icon} x={startCircle.cx - s} y={startCircle.cy - s} width={s * 2} height={s * 2} opacity={1} pointerEvents="none" />
-          ); })()}
+          {/* Class character art in center — full-body KeyArt for implemented classes,
+             small class icon for the not-yet-shipped ones. */}
+          {startCircle && (() => {
+            const hasKeyArt = isClassImplemented(gameClass.slug);
+            const href = hasKeyArt
+              ? `/Icons/Talents/centerpieces/${gameClass.slug}.png`
+              : gameClass.icon;
+            const adj: Record<string, { scale: number; dx: number; dy: number }> = {
+              ranger:  { scale: 1.00, dx: 0.12, dy: 0.00 },
+              paladin: { scale: 1.20, dx: 0.00, dy: 0.00 },
+              mage:    { scale: 1.00, dx: 0.00, dy: 0.18 },
+              druid:   { scale: 1.20, dx: 0.00, dy: 0.00 },
+            };
+            const a = adj[gameClass.slug] ?? { scale: 1, dx: 0, dy: 0 };
+            const baseScale = hasKeyArt ? 1.125 : 1.2;
+            const s = startCircle.r * baseScale * a.scale;
+            const ox = a.dx * startCircle.r;
+            const oy = a.dy * startCircle.r;
+            return (
+              <image
+                href={href}
+                x={startCircle.cx - s + ox}
+                y={startCircle.cy - s + oy}
+                width={s * 2}
+                height={s * 2}
+                opacity={1}
+                pointerEvents="none"
+                preserveAspectRatio="xMidYMid meet"
+              />
+            );
+          })()}
 
           {/* Nodes - event delegation via parent g */}
           <g onClick={handleNodeClick} onContextMenu={handleNodeContext} onMouseOver={handleNodeHover} onMouseMove={handleNodeMouseMove} onMouseOut={() => setHoveredId(null)}>
@@ -991,36 +1136,51 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
               return (
                 <g key={node.id} data-nid={node.id} transform={`translate(${node.dx},${node.dy})`} className="cursor-pointer">
-                  {(isP || isSH) && <circle r={r + 8} fill={PG} opacity={0.07} />}
                   {isH && !isM && !isP && <circle r={r + 6} fill="none" stroke={isA ? col : '#aaa'} strokeWidth={1} opacity={0.3} />}
-                  {node.nodeType === 'active' ? (
-                    <>
-                      <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="transparent" />
-                      {isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-green)" />}
-                      {isH && !isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-yellow)" />}
-                      <image href={node.iconUrl || SQUARE_ICON_PLACEHOLDER} x={-r} y={-r} width={r * 2} height={r * 2} opacity={isA ? 1 : isP || isSH ? 0.8 : 0.6} pointerEvents="none" filter={isA ? 'url(#tint-green)' : undefined} />
-                      {(isP || isSH) && <rect x={-r * 0.9} y={-r * 0.9} width={r * 1.8} height={r * 1.8} fill={PG} opacity={0.15} pointerEvents="none" />}
-                      {isA && <rect x={-r * 0.9} y={-r * 0.9} width={r * 1.8} height={r * 1.8} fill={PG} opacity={0.2} pointerEvents="none" />}
-                    </>
-                  ) : (() => {
-                    const abilityIcon = node.iconUrl || null;
+                  {(() => {
+                    const frame = FRAME_BY_TYPE[node.nodeType];
+                    const ir = r * (INNER_FRAC[node.nodeType] ?? 0.6);
+                    const iconOpacity = isA ? 1 : isP || isSH ? 0.85 : 0.7;
+                    const isSquare = node.nodeType === 'active';
                     return (
                       <>
-                        <circle r={r} fill="transparent" />
-                        {isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-green)" pointerEvents="none" />}
-                        {isH && !isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-yellow)" pointerEvents="none" />}
-                        {/* Outer notched shape - always shown */}
-                        <image href={ROUND_ICON_PLACEHOLDER} x={-r} y={-r} width={r * 2} height={r * 2} opacity={isA ? 1 : isP || isSH ? 0.8 : 0.6} pointerEvents="none" filter={isA ? 'url(#tint-green)' : undefined} />
-                        {/* Ability icon inside the inner circle */}
-                        {abilityIcon && (
+                        {isSquare ? (
                           <>
-                            <clipPath id={`ability-clip-${node.id}`}><circle r={r * 0.525} /></clipPath>
-                            <circle r={r * 0.525} fill="#0a0a12" pointerEvents="none" />
-                            <image href={abilityIcon} x={-r * 0.475} y={-r * 0.475} width={r * 0.95} height={r * 0.95} clipPath={`url(#ability-clip-${node.id})`} opacity={isA ? 1 : 0.7} pointerEvents="none" />
+                            <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="transparent" />
+                            {isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-green)" />}
+                            {isH && !isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-yellow)" />}
+                          </>
+                        ) : (
+                          <>
+                            <circle r={r} fill="transparent" />
+                            {isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-green)" pointerEvents="none" />}
+                            {isH && !isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-yellow)" pointerEvents="none" />}
                           </>
                         )}
-                        {(isP || isSH) && <circle r={r * 0.9} fill={PG} opacity={0.15} pointerEvents="none" />}
-                        {isA && <circle r={r * 0.9} fill={PG} opacity={0.2} pointerEvents="none" />}
+                        {node.iconUrl && (
+                          <>
+                            <clipPath id={`ability-clip-${node.id}`}>
+                              {isSquare
+                                ? <rect x={-ir} y={-ir} width={ir * 2} height={ir * 2} />
+                                : <circle r={ir} />}
+                            </clipPath>
+                            <image
+                              href={node.iconUrl}
+                              x={-ir} y={-ir} width={ir * 2} height={ir * 2}
+                              clipPath={`url(#ability-clip-${node.id})`}
+                              opacity={iconOpacity}
+                              pointerEvents="none"
+                              filter={isA ? 'url(#brighten-allocated)' : 'url(#darken-locked)'}
+                            />
+                          </>
+                        )}
+                        <image
+                          href={frame}
+                          x={-r} y={-r} width={r * 2} height={r * 2}
+                          opacity={isA ? 1 : isP || isSH ? 0.95 : 0.75}
+                          pointerEvents="none"
+                          filter={isA ? 'url(#brighten-allocated)' : 'url(#darken-locked)'}
+                        />
                       </>
                     );
                   })()}
@@ -1037,11 +1197,19 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
         {hovered && (
           <div className="absolute bg-[#12122a]/95 border border-border-subtle rounded-lg p-3 shadow-xl max-w-xs pointer-events-none z-10 backdrop-blur-sm" style={{ left: mousePos.x + 16, top: mousePos.y + 16 }}>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-sm font-bold text-text-primary">{hovered.name}</span>
+              <span
+                className="text-sm font-bold text-text-primary [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white"
+                dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.name) }}
+              />
               <span className="text-[10px] px-1.5 py-0.5 rounded capitalize" style={{ backgroundColor: col + '20', color: col }}>{hovered.nodeType}</span>
             </div>
-            {hovered.description && <p className="text-[11px] text-text-muted mb-1.5">{hovered.description}</p>}
-            <span className="text-[10px]" style={{ color: col }}>Rank {allocated[hovered.id] || 0}/{hovered.maxRank}</span>
+            {hovered.description && (
+              <p
+                className="text-[11px] text-text-muted mb-1.5 [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_i]:italic [&_em]:italic"
+                dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.description) }}
+              />
+            )}
+            {/* Rank display intentionally omitted — talents are single-rank in SoH */}
           </div>
         )}
         {(() => {
@@ -1050,15 +1218,17 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
           const fillOpacity = 0.25 + t * 0.75;
           return (
             <>
-              <div className="absolute bottom-3 right-3 flex items-center gap-0">
+              <div className="absolute bottom-3 left-3 flex items-center gap-1.5">
                 <button
                   onClick={zoomOut}
                   aria-label="Zoom out"
-                  className="w-7 h-7 rotate-45 bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold transition-colors flex items-center justify-center"
+                  className="w-8 h-8 rounded-full bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold text-text-muted hover:text-honor-gold transition-colors flex items-center justify-center"
                 >
-                  <span className="-rotate-45 text-text-muted text-base leading-none">−</span>
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden>
+                    <rect x="3" y="7" width="10" height="2" rx="1" />
+                  </svg>
                 </button>
-                <div className="relative w-20 h-[3px] bg-dark-surface mx-1.5 overflow-hidden">
+                <div className="relative w-20 h-[3px] bg-dark-surface overflow-hidden rounded-full">
                   <div
                     className="absolute top-0 bottom-0 left-0 transition-all duration-200"
                     style={{ width: `${t * 100}%`, background: '#c8a84e', opacity: fillOpacity, boxShadow: `0 0 ${4 + t * 8}px rgba(200,168,78,${fillOpacity})` }}
@@ -1067,17 +1237,26 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                 <button
                   onClick={zoomIn}
                   aria-label="Zoom in"
-                  className="w-7 h-7 rotate-45 bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold transition-colors flex items-center justify-center"
+                  className="w-8 h-8 rounded-full bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold text-text-muted hover:text-honor-gold transition-colors flex items-center justify-center"
                 >
-                  <span className="-rotate-45 text-text-muted text-base leading-none">+</span>
+                  <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden>
+                    <rect x="3" y="7" width="10" height="2" rx="1" />
+                    <rect x="7" y="3" width="2" height="10" rx="1" />
+                  </svg>
                 </button>
               </div>
               <button
                 onClick={resetView}
                 title="Fit to view"
-                className="absolute bottom-3 left-3 w-7 h-7 rotate-45 bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold transition-colors flex items-center justify-center"
+                aria-label="Fit to view"
+                className="absolute bottom-3 right-3 w-8 h-8 rounded-full bg-[#12122a]/90 border border-border-subtle hover:border-honor-gold text-text-muted hover:text-honor-gold transition-colors flex items-center justify-center"
               >
-                <span className="-rotate-45 text-text-muted text-[10px] leading-none">⊡</span>
+                <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M3 6 V3 H6" />
+                  <path d="M13 6 V3 H10" />
+                  <path d="M3 10 V13 H6" />
+                  <path d="M13 10 V13 H10" />
+                </svg>
               </button>
             </>
           );
@@ -1107,12 +1286,24 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             </button>
             {showClassDropdown && (
               <div className="absolute bottom-full mb-2 left-0 bg-[#171b24]/95 border border-[#2a4a64] rounded-lg py-1.5 shadow-2xl backdrop-blur-md w-48">
-                {[...classes].sort((a, b) => a.name.localeCompare(b.name)).map((c) => (
-                  <Link key={c.slug} href={`/talents/${c.slug}`} onClick={() => setShowClassDropdown(false)}
-                    className={`flex items-center gap-2.5 px-4 py-2 text-sm hover:bg-honor-gold/10 transition-colors ${c.slug === gameClass.slug ? 'text-honor-gold' : 'text-text-secondary'}`}>
-                    <img src={c.icon} alt={c.name} className="w-6 h-6" /><span>{c.name}</span>
-                  </Link>
-                ))}
+                {[...classes].sort((a, b) => a.name.localeCompare(b.name)).map((c) => {
+                  const implemented = isClassImplemented(c.slug);
+                  const isCurrent = c.slug === gameClass.slug;
+                  const cls = `flex items-center gap-2.5 px-4 py-2 text-sm transition-colors ${
+                    implemented ? 'hover:bg-honor-gold/10' : 'opacity-40 grayscale cursor-not-allowed'
+                  } ${isCurrent ? 'text-honor-gold' : 'text-text-secondary'}`;
+                  return implemented ? (
+                    <Link key={c.slug} href={`/talents/${c.slug}`} onClick={() => setShowClassDropdown(false)} className={cls}>
+                      <img src={c.icon} alt={c.name} className="w-6 h-6" /><span>{c.name}</span>
+                    </Link>
+                  ) : (
+                    <div key={c.slug} className={cls} title="Talent tree not yet shipped">
+                      <img src={c.icon} alt={c.name} className="w-6 h-6" />
+                      <span>{c.name}</span>
+                      <span className="ml-auto text-[10px] uppercase tracking-wider text-text-muted">soon</span>
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -1274,6 +1465,12 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                 >
                   {saving ? 'Saving...' : 'Save Build'}
                 </button>
+                <button
+                  onClick={() => { setShowSaveModal(false); openExportModal(); }}
+                  className="w-full py-2 bg-[#0f1f2c] border border-[#2a4a64] rounded text-xs font-heading uppercase tracking-wider text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim transition-colors"
+                >
+                  Export as JSON
+                </button>
                 <button onClick={() => setShowSaveModal(false)} className="w-full py-1.5 text-xs text-text-muted hover:text-text-secondary transition-colors">Cancel</button>
               </div>
             )}
@@ -1308,13 +1505,13 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                 </div>
               </button>
               <button
-                onClick={() => { setShowLoadModal(false); setShowImportModal(true); }}
+                onClick={() => { setShowLoadModal(false); setJsonImportText(''); setJsonImportError(null); setShowJsonImportModal(true); }}
                 className="flex items-center gap-3 w-full p-3 bg-dark-surface border border-border-subtle rounded-lg text-sm text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim transition-colors text-left"
               >
-                <span className="text-lg">&#128274;</span>
+                <span className="text-lg">&#128190;</span>
                 <div>
-                  <div className="font-heading text-text-primary">Import via Code</div>
-                  <div className="text-[11px] text-text-muted">Paste a build share code</div>
+                  <div className="font-heading text-text-primary">Import from JSON</div>
+                  <div className="text-[11px] text-text-muted">Paste or upload an exported build file</div>
                 </div>
               </button>
             </div>
@@ -1358,6 +1555,89 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                 className="px-4 py-2 text-xs font-heading uppercase tracking-wider text-[#fffede] bg-scar-red/80 hover:bg-scar-red rounded transition-colors"
               >
                 Refund
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Export build to JSON */}
+      {showExportModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowExportModal(false)}>
+          <div className="bg-deep-night border border-border-subtle rounded-lg p-6 w-full max-w-lg shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-heading text-lg text-honor-gold mb-2">Export Build</h3>
+            <p className="text-sm text-text-muted mb-4">
+              Copy or download this JSON. Anyone can re-import it to load your exact build,
+              equipment, and notes.
+            </p>
+            <textarea
+              readOnly
+              value={exportText}
+              className="w-full h-56 bg-dark-surface border border-border-subtle rounded px-3 py-2 text-xs text-text-secondary font-mono resize-none focus:outline-none focus:border-honor-gold-dim"
+              onFocus={(e) => e.currentTarget.select()}
+            />
+            <div className="flex items-center gap-2 mt-3">
+              <button
+                onClick={copyExport}
+                className="px-4 py-2 bg-honor-gold text-void-black text-xs font-heading uppercase tracking-wider rounded hover:bg-honor-gold-light transition-colors"
+              >
+                {exportCopied ? 'Copied!' : 'Copy JSON'}
+              </button>
+              <button
+                onClick={downloadExport}
+                className="px-4 py-2 bg-[#0f1f2c] border border-[#2a4a64] text-text-secondary text-xs font-heading uppercase tracking-wider rounded hover:text-honor-gold hover:border-honor-gold-dim transition-colors"
+              >
+                Download .json
+              </button>
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="ml-auto px-4 py-2 text-xs font-heading uppercase tracking-wider text-text-muted hover:text-[#fffede] transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import build from JSON (paste or file) */}
+      {showJsonImportModal && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => setShowJsonImportModal(false)}>
+          <div className="bg-deep-night border border-border-subtle rounded-lg p-6 w-full max-w-lg shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <h3 className="font-heading text-lg text-honor-gold mb-2">Import Build</h3>
+            <p className="text-sm text-text-muted mb-4">
+              Paste a JSON export below, or upload a .json file. The build replaces what&apos;s
+              currently on the calculator.
+            </p>
+            <textarea
+              value={jsonImportText}
+              onChange={(e) => { setJsonImportText(e.target.value); setJsonImportError(null); }}
+              placeholder='{"scarshq":"build/v1", ...}'
+              className="w-full h-48 bg-dark-surface border border-border-subtle rounded px-3 py-2 text-xs text-text-primary font-mono resize-none focus:outline-none focus:border-honor-gold-dim placeholder:text-text-muted"
+            />
+            {jsonImportError && <p className="text-xs text-scar-red mt-2">{jsonImportError}</p>}
+            <div className="flex items-center gap-2 mt-3">
+              <label className="px-4 py-2 bg-[#0f1f2c] border border-[#2a4a64] text-text-secondary text-xs font-heading uppercase tracking-wider rounded hover:text-honor-gold hover:border-honor-gold-dim transition-colors cursor-pointer">
+                Upload file
+                <input
+                  type="file"
+                  accept="application/json,.json"
+                  className="hidden"
+                  onChange={(e) => { const f = e.target.files?.[0]; if (f) handleJsonFile(f); e.currentTarget.value = ''; }}
+                />
+              </label>
+              <button
+                onClick={submitJsonImport}
+                disabled={!jsonImportText.trim()}
+                className="px-4 py-2 bg-honor-gold text-void-black text-xs font-heading uppercase tracking-wider rounded hover:bg-honor-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Load
+              </button>
+              <button
+                onClick={() => { setShowJsonImportModal(false); setJsonImportText(''); setJsonImportError(null); }}
+                className="ml-auto px-4 py-2 text-xs font-heading uppercase tracking-wider text-text-muted hover:text-[#fffede] transition-colors"
+              >
+                Cancel
               </button>
             </div>
           </div>

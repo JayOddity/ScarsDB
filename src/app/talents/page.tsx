@@ -38,11 +38,14 @@ export default async function TalentsHubPage({ searchParams }: { searchParams: P
   const lastClass = lastClassCookie && classes.some((c) => c.slug === lastClassCookie) ? lastClassCookie : null;
 
   if (tab === 'Equipment' || tab === 'Scars') {
-    redirect(`/talents/${lastClass ?? 'paladin'}?tab=${encodeURIComponent(tab)}`);
+    redirect(`/talents/${lastClass ?? 'mage'}?tab=${encodeURIComponent(tab)}`);
   }
   if (lastClass) {
     redirect(`/talents/${lastClass}`);
   }
+  // First-time visitor (no cookie, no tab): default to Mage so they see real
+  // datamined content rather than an empty Warrior stub.
+  redirect('/talents/mage');
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8">
       <Suspense fallback={null}>

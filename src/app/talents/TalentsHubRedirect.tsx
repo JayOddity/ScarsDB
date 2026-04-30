@@ -11,14 +11,13 @@ export default function TalentsHubRedirect() {
 
   useEffect(() => {
     const tab = searchParams.get('tab');
-    const tabDefaultsToPaladin = tab === 'Equipment' || tab === 'Scars';
-    let lastClass = tabDefaultsToPaladin ? 'paladin' : 'warrior';
-    if (!tabDefaultsToPaladin) {
-      try {
-        const saved = localStorage.getItem('scarshq-last-class');
-        if (saved) lastClass = saved;
-      } catch {}
-    }
+    // Default to Mage — it's one of the four classes with real datamined data,
+    // so first-time visitors land on a populated tree instead of an empty stub.
+    let lastClass = 'mage';
+    try {
+      const saved = localStorage.getItem('scarshq-last-class');
+      if (saved) lastClass = saved;
+    } catch {}
     const qs = tab ? `?tab=${encodeURIComponent(tab)}` : '';
     router.replace(`/talents/${lastClass}${qs}`);
   }, [router, searchParams]);

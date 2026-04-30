@@ -185,7 +185,11 @@ export default function Header({ siteName, siteAbbrev }: HeaderProps) {
                       <div className="fixed inset-0 z-40" onClick={() => setShowUserMenu(false)} />
                       <div className="absolute top-full right-0 mt-2 w-48 bg-deep-night border border-border-subtle rounded-lg shadow-xl py-2 z-50">
                         <div className="px-4 py-2 border-b border-border-subtle">
-                          <p className="text-sm text-text-primary font-medium truncate">{session.user.name}</p>
+                          <p className="text-sm text-text-primary font-medium truncate">
+                            {(session.user as unknown as Record<string, string>).provider === 'google'
+                              ? 'Google Account'
+                              : session.user.name}
+                          </p>
                           <p className="text-[10px] text-text-muted capitalize">{(session.user as unknown as Record<string, string>).provider}</p>
                         </div>
                         <Link href="/builds?tab=mine" className="block px-4 py-2 text-sm text-text-secondary hover:text-honor-gold hover:bg-dark-surface transition-colors" onClick={() => setShowUserMenu(false)}>

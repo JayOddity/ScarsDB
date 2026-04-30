@@ -4,6 +4,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.scarshq.com' }],
+        destination: 'https://scarshq.com/:path*',
+        permanent: true,
+      },
+      {
         source: '/news',
         destination: '/',
         permanent: true,

@@ -17,7 +17,7 @@ export const user = defineType({
       name: 'provider',
       title: 'Provider',
       type: 'string',
-      options: { list: ['google', 'discord'] },
+      options: { list: ['discord', 'twitch'] },
       readOnly: true,
     }),
     defineField({

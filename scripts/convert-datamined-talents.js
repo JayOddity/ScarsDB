@@ -72,7 +72,7 @@ function convert(cls) {
     return {
       id: n.id,
       dx: Math.round(n.position.x * SCALE),
-      dy: Math.round(n.position.y * SCALE),
+      dy: Math.round(-n.position.y * SCALE),
       nodeType: nodeType(n.frame, n.group),
       name: n.name || `Talent ${n.id}`,
       description: (n.description || '').replace(/^"+|"+$/g, ''),

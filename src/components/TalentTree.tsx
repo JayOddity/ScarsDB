@@ -118,10 +118,10 @@ const FRAME_BY_TYPE: Record<string, string> = {
 };
 const INNER_FRAC: Record<string, number> = {
   start: 0.55,
-  minor: 0.66,
-  major: 0.62,
-  keystone: 0.55,
-  active: 0.74,
+  minor: 0.92,
+  major: 0.87,
+  keystone: 0.77,
+  active: 0.92,
 };
 
 
@@ -148,10 +148,14 @@ function processTalentData(data: RealTalentData) {
   const startNds = data.nodes.filter((n) => n.nodeType === 'start');
   const cx0 = startNds.reduce((s, n) => s + n.dx, 0) / (startNds.length || 1);
   const cy0 = startNds.reduce((s, n) => s + n.dy, 0) / (startNds.length || 1);
+  const maxStartR = Math.max(...startNds.map((n) => Math.hypot(n.dx - cx0, n.dy - cy0)));
+  const targetStartR = maxStartR * 1.4;
   const nodes = data.nodes.map((n) => {
-    if (n.nodeType === 'start') return n;
     const dx = n.dx - cx0, dy = n.dy - cy0, dist = Math.hypot(dx, dy);
     if (dist === 0) return n;
+    if (n.nodeType === 'start') {
+      return { ...n, dx: cx0 + (dx / dist) * targetStartR, dy: cy0 + (dy / dist) * targetStartR };
+    }
     return { ...n, dx: n.dx + (dx / dist) * 100, dy: n.dy + (dy / dist) * 100 };
   });
   let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
@@ -830,13 +834,13 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       const coords = `x1="${a.dx}" y1="${a.dy}" x2="${b.dx}" y2="${b.dy}"`;
 
       if (onPath) {
-        // Highlighting path to pick - orange outer, gap visible (no middle fill)
-        lines.push(`<line ${coords} stroke="#e8922d" stroke-width="10" opacity="0.9" stroke-linecap="round"/>`);
+        // Selecting path - green outer, gap visible (no middle fill)
+        lines.push(`<line ${coords} stroke="#86d8af" stroke-width="10" opacity="0.9" stroke-linecap="round"/>`);
         lines.push(`<line ${coords} stroke="#000000" stroke-width="5" opacity="0.95" stroke-linecap="round"/>`);
       } else if (both) {
-        // Fully selected - soft green outer, darker green middle
-        lines.push(`<line ${coords} stroke="#86d8af" stroke-width="10" opacity="0.8" stroke-linecap="round"/>`);
-        lines.push(`<line ${coords} stroke="#2a5e42" stroke-width="3" opacity="0.9" stroke-linecap="round"/>`);
+        // Locked in - yellow outer, darker amber middle
+        lines.push(`<line ${coords} stroke="#e8c432" stroke-width="10" opacity="0.8" stroke-linecap="round"/>`);
+        lines.push(`<line ${coords} stroke="#7a6418" stroke-width="3" opacity="0.9" stroke-linecap="round"/>`);
 
       } else if (one) {
         // One side allocated - dim
@@ -974,7 +978,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               ].map((scar) => (
                 <div key={scar.name} className="bg-card-bg border border-border-subtle rounded-lg p-5 flex items-start gap-4 hover:border-honor-gold-dim transition-colors">
                   <div className="w-12 h-12 rounded-lg bg-dark-surface border border-border-subtle flex items-center justify-center flex-shrink-0">
-                    <div className="w-3 h-3 bg-honor-gold rotate-45" />
+                    <div className="w-3 h-3 gem-bullet" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-heading text-sm text-text-primary mb-1">{scar.name}</h3>
@@ -1033,15 +1037,15 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             <radialGradient id="ng-m" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor={col} stopOpacity={0.5} /><stop offset="50%" stopColor={col} stopOpacity={0.25} /><stop offset="100%" stopColor={col} stopOpacity={0.08} /></radialGradient>
             <radialGradient id="ng-p" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor={PG} stopOpacity={0.3} /><stop offset="60%" stopColor={PG} stopOpacity={0.1} /><stop offset="100%" stopColor={PG} stopOpacity={0.02} /></radialGradient>
             <radialGradient id="ng-u" cx="50%" cy="50%" r="50%"><stop offset="0%" stopColor="#222233" stopOpacity={0.8} /><stop offset="100%" stopColor="#0a0a12" stopOpacity={0.9} /></radialGradient>
-            <filter id="glow-green" x="-50%" y="-50%" width="200%" height="200%">
+            <filter id="glow-allocated" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="3" result="blur" />
-              <feFlood floodColor={PG} floodOpacity="0.5" result="color" />
+              <feFlood floodColor="#e8c432" floodOpacity="0.5" result="color" />
               <feComposite in="color" in2="blur" operator="in" result="glow" />
               <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
-            <filter id="glow-yellow" x="-50%" y="-50%" width="200%" height="200%">
+            <filter id="glow-selecting" x="-50%" y="-50%" width="200%" height="200%">
               <feGaussianBlur stdDeviation="3" result="blur" />
-              <feFlood floodColor="#e8c432" floodOpacity="0.5" result="color" />
+              <feFlood floodColor={PG} floodOpacity="0.5" result="color" />
               <feComposite in="color" in2="blur" operator="in" result="glow" />
               <feMerge><feMergeNode in="glow" /><feMergeNode in="SourceGraphic" /></feMerge>
             </filter>
@@ -1056,6 +1060,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             </filter>
             <filter id="brighten-allocated" colorInterpolationFilters="sRGB">
               <feColorMatrix type="matrix" values="1.265 0 0 0 0  0 1.265 0 0 0  0 0 1.265 0 0  0 0 0 1 0" />
+            </filter>
+            <filter id="desaturate-frame" colorInterpolationFilters="sRGB">
+              <feColorMatrix type="saturate" values="0.15" />
             </filter>
             <filter id="darken-locked" colorInterpolationFilters="sRGB">
               <feColorMatrix type="matrix" values="0.9 0 0 0 0  0 0.9 0 0 0  0 0 0.9 0 0  0 0 0 1 0" />
@@ -1104,7 +1111,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               druid:   { scale: 1.20, dx: 0.00, dy: 0.00 },
             };
             const a = adj[gameClass.slug] ?? { scale: 1, dx: 0, dy: 0 };
-            const baseScale = hasKeyArt ? 1.125 : 1.2;
+            const baseScale = (hasKeyArt ? 1.125 : 1.2) * 1.1;
             const s = startCircle.r * baseScale * a.scale;
             const ox = a.dx * startCircle.r;
             const oy = a.dy * startCircle.r;
@@ -1130,13 +1137,13 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               const isH = hoveredId === node.id, isP = hoveredPath.has(node.id);
               const isSH = node.nodeType === 'start' && !isA && !hasStartAlloc;
               const r = SIZE[node.nodeType] || 12;
-              const sc = isP ? PG : isSH ? PG : isA ? col : '#d9d9d9';
+              const sc = isP ? PG : isSH ? PG : isA ? '#e8c432' : '#d9d9d9';
               const fi = isM ? 'url(#ng-m)' : isP ? 'url(#ng-p)' : isSH ? 'url(#ng-p)' : isA ? 'url(#ng-a)' : 'url(#ng-u)';
               const sw = isA || isP ? 2 : 1.5;
 
               return (
                 <g key={node.id} data-nid={node.id} transform={`translate(${node.dx},${node.dy})`} className="cursor-pointer">
-                  {isH && !isM && !isP && <circle r={r + 6} fill="none" stroke={isA ? col : '#aaa'} strokeWidth={1} opacity={0.3} />}
+                  {isH && !isM && !isP && <circle r={r + 6} fill="none" stroke={isA ? '#e8c432' : '#aaa'} strokeWidth={1} opacity={0.3} />}
                   {(() => {
                     const frame = FRAME_BY_TYPE[node.nodeType];
                     const ir = r * (INNER_FRAC[node.nodeType] ?? 0.6);
@@ -1147,14 +1154,14 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                         {isSquare ? (
                           <>
                             <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="transparent" />
-                            {isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-green)" />}
-                            {isH && !isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-yellow)" />}
+                            {isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-allocated)" />}
+                            {isH && !isA && <rect x={-r} y={-r} width={r * 2} height={r * 2} fill="none" filter="url(#glow-selecting)" />}
                           </>
                         ) : (
                           <>
                             <circle r={r} fill="transparent" />
-                            {isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-green)" pointerEvents="none" />}
-                            {isH && !isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-yellow)" pointerEvents="none" />}
+                            {isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-allocated)" pointerEvents="none" />}
+                            {isH && !isA && <circle r={r} fill="none" stroke="none" filter="url(#glow-selecting)" pointerEvents="none" />}
                           </>
                         )}
                         {node.iconUrl && (
@@ -1162,7 +1169,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                             <clipPath id={`ability-clip-${node.id}`}>
                               {isSquare
                                 ? <rect x={-ir} y={-ir} width={ir * 2} height={ir * 2} />
-                                : <circle r={ir} />}
+                                : node.nodeType === 'start'
+                                  ? <circle r={ir} />
+                                  : <path d={NOTCHED[node.nodeType]} />}
                             </clipPath>
                             <image
                               href={node.iconUrl}
@@ -1174,12 +1183,24 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                             />
                           </>
                         )}
+                        {node.nodeType === 'start' && isA && (() => {
+                          const dr = r * 0.705;
+                          const ds = r * 0.115;
+                          return (
+                            <>
+                              <path d={`M 0 ${-dr - ds} L ${ds} ${-dr} L 0 ${-dr + ds} L ${-ds} ${-dr} Z`} fill="#e8c432" pointerEvents="none" />
+                              <path d={`M ${dr + ds} 0 L ${dr} ${ds} L ${dr - ds} 0 L ${dr} ${-ds} Z`} fill="#e8c432" pointerEvents="none" />
+                              <path d={`M 0 ${dr + ds} L ${ds} ${dr} L 0 ${dr - ds} L ${-ds} ${dr} Z`} fill="#e8c432" pointerEvents="none" />
+                              <path d={`M ${-dr - ds} 0 L ${-dr} ${ds} L ${-dr + ds} 0 L ${-dr} ${-ds} Z`} fill="#e8c432" pointerEvents="none" />
+                            </>
+                          );
+                        })()}
                         <image
                           href={frame}
                           x={-r} y={-r} width={r * 2} height={r * 2}
                           opacity={isA ? 1 : isP || isSH ? 0.95 : 0.75}
                           pointerEvents="none"
-                          filter={isA ? 'url(#brighten-allocated)' : 'url(#darken-locked)'}
+                          filter={isA ? 'url(#brighten-allocated)' : 'url(#desaturate-frame)'}
                         />
                       </>
                     );

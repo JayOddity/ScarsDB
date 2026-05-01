@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 import PlaytestCountdown from '@/components/PlaytestCountdown';
 
 export const metadata: Metadata = {
-  title: 'Scars of Honor Playtest: April 30 – May 11, 2026 | Dates & Access | ScarsHQ',
-  description: 'Scars of Honor playtest runs April 30 to May 11, 2026 on Steam. All 10 classes, 6 races (Bearan and Gronthar added), Ondall\'s Fall region, world bosses, and PvP. Dungeons not included.',
+  title: 'Scars of Honor Playtest: Apr 30 - May 11, 2026 | ScarsHQ',
+  description: 'Scars of Honor playtest starts April 30, 2026 on Steam and runs through May 11. All 10 classes, 6 races (Bearan and Gronthar new), Ondall\'s Fall, world bosses, PvP. Dungeons not included.',
   openGraph: {
-    title: 'Scars of Honor Playtest: April 30 – May 11, 2026',
-    description: 'Free Steam playtest with all 10 classes, 6 races, world bosses, and PvP. Request access now. Content rolls out in 3 waves.',
+    title: 'Scars of Honor Playtest: Apr 30 - May 11, 2026',
+    description: 'Free Steam playtest. Starts April 30. All 10 classes, 6 races, world bosses, PvP. Content rolls out in 3 waves.',
     url: '/playtest',
     siteName: 'ScarsHQ',
     type: 'website',
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Scars of Honor Playtest: April 30 – May 11, 2026',
-    description: 'Free Steam playtest. 10 classes, 6 races, world bosses, PvP. Request access on Steam now.',
+    title: 'Scars of Honor Playtest: Apr 30 - May 11, 2026',
+    description: 'Free Steam playtest starts April 30. 10 classes, 6 races, world bosses, PvP. Request access on Steam now.',
   },
   alternates: {
     canonical: '/playtest',
@@ -98,7 +98,7 @@ export default function PlaytestPage() {
         <div className="relative max-w-6xl mx-auto">
           <p className="text-xs uppercase tracking-[0.25em] text-honor-gold/70 mb-4">Steam Technical Alpha</p>
           <h1 className="font-heading text-3xl md:text-5xl text-honor-gold mb-4">
-            Spring 2026 Playtest
+            Scars of Honor Playtest
           </h1>
           <p className="text-2xl text-parchment font-heading mb-2">April 30 - May 11, 2026</p>
           <p className="text-text-secondary max-w-3xl mx-auto mb-5">

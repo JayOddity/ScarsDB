@@ -49,6 +49,20 @@ function nodeType(frame, group) {
   return 'minor';
 }
 
+// Known display-breaking errors in the game's English locale. We patch only
+// structural mistakes (stray characters next to bold tags, orphan close tags),
+// not spelling typos — those stay faithful to source.
+const DESC_FIXES = [
+  ['Throws an I<b>Ice Lance</b>', 'Throws an <b>Ice Lance</b>'],
+  ['Ice Lance</b> reduces target Magic Resistance', '<b>Ice Lance</b> reduces target Magic Resistance'],
+];
+
+function fixDescription(desc) {
+  let out = desc;
+  for (const [from, to] of DESC_FIXES) out = out.split(from).join(to);
+  return out;
+}
+
 function convert(cls) {
   const srcPath = path.join(SRC_ROOT, `${cls}.json`);
   if (!fs.existsSync(srcPath)) throw new Error(`Datamined source not found: ${srcPath}`);
@@ -75,7 +89,7 @@ function convert(cls) {
       dy: Math.round(-n.position.y * SCALE),
       nodeType: nodeType(n.frame, n.group),
       name: n.name || `Talent ${n.id}`,
-      description: (n.description || '').replace(/^"+|"+$/g, ''),
+      description: fixDescription((n.description || '').replace(/^"+|"+$/g, '')),
       maxRank: 1,
       iconUrl,
     };

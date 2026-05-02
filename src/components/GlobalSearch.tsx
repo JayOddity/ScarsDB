@@ -85,7 +85,7 @@ export default function GlobalSearch() {
     }
   }, [open]);
 
-  // Search
+  // Search — local results render immediately; remote fetches debounced 220ms
   useEffect(() => {
     if (query.trim().length < 3) {
       setResults([]);
@@ -111,43 +111,47 @@ export default function GlobalSearch() {
     const controller = new AbortController();
     const signal = controller.signal;
 
-    Promise.all([
-      fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal }).then((r) => r.json()).catch(() => ({ results: [] })),
-      fetch(`/api/items?search=${encodeURIComponent(query)}&per_page=5`, { signal }).then((r) => r.json()).catch(() => ({ items: [] })),
-    ]).then(([sanityData, itemData]) => {
-      setResults((prev) => {
-        const existing = new Set(prev.map((r) => r.href));
-        const newResults: SearchResult[] = [];
+    const timer = window.setTimeout(() => {
+      Promise.all([
+        fetch(`/api/search?q=${encodeURIComponent(query)}`, { signal }).then((r) => r.json()).catch(() => ({ results: [] })),
+        fetch(`/api/items?search=${encodeURIComponent(query)}&per_page=5`, { signal }).then((r) => r.json()).catch(() => ({ items: [] })),
+      ]).then(([sanityData, itemData]) => {
+        if (signal.aborted) return;
+        setResults((prev) => {
+          const existing = new Set(prev.map((r) => r.href));
+          const newResults: SearchResult[] = [];
 
-        if (sanityData.results?.length) {
-          for (const r of sanityData.results) {
-            if (!existing.has(r.href)) {
-              newResults.push(r);
-              existing.add(r.href);
+          if (sanityData.results?.length) {
+            for (const r of sanityData.results) {
+              if (!existing.has(r.href)) {
+                newResults.push(r);
+                existing.add(r.href);
+              }
             }
           }
-        }
 
-        if (itemData.items?.length) {
-          for (const item of itemData.items) {
-            const href = item.slug ? `/database/${item.slug}` : `/items/${item.id}`;
-            if (!existing.has(href)) {
-              newResults.push({
-                type: 'item',
-                name: item.name,
-                description: [item.rarity, item.type, item.slot_type].filter(Boolean).join(' · '),
-                href,
-              });
-              existing.add(href);
+          if (itemData.items?.length) {
+            for (const item of itemData.items) {
+              const href = item.slug ? `/database/${item.slug}` : `/items/${item.id}`;
+              if (!existing.has(href)) {
+                newResults.push({
+                  type: 'item',
+                  name: item.name,
+                  description: [item.rarity, item.type, item.slot_type].filter(Boolean).join(' · '),
+                  href,
+                });
+                existing.add(href);
+              }
             }
           }
-        }
 
-        const viewAllLink = prev[prev.length - 1];
-        return [...prev.slice(0, -1), ...newResults, viewAllLink].slice(0, 15);
+          const viewAllLink = prev[prev.length - 1];
+          return [...prev.slice(0, -1), ...newResults, viewAllLink].slice(0, 15);
+        });
       });
-    });
-    return () => controller.abort();
+    }, 220);
+
+    return () => { window.clearTimeout(timer); controller.abort(); };
   }, [query]);
 
   const navigate = useCallback((result: SearchResult) => {

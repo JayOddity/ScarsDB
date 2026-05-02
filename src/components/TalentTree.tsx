@@ -40,7 +40,7 @@ interface TalentNode {
 }
 interface TalentEdge { from: number; to: number; }
 
-const SIZE: Record<string, number> = { start: 44, minor: 27, major: 36, keystone: 47, active: 34 };
+const SIZE: Record<string, number> = { start: 38, minor: 23, major: 31, keystone: 41, active: 29 };
 
 function encodeAlloc(a: Record<number, number>): string {
   const e = Object.entries(a).filter(([, v]) => v > 0);
@@ -150,12 +150,13 @@ interface TalentTreeProps {
 }
 
 function processTalentData(data: RealTalentData) {
+  const SPREAD = 1.0;
   const startNds = data.nodes.filter((n) => n.nodeType === 'start');
   const cx0 = startNds.reduce((s, n) => s + n.dx, 0) / (startNds.length || 1);
   const cy0 = startNds.reduce((s, n) => s + n.dy, 0) / (startNds.length || 1);
   const maxStartR = Math.max(...startNds.map((n) => Math.hypot(n.dx - cx0, n.dy - cy0)));
   const targetStartR = maxStartR * 1.4;
-  const nodes = data.nodes.map((n) => {
+  const preNodes = data.nodes.map((n) => {
     const dx = n.dx - cx0, dy = n.dy - cy0, dist = Math.hypot(dx, dy);
     if (dist === 0) return n;
     if (n.nodeType === 'start') {
@@ -163,8 +164,16 @@ function processTalentData(data: RealTalentData) {
     }
     return { ...n, dx: n.dx + (dx / dist) * 100, dy: n.dy + (dy / dist) * 100 };
   });
+  // Spread positions outward from centroid. Camera bounds are computed from the
+  // PRE-spread positions so the camera doesn't zoom out to compensate — net effect
+  // is that nodes actually look further apart at the default fit.
+  const nodes = preNodes.map((n) => ({
+    ...n,
+    dx: cx0 + (n.dx - cx0) * SPREAD,
+    dy: cy0 + (n.dy - cy0) * SPREAD,
+  }));
   let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-  for (const n of data.nodes) { minX = Math.min(minX, n.dx); maxX = Math.max(maxX, n.dx); minY = Math.min(minY, n.dy); maxY = Math.max(maxY, n.dy); }
+  for (const n of preNodes) { minX = Math.min(minX, n.dx); maxX = Math.max(maxX, n.dx); minY = Math.min(minY, n.dy); maxY = Math.max(maxY, n.dy); }
   const bounds = { minX, maxX, minY, maxY };
   const camera = { cx: (minX + maxX) / 2, cy: (minY + maxY) / 2, zoom: Math.min(4000 / (maxX - minX + 400), 3000 / (maxY - minY + 400)) };
   return { nodes, edges: data.connections, accentColor: data.accentColor, bounds, camera };
@@ -179,7 +188,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const [allocated, setAllocated] = useState<Record<number, number>>({});
   const [history, setHistory] = useState<Record<number, number>[]>([]);
   const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const tooltipMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const tooltipRafRef = useRef<number>(0);
   const [copied, setCopied] = useState(false);
   const [savedBuildExists, setSavedBuildExists] = useState(false);
   const [cloudCode, setCloudCode] = useState<string | null>(null);
@@ -482,19 +493,27 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     });
   }
 
-  const handleNodeHover = useCallback((e: React.MouseEvent) => {
-    const nid = getNodeId(e.target as Element);
-    setHoveredId(nid);
-    if (nid != null && containerRef.current) {
-      const r = containerRef.current.getBoundingClientRect();
-      setMousePos({ x: e.clientX - r.left, y: e.clientY - r.top });
-    }
-  }, []);
-  const handleNodeMouseMove = useCallback((e: React.MouseEvent) => {
+  const updateTooltipPos = useCallback((clientX: number, clientY: number) => {
     if (!containerRef.current) return;
     const r = containerRef.current.getBoundingClientRect();
-    setMousePos({ x: e.clientX - r.left, y: e.clientY - r.top });
+    tooltipMouseRef.current = { x: clientX - r.left, y: clientY - r.top };
+    if (tooltipRafRef.current) return;
+    tooltipRafRef.current = requestAnimationFrame(() => {
+      tooltipRafRef.current = 0;
+      const el = tooltipRef.current;
+      if (!el) return;
+      el.style.left = `${tooltipMouseRef.current.x + 16}px`;
+      el.style.top = `${tooltipMouseRef.current.y + 16}px`;
+    });
   }, []);
+  const handleNodeHover = useCallback((e: React.MouseEvent) => {
+    const nid = getNodeId(e.target as Element);
+    setHoveredId((prev) => (prev === nid ? prev : nid));
+    if (nid != null) updateTooltipPos(e.clientX, e.clientY);
+  }, [updateTooltipPos]);
+  const handleNodeMouseMove = useCallback((e: React.MouseEvent) => {
+    updateTooltipPos(e.clientX, e.clientY);
+  }, [updateTooltipPos]);
 
   function reset() { setAllocated({}); setBuildEquipment({}); }
   function resetView() {
@@ -756,7 +775,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       e.preventDefault(); e.stopPropagation();
       const factor = e.deltaY > 0 ? 0.88 : 1.14;
       const base = zoomTargetRef.current || cameraRef.current;
-      const newZoom = Math.max(0.15, Math.min(15, base.zoom * factor));
+      const newZoom = Math.max(0.41, Math.min(15, base.zoom * factor));
       const svg = svgRef.current;
       if (svg) {
         const rect = svg.getBoundingClientRect();
@@ -812,13 +831,19 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   }, [loading]);
 
   function zoomIn() { const b = zoomTargetRef.current || camera; animateZoom({ ...b, zoom: Math.min(15, b.zoom * 1.3) }); }
-  function zoomOut() { const b = zoomTargetRef.current || camera; animateZoom({ ...b, zoom: Math.max(0.15, b.zoom * 0.7) }); }
+  function zoomOut() { const b = zoomTargetRef.current || camera; animateZoom({ ...b, zoom: Math.max(0.41, b.zoom * 0.7) }); }
 
   const hovered = hoveredId != null ? nodeMap.get(hoveredId) ?? null : null;
   const col = accentColor;
   const allocatedNodes = useMemo(() => nodes.filter((n) => (allocated[n.id] || 0) > 0), [nodes, allocated]);
 
-  const searchQuery = !readOnly ? talentSearch.trim().toLowerCase() : '';
+  // Debounce the search query so 303-node re-renders don't fire on every keystroke
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  useEffect(() => {
+    const t = window.setTimeout(() => setDebouncedSearch(talentSearch), 140);
+    return () => window.clearTimeout(t);
+  }, [talentSearch]);
+  const searchQuery = !readOnly ? debouncedSearch.trim().toLowerCase() : '';
   const searchMatchIds = useMemo(() => {
     if (!searchQuery) return null;
     const ids = new Set<number>();
@@ -939,7 +964,8 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
           {showTalentSearch && talentSearch.trim() && (
             <div className="absolute top-full right-0 mt-2 w-72 bg-[#171b24] border border-border-subtle rounded-lg shadow-xl p-2 z-40 max-h-64 overflow-y-auto">
               {(() => {
-                const q = talentSearch.trim().toLowerCase();
+                const q = debouncedSearch.trim().toLowerCase();
+                if (!q) return null;
                 const matches = nodes.filter((n) => n.name && stripTalentTags(n.name).toLowerCase().includes(q));
                 if (matches.length === 0) {
                   return <div className="px-3 py-2 text-sm text-text-muted">No talents found.</div>;
@@ -1194,9 +1220,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                               href={node.iconUrl}
                               x={-ir} y={-ir} width={ir * 2} height={ir * 2}
                               clipPath={`url(#ability-clip-${node.id})`}
-                              opacity={iconOpacity}
+                              opacity={isA ? iconOpacity : iconOpacity * 0.9}
                               pointerEvents="none"
-                              filter={isA ? 'url(#brighten-allocated)' : 'url(#darken-locked)'}
+                              filter={isA ? 'url(#brighten-allocated)' : undefined}
                             />
                           </>
                         )}
@@ -1233,25 +1259,51 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
         {/* Tooltip */}
         {hovered && (
-          <div className="absolute bg-[#12122a]/95 border border-border-subtle rounded-lg p-3 shadow-xl max-w-xs pointer-events-none z-10 backdrop-blur-sm" style={{ left: mousePos.x + 16, top: mousePos.y + 16 }}>
-            <div className="flex items-center gap-2 mb-1">
+          <div
+            ref={tooltipRef}
+            className="absolute pointer-events-none z-10"
+            style={{
+              left: tooltipMouseRef.current.x + 16,
+              top: tooltipMouseRef.current.y + 16,
+              maxWidth: '366px',
+              background: '#0a0a10',
+              borderStyle: 'solid',
+              borderWidth: '4px',
+              borderColor: 'transparent',
+              borderImageSource: 'url(/Icons/UI/tooltip-spells-bg.png)',
+              borderImageSlice: 4,
+              borderImageWidth: '4px',
+              borderImageRepeat: 'stretch',
+              padding: '11px 14px',
+            }}
+          >
+            <div
+              aria-hidden
+              className="absolute left-0 right-0 top-0 h-[32px] pointer-events-none"
+              style={{
+                backgroundImage: 'url(/Icons/UI/tooltip-top-background.png)',
+                backgroundSize: '100% 100%',
+                opacity: 0.3,
+                mixBlendMode: 'screen',
+              }}
+            />
+            <div className="relative flex items-center gap-2 mb-1">
               <span
-                className="text-sm font-bold text-text-primary [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white"
+                className="text-[16px] font-bold text-[#fffede] leading-tight [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white"
                 dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.name) }}
               />
-              <span className="text-[10px] px-1.5 py-0.5 rounded capitalize" style={{ backgroundColor: col + '20', color: col }}>{hovered.nodeType}</span>
+              <span className="text-[11px] px-1.5 py-0.5 rounded capitalize" style={{ backgroundColor: col + '20', color: col }}>{hovered.nodeType}</span>
             </div>
             {hovered.description && (
               <p
-                className="text-[11px] text-text-muted mb-1.5 [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_i]:italic [&_em]:italic"
+                className="relative text-[13px] text-text-muted leading-snug [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_i]:italic [&_em]:italic"
                 dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.description) }}
               />
             )}
-            {/* Rank display intentionally omitted — talents are single-rank in SoH */}
           </div>
         )}
         {(() => {
-          const minZ = 0.15, maxZ = 15;
+          const minZ = 0.41, maxZ = 15;
           const t = Math.max(0, Math.min(1, (Math.log(camera.zoom) - Math.log(minZ)) / (Math.log(maxZ) - Math.log(minZ))));
           const fillOpacity = 0.25 + t * 0.75;
           return (

@@ -4,20 +4,12 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Item, StatModification } from '@/lib/api';
-import { rarityColorClass, rarityBorderClass, rarityGlowClass, rarityBgClass } from '@/lib/rarityStyles';
+import type { Item } from '@/lib/api';
+import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
+import ItemTooltipPanel from './ItemTooltipPanel';
 
 const RARITIES = ['Common', 'Rare', 'Epic', 'Legendary'] as const;
 
-const RARITY_HEX: Record<string, string> = {
-  Common: '#9d9d9d',
-  Rare: '#4a8ff7',
-  Epic: '#a855f7',
-  Legendary: '#f59e0b',
-};
-function rarityHex(r?: string) {
-  return RARITY_HEX[r || ''] || '#6b7280';
-}
 
 interface ApiMeta {
   total: number;
@@ -36,198 +28,7 @@ const CATEGORIES_MAP: Record<string, { label: string; slots?: string[]; types?: 
   other: { label: 'Other', types: ['Mount Equipment', 'Valuables'] },
 };
 
-// --- Detail Panel Component ---
-// Process a stat list: combine Weapon Min/Max Damage into a single "Damage" line
-function processStatList(mods: StatModification[]) {
-  const minDmg = mods.find((m) => m.stat === 'Weapon Min Damage');
-  const maxDmg = mods.find((m) => m.stat === 'Weapon Max Damage');
-  const rest = mods.filter((m) => m.stat !== 'Weapon Min Damage' && m.stat !== 'Weapon Max Damage');
-
-  const processed: { label: string; min: number; max: number; type: string }[] = [];
-
-  if (minDmg && maxDmg) {
-    const lo = parseFloat(minDmg.modif_min_value) || 0;
-    const hi = parseFloat(maxDmg.modif_max_value) || 0;
-    processed.push({ label: 'Damage', min: lo, max: hi, type: 'Flat' });
-  } else {
-    // If only one damage stat, show it as-is
-    if (minDmg) rest.unshift(minDmg);
-    if (maxDmg) rest.unshift(maxDmg);
-  }
-
-  for (const mod of rest) {
-    processed.push({
-      label: mod.stat,
-      min: parseFloat(mod.modif_min_value) || 0,
-      max: parseFloat(mod.modif_max_value) || 0,
-      type: mod.modif_type,
-    });
-  }
-
-  return processed;
-}
-
-const POOL_LABELS = ['Base Stats', 'Stat Pool 2', 'Stat Pool 3', 'Stat Pool 4'];
-const POOL_COLORS = [
-  { bar: 'bg-honor-gold', barDim: 'bg-honor-gold/30' },
-  { bar: 'bg-rarity-rare', barDim: 'bg-rarity-rare/30' },
-  { bar: 'bg-rarity-epic', barDim: 'bg-rarity-epic/30' },
-  { bar: 'bg-rarity-legendary', barDim: 'bg-rarity-legendary/30' },
-];
-
-function ItemDetailPanel({ item }: { item: Item }) {
-  const lists = item.stat_configuration?.lists || [];
-  const hex = rarityHex(item.rarity);
-
-  return (
-    <div
-      className="detail-panel-enter relative overflow-hidden"
-      style={{
-        backgroundColor: '#1a1a1a',
-        backgroundImage: 'url(/Icons/UI/tooltip-item-bg.png)',
-        backgroundSize: '100% 100%',
-        border: `1.5px solid ${hex}`,
-        borderRadius: '4px',
-        boxShadow: `0 0 24px ${hex}33, 0 6px 24px rgba(0,0,0,0.7)`,
-      }}
-    >
-      {/* Rarity colour sweep — sits in the top strip only, above the content via z-index 0. */}
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-[14px] pointer-events-none z-0"
-        style={{
-          background: `linear-gradient(to bottom, ${hex}cc 0%, ${hex}55 60%, transparent 100%)`,
-        }}
-      />
-
-      <div className="relative z-10 p-4">
-        {/* Item header */}
-        <div className="flex items-start gap-4 mb-4">
-          <div
-            className={`w-16 h-16 rounded border-2 ${rarityBorderClass[item.rarity]} ${rarityGlowClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}
-          >
-            {item.icon && !item.icon.includes('placehold') ? (
-              <Image src={item.icon} alt={item.name} width={64} height={64} className="object-cover w-full h-full" />
-            ) : (
-              <span className="text-lg text-text-muted">?</span>
-            )}
-          </div>
-          <div className="min-w-0">
-            <Link
-              href={item.slug ? `/database/${item.slug}` : `/items/${item.id}`}
-              className={`font-heading text-lg leading-tight hover:underline block ${rarityColorClass[item.rarity]}`}
-            >
-              {item.name}
-            </Link>
-            <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-              <span className={`text-xs px-2 py-0.5 rounded ${rarityBgClass[item.rarity]} ${rarityColorClass[item.rarity]}`}>
-                {item.rarity}
-              </span>
-              {item.type && (
-                <span className="text-xs text-text-muted">{item.type}</span>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Slot */}
-        {item.slot_type && (
-          <div className="flex items-center gap-2 mb-3 text-sm">
-            <span className="text-text-muted">Slot</span>
-            <span className="text-text-secondary">{item.slot_type}</span>
-          </div>
-        )}
-
-        {/* Stat Pools */}
-        {lists.map((list, li) => {
-          const processed = processStatList(list.modifications);
-          if (!processed.length) return null;
-          const maxVal = Math.max(...processed.map((s) => s.max), 1);
-          const colors = POOL_COLORS[li] || POOL_COLORS[0];
-
-          return (
-            <div key={li} className={li > 0 ? 'mt-3 pt-3' : ''}>
-              {li > 0 && (
-                <div
-                  className="absolute left-4 right-4 -mt-3 h-[2px] pointer-events-none"
-                  style={{ backgroundImage: 'url(/Icons/UI/tooltip-stat-row-gradient.png)', backgroundSize: '100% 100%' }}
-                />
-              )}
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-text-muted uppercase tracking-wider">{POOL_LABELS[li] || `Stat Pool ${li + 1}`}</span>
-                <span className="text-xs text-text-muted">
-                  {list.min_stat_count === list.max_stat_count
-                    ? `${list.min_stat_count} fixed`
-                    : `${list.min_stat_count}–${list.max_stat_count} rolls`}
-                </span>
-              </div>
-              {processed.map((stat, si) => {
-                const fillPercent = (stat.max / maxVal) * 100;
-                const minPercent = (stat.min / maxVal) * 100;
-                return (
-                  <div key={si}>
-                    <div className="flex items-center justify-between py-1 px-1">
-                      <span className="text-sm text-text-primary flex items-center gap-2">
-                        <img src="/Icons/UI/tooltip-stat-bullet.png" alt="" aria-hidden className="w-2.5 h-2.5 opacity-80" />
-                        {stat.label}
-                      </span>
-                      <span className="text-sm text-honor-gold font-medium ml-2 flex-shrink-0">
-                        {stat.min === stat.max ? `+${stat.min}` : `${stat.min} – ${stat.max}`}
-                      </span>
-                    </div>
-                    <div className="mx-1 mb-1">
-                      <div className="h-1.5 bg-dark-surface rounded-full overflow-hidden relative">
-                        <div
-                          className={`absolute inset-y-0 left-0 ${colors.barDim} rounded-full stat-bar-fill`}
-                          style={{ width: `${fillPercent}%`, animationDelay: `${(li * 5 + si) * 60}ms` }}
-                        />
-                        <div
-                          className={`absolute inset-y-0 left-0 ${colors.bar} rounded-full stat-bar-fill`}
-                          style={{ width: `${minPercent}%`, animationDelay: `${(li * 5 + si) * 60}ms` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-
-        {/* Details grid */}
-        {(item.sell_value > 0 || item.stack_size > 1) && (
-          <div
-            className="mt-4 pt-3 relative"
-            style={{
-              backgroundImage: 'url(/Icons/UI/tooltip-stat-row-gradient.png)',
-              backgroundSize: '100% 2px',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'top',
-            }}
-          >
-            <div className="flex gap-4 text-sm">
-              {item.sell_value > 0 && (
-                <div>
-                  <span className="text-text-muted text-xs">Sell Value</span>
-                  <p className="text-text-primary">{item.sell_value}g</p>
-                </div>
-              )}
-              {item.stack_size > 1 && (
-                <div>
-                  <span className="text-text-muted text-xs">Stack</span>
-                  <p className="text-text-primary">{item.stack_size}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Click hint */}
-        <p className="mt-3 text-center text-xs text-text-muted">Click item to view full page</p>
-      </div>
-    </div>
-  );
-}
+// Hover panel uses the shared ItemTooltipPanel.
 
 // --- Hover Panel (measures its own height to stay on screen) ---
 function HoverPanel({ item, mousePos }: { item: Item; mousePos: { x: number; y: number } }) {
@@ -255,7 +56,7 @@ function HoverPanel({ item, mousePos }: { item: Item; mousePos: { x: number; y: 
       className="hidden lg:block fixed w-[340px] z-50 pointer-events-none"
       style={{ left: `${pos.left}px`, top: `${pos.top}px` }}
     >
-      <ItemDetailPanel item={item} />
+      <ItemTooltipPanel item={item} />
     </div>
   );
 }

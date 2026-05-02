@@ -1,21 +1,12 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { sanityClient } from '@/lib/sanity';
 import type { Item } from '@/lib/api';
+import { ITEM_PROJECTION } from '@/lib/itemQueries';
 import TrackView from '@/components/TrackView';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+import ItemTooltipPanel from '@/components/ItemTooltipPanel';
 import { classes } from '@/data/classes';
-import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
-
-const RARITY_HEX: Record<string, string> = {
-  Common: '#9d9d9d',
-  Rare: '#4a8ff7',
-  Epic: '#a855f7',
-  Legendary: '#f59e0b',
-};
-function rarityHex(r?: string) {
-  return RARITY_HEX[r || ''] || '#6b7280';
-}
+import { rarityColorClass } from '@/lib/rarityStyles';
 
 const classMap = new Map(classes.map((c) => [c.slug, c]));
 
@@ -76,36 +67,12 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
 
   let item: Item;
   try {
-    item = await sanityClient.fetch<Item>(
-      `*[_type == "item" && slug.current == $slug][0] {
-        "id": externalId,
-        "slug": slug.current,
-        name,
-        "type": itemType,
-        rarity,
-        icon,
-        "slot_type": slotType,
-        "stack_size": stackSize,
-        "sell_value": sellValue,
-        "is_destructible": isDestructible,
-        "updated_at": _updatedAt,
-        "stat_configuration": select(
-          defined(statLists) && length(statLists) > 0 => {
-            "lists": statLists[] {
-              "min_stat_count": minStatCount,
-              "max_stat_count": maxStatCount,
-              "modifications": modifications[] {
-                "stat": stat,
-                "modif_type": modifType,
-                "modif_weight": modifWeight,
-                "modif_min_value": minValue,
-                "modif_max_value": maxValue
-              }
-            }
-          },
-          null
-        )
-      }`,
+    // Reuse the same projection as /api/items so the detail page reads from the
+    // populated `stats[]` field (the schema's `statLists[]` is empty for every
+    // item — it was added later but never backfilled). This also keeps the
+    // shape identical to what the hover panel renders.
+    item = await sanityClient.fetch<Item & { updated_at?: string }>(
+      `*[_type == "item" && slug.current == $slug][0] ${ITEM_PROJECTION.replace(/\}$/, ', "updated_at": _updatedAt }')}`,
       { slug }
     );
     if (!item) throw new Error('Not found');
@@ -140,184 +107,45 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
         <span className={rarityColorClass[item.rarity]}>{item.name}</span>
       </nav>
 
-      {/* Item Header — in-game item tooltip styling */}
-      {(() => {
-        const hex = rarityHex(item.rarity);
-        return (
-          <div
-            className="relative mb-8 overflow-hidden"
-            style={{
-              backgroundColor: '#1a1a1a',
-              backgroundImage: 'url(/Icons/UI/tooltip-item-bg.png)',
-              backgroundSize: '100% 100%',
-              border: `1.5px solid ${hex}`,
-              borderRadius: '4px',
-              boxShadow: `0 0 28px ${hex}33, 0 8px 28px rgba(0,0,0,0.7)`,
-            }}
-          >
-            <div
-              aria-hidden
-              className="absolute inset-x-0 top-0 h-[18px] pointer-events-none z-0"
-              style={{ background: `linear-gradient(to bottom, ${hex}cc 0%, ${hex}55 60%, transparent 100%)` }}
-            />
-            <div className="relative z-10 p-8">
-              <div className="flex items-start gap-6">
-                <div className={`w-24 h-24 rounded border-2 ${rarityBorderClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}>
-                  {item.icon && !item.icon.includes('placehold') ? (
-                    <Image src={item.icon} alt={item.name} width={96} height={96} className="object-cover w-full h-full" />
-                  ) : (
-                    <span className="text-2xl text-text-muted">?</span>
-                  )}
-                </div>
-                <div>
-                  <h1 className={`font-heading text-2xl md:text-3xl mb-2 ${rarityColorClass[item.rarity]}`}>
-                    {item.name}
-                  </h1>
-                  <div className="flex flex-wrap gap-3 text-sm">
-                    <span className="px-2 py-1 rounded bg-dark-surface text-text-secondary">{item.type}</span>
-                    <span className={`px-2 py-1 rounded bg-dark-surface ${rarityColorClass[item.rarity]}`}>{item.rarity}</span>
-                    {item.slot_type && (
-                      <span className="px-2 py-1 rounded bg-dark-surface text-text-secondary">{item.slot_type}</span>
-                    )}
-                  </div>
-                </div>
+      <div className="grid lg:grid-cols-[340px_1fr] gap-8 items-start">
+        {/* Left column: in-game tooltip card. Sticks on lg+ so it stays visible while scrolling the right side. */}
+        <aside className="lg:sticky lg:top-24">
+          <ItemTooltipPanel item={item} linkable={false} size="lg" />
+        </aside>
+
+        {/* Right column: meta details + builds using this item. Header/stats live in the tooltip on the left. */}
+        <div>
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-8">
+            <h2 className="font-heading text-lg text-honor-gold mb-4">Details</h2>
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <span className="text-text-muted">Sell Value</span>
+                <p className="text-text-primary">{item.sell_value > 0 ? `${item.sell_value} gold` : 'Cannot be sold'}</p>
+              </div>
+              <div>
+                <span className="text-text-muted">Stack Size</span>
+                <p className="text-text-primary">{item.stack_size}</p>
+              </div>
+              <div>
+                <span className="text-text-muted">Destructible</span>
+                <p className="text-text-primary">{item.is_destructible ? 'Yes' : 'No'}</p>
+              </div>
+              <div>
+                <span className="text-text-muted">Last Updated</span>
+                <p className="text-text-primary">{new Date(item.updated_at).toLocaleDateString()}</p>
               </div>
             </div>
           </div>
-        );
-      })()}
 
-      {/* Stats */}
-      {item.stat_configuration?.lists?.length ? (
-        <div
-          className="mb-8 relative overflow-hidden p-6"
-          style={{
-            backgroundColor: '#1a1a1a',
-            backgroundImage: 'url(/Icons/UI/tooltip-item-bg.png)',
-            backgroundSize: '100% 100%',
-            border: `1px solid ${rarityHex(item.rarity)}66`,
-            borderRadius: '4px',
-          }}
-        >
-          <h2 className="font-heading text-lg text-honor-gold mb-4">Stats</h2>
-          {item.stat_configuration.lists.map((list, li) => {
-            const minDmg = list.modifications.find((m) => m.stat === 'Weapon Min Damage');
-            const maxDmg = list.modifications.find((m) => m.stat === 'Weapon Max Damage');
-            const rest = list.modifications.filter((m) => m.stat !== 'Weapon Min Damage' && m.stat !== 'Weapon Max Damage');
-
-            type ProcessedStat = { label: string; min: number; max: number; type: string };
-            const processed: ProcessedStat[] = [];
-
-            if (minDmg && maxDmg) {
-              processed.push({
-                label: 'Damage',
-                min: parseFloat(minDmg.modif_min_value) || 0,
-                max: parseFloat(maxDmg.modif_max_value) || 0,
-                type: 'Damage',
-              });
-            } else {
-              if (minDmg) rest.unshift(minDmg);
-              if (maxDmg) rest.unshift(maxDmg);
-            }
-
-            for (const mod of rest) {
-              processed.push({
-                label: mod.stat,
-                min: parseFloat(mod.modif_min_value) || 0,
-                max: parseFloat(mod.modif_max_value) || 0,
-                type: mod.modif_type,
-              });
-            }
-
-            const totalPools = item.stat_configuration?.lists.length || 1;
-            const isFirstPool = li === 0;
-            const poolLabel = totalPools === 1 ? 'Stats' : isFirstPool ? 'Base Stats' : `Bonus Pool ${li}`;
-            const totalStats = list.modifications.length;
-            const rollLabel =
-              list.min_stat_count === list.max_stat_count
-                ? list.min_stat_count === totalStats
-                  ? 'All guaranteed'
-                  : `Rolls ${list.min_stat_count} of ${totalStats}`
-                : `Rolls ${list.min_stat_count}–${list.max_stat_count} of ${totalStats}`;
-
-            const formatValue = (val: number, type: string) => {
-              const isPercent = type === 'Percentage' || type === 'Percent';
-              const rounded = Number.isInteger(val) ? val : Math.round(val * 100) / 100;
-              return `${rounded}${isPercent ? '%' : ''}`;
-            };
-            const formatRange = (stat: ProcessedStat) => {
-              if (stat.type === 'Damage') {
-                return `${formatValue(stat.min, 'Flat')} – ${formatValue(stat.max, 'Flat')}`;
-              }
-              const sign = stat.min >= 0 ? '+' : '';
-              if (stat.min === stat.max) return `${sign}${formatValue(stat.min, stat.type)}`;
-              return `${sign}${formatValue(stat.min, stat.type)} – ${formatValue(stat.max, stat.type)}`;
-            };
-
-            return (
-              <div key={li} className={li > 0 ? 'mt-6 pt-6 border-t border-border-subtle/50' : ''}>
-                <div className="flex items-baseline justify-between mb-3">
-                  <span className="text-sm text-text-secondary font-heading uppercase tracking-wider">{poolLabel}</span>
-                  <span className="text-xs text-text-muted">{rollLabel}</span>
-                </div>
-                <ul>
-                  {processed.map((stat, si) => (
-                    <li
-                      key={si}
-                      className="flex items-center justify-between py-2.5"
-                      style={si > 0 ? {
-                        backgroundImage: 'url(/Icons/UI/tooltip-stat-row-gradient.png)',
-                        backgroundSize: '100% 1px',
-                        backgroundRepeat: 'no-repeat',
-                        backgroundPosition: 'top',
-                      } : undefined}
-                    >
-                      <span className="text-sm text-text-primary flex items-center gap-2">
-                        <img src="/Icons/UI/tooltip-stat-bullet.png" alt="" aria-hidden className="w-3 h-3 opacity-80" />
-                        {stat.label}
-                      </span>
-                      <span className="text-sm text-honor-gold font-medium tabular-nums">{formatRange(stat)}</span>
-                    </li>
-                  ))}
-                </ul>
+          {buildsUsing.length > 0 && (
+            <section className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="font-heading text-lg text-honor-gold">Builds using this item</h2>
+                <Link href="/builds" className="text-xs text-text-muted hover:text-honor-gold transition-colors">
+                  All builds &rarr;
+                </Link>
               </div>
-            );
-          })}
-        </div>
-      ) : null}
-
-      {/* Info */}
-      <div className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-8">
-        <h2 className="font-heading text-lg text-honor-gold mb-4">Details</h2>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <span className="text-text-muted">Sell Value</span>
-            <p className="text-text-primary">{item.sell_value > 0 ? `${item.sell_value} gold` : 'Cannot be sold'}</p>
-          </div>
-          <div>
-            <span className="text-text-muted">Stack Size</span>
-            <p className="text-text-primary">{item.stack_size}</p>
-          </div>
-          <div>
-            <span className="text-text-muted">Destructible</span>
-            <p className="text-text-primary">{item.is_destructible ? 'Yes' : 'No'}</p>
-          </div>
-          <div>
-            <span className="text-text-muted">Last Updated</span>
-            <p className="text-text-primary">{new Date(item.updated_at).toLocaleDateString()}</p>
-          </div>
-        </div>
-      </div>
-
-      {buildsUsing.length > 0 && (
-        <section className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="font-heading text-lg text-honor-gold">Builds using this item</h2>
-            <Link href="/builds" className="text-xs text-text-muted hover:text-honor-gold transition-colors">
-              All builds &rarr;
-            </Link>
-          </div>
-          <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid sm:grid-cols-2 gap-3">
             {buildsUsing.map((build) => {
               const cls = classMap.get(build.classSlug);
               const score = (build.upvotes || 0) - (build.downvotes || 0);
@@ -345,13 +173,15 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
                 </Link>
               );
             })}
-          </div>
-        </section>
-      )}
+              </div>
+            </section>
+          )}
 
-      <Link href="/database" className="text-honor-gold hover:text-honor-gold-light text-sm transition-colors">
-        ← Back to Item Database
-      </Link>
+          <Link href="/database" className="text-honor-gold hover:text-honor-gold-light text-sm transition-colors">
+            ← Back to Item Database
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

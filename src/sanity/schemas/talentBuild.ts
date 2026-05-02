@@ -114,6 +114,20 @@ export const talentBuild = defineType({
       type: 'datetime',
       readOnly: true,
     }),
+    defineField({
+      name: 'isPublic',
+      title: 'Listed in Community',
+      type: 'boolean',
+      description: 'When true, the build appears in /builds. Toggled via the Publish action.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'publishedAt',
+      title: 'Published At',
+      type: 'datetime',
+      description: 'Most recent publish time. Used for newest-first sort on the community list.',
+      readOnly: true,
+    }),
   ],
   preview: {
     select: { title: 'name', subtitle: 'classSlug', code: 'code' },

@@ -44,15 +44,18 @@ export async function GET(request: NextRequest) {
       }
       filter += ' && author._ref == $userId';
       params.userId = userId;
+    } else {
+      // Community list only shows published builds. /mine sees both private and public.
+      filter += ' && isPublic == true';
     }
     filter += ']';
 
-    const fields = '{ code, classSlug, allocation, equipment, name, tags, difficulty, description, guide, patch, totalPoints, upvotes, downvotes, createdAt, "authorName": author->displayName, "authorImage": author->image, "authorRef": author._ref }';
+    const fields = '{ code, classSlug, allocation, equipment, name, tags, difficulty, description, guide, patch, totalPoints, upvotes, downvotes, createdAt, isPublic, publishedAt, "authorName": author->displayName, "authorImage": author->image, "authorRef": author._ref }';
 
     if (sort === 'popular') {
       // Fetch all builds, rank by in-memory view counts
       const allBuilds = await sanityWriteClient.fetch(
-        `${filter} | order(createdAt desc) ${fields}`,
+        `${filter} | order(coalesce(publishedAt, createdAt) desc) ${fields}`,
         params,
       );
       const viewCounts = getBuildViewCounts();
@@ -78,9 +81,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ builds, total, page, pages: Math.ceil(total / limit) });
     }
 
+    // Newest sort: prefer publishedAt for community list (so republishes float),
+    // fall back to createdAt for unpublished /mine entries.
     const [builds, total] = await Promise.all([
       sanityWriteClient.fetch(
-        `${filter} | order(createdAt desc) [$offset...$offset + $limit] ${fields}`,
+        `${filter} | order(coalesce(publishedAt, createdAt) desc) [$offset...$offset + $limit] ${fields}`,
         params,
       ),
       sanityWriteClient.fetch(`count(${filter})`, params),
@@ -93,36 +98,30 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  // Public builds require a signed-in account with a chosen display name.
+  // Saves are anon-friendly. Builds default to PRIVATE (isPublic=false) — unique
+  // link only. Author attribution and the community listing require a separate
+  // POST /api/builds/[code]/publish action by a signed-in owner.
   const session = await auth();
   const authorId = (session?.user as unknown as Record<string, string> | undefined)?.sanityUserId;
-  const displayName = (session?.user as unknown as Record<string, string | null> | undefined)?.displayName;
 
-  if (!authorId) {
-    return NextResponse.json(
-      { error: 'You must sign in to publish a public build.', code: 'NOT_SIGNED_IN' },
-      { status: 401 },
-    );
-  }
-  if (!displayName) {
-    return NextResponse.json(
-      { error: 'Pick a display name before publishing builds.', code: 'NEED_DISPLAY_NAME' },
-      { status: 403 },
-    );
-  }
-
-  if (isUserBanned(authorId)) {
+  if (authorId && isUserBanned(authorId)) {
     return NextResponse.json(
       { error: 'Your account has been restricted from creating builds due to a policy violation.' },
       { status: 403 },
     );
   }
 
-  const { allowed: hourlyAllowed, remaining } = checkRateLimit(`hr-${authorId}`, 10, 3_600_000);
+  // Rate limit: signed-in users get 10/hr keyed to user; anon gets 5/30min keyed to IP.
+  const ipHeader = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown';
+  const ip = ipHeader.split(',')[0].trim();
+  const rateKey = authorId ? `hr-${authorId}` : `anon-${ip}`;
+  const rateMax = authorId ? 10 : 5;
+  const rateWindow = authorId ? 3_600_000 : 1_800_000;
+  const { allowed: hourlyAllowed, remaining } = checkRateLimit(rateKey, rateMax, rateWindow);
   if (!hourlyAllowed) {
     return NextResponse.json(
-      { error: 'Rate limit exceeded. Max 10 builds per hour.' },
-      { status: 429, headers: { 'Retry-After': '3600' } },
+      { error: `Rate limit exceeded. Max ${rateMax} builds per ${authorId ? 'hour' : '30 minutes'}.` },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(rateWindow / 1000)) } },
     );
   }
 
@@ -154,7 +153,7 @@ export async function POST(request: NextRequest) {
       { classSlug, allocation },
     );
     if (existing) {
-      return NextResponse.json({ code: existing });
+      return appendOwnedCookie(NextResponse.json({ code: existing }), request, existing);
     }
 
     // Generate unique short code
@@ -175,15 +174,17 @@ export async function POST(request: NextRequest) {
       .split(',')
       .reduce((sum, pair) => sum + (parseInt(pair.split(':')[1], 10) || 0), 0);
 
-    const userBuildCount = await sanityWriteClient.fetch<number>(
-      `count(*[_type == "talentBuild" && author._ref == $authorId])`,
-      { authorId },
-    );
-    if (userBuildCount >= 50) {
-      return NextResponse.json(
-        { error: 'Build limit reached. Maximum 50 builds per account.' },
-        { status: 403 },
+    if (authorId) {
+      const userBuildCount = await sanityWriteClient.fetch<number>(
+        `count(*[_type == "talentBuild" && author._ref == $authorId])`,
+        { authorId },
       );
+      if (userBuildCount >= 50) {
+        return NextResponse.json(
+          { error: 'Build limit reached. Maximum 50 builds per account.' },
+          { status: 403 },
+        );
+      }
     }
 
     await sanityWriteClient.create({
@@ -202,18 +203,35 @@ export async function POST(request: NextRequest) {
       totalPoints,
       upvotes: 0,
       downvotes: 0,
-      author: { _type: 'reference', _ref: authorId },
+      isPublic: false,
+      ...(authorId ? { author: { _type: 'reference', _ref: authorId } } : {}),
       createdAt: new Date().toISOString(),
     });
 
-    return NextResponse.json(
+    const res = NextResponse.json(
       { code },
       { headers: { 'X-RateLimit-Remaining': String(remaining) } },
     );
+    return appendOwnedCookie(res, request, code);
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to save build', details: String(error) },
       { status: 500 },
     );
   }
+}
+
+function appendOwnedCookie(res: NextResponse, request: NextRequest, code: string) {
+  const existing = request.cookies.get('scarshq-owned-builds')?.value || '';
+  const codes = existing ? existing.split(',').filter(Boolean) : [];
+  if (!codes.includes(code)) codes.push(code);
+  // Cap to 200 to keep the cookie small.
+  const trimmed = codes.slice(-200).join(',');
+  res.cookies.set('scarshq-owned-builds', trimmed, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365 * 2, // 2 years
+    sameSite: 'lax',
+    httpOnly: false, // client reads this for instant ownership UI
+  });
+  return res;
 }

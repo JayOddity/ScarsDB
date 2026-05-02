@@ -4,6 +4,7 @@ import { sanityClient } from '@/lib/sanity';
 import { classes } from '@/data/classes';
 import BuildGuideView from '@/components/BuildGuideView';
 import BuildEditButton from '@/components/BuildEditButton';
+import BuildPublishControls from '@/components/BuildPublishControls';
 import TalentTree from '@/components/TalentTree';
 import VoteButton from '@/components/VoteButton';
 import BuildViewEquipment from '@/components/BuildViewEquipment';
@@ -20,7 +21,7 @@ interface PageProps {
 export async function generateMetadata({ params }: PageProps) {
   const { code } = await params;
   const build = await sanityClient.fetch(
-    `*[_type == "talentBuild" && code == $code][0]{ name, classSlug, tags, description }`,
+    `*[_type == "talentBuild" && code == $code][0]{ name, classSlug, tags, description, isPublic }`,
     { code },
   );
   if (!build) return { title: 'Build Not Found - ScarsHQ' };
@@ -30,6 +31,7 @@ export async function generateMetadata({ params }: PageProps) {
     title: `${build.name || 'Build'} - ${cls?.name || build.classSlug} Build${tagStr} | ScarsHQ`,
     description: build.description || `A ${cls?.name} talent build for Scars of Honor.`,
     alternates: { canonical: `/builds/view/${code}` },
+    robots: build.isPublic ? undefined : { index: false, follow: false },
   };
 }
 
@@ -39,7 +41,7 @@ export default async function BuildViewPage({ params }: PageProps) {
   const build = await sanityClient.fetch(
     `*[_type == "talentBuild" && code == $code][0]{
       code, classSlug, allocation, equipment, name, tags, description, guide, patch,
-      totalPoints, upvotes, downvotes, createdAt,
+      totalPoints, upvotes, downvotes, createdAt, isPublic, publishedAt,
       "authorName": author->displayName, "authorImage": author->image, "authorRef": author._ref
     }`,
     { code },
@@ -108,8 +110,16 @@ export default async function BuildViewPage({ params }: PageProps) {
             Open in Talent Calculator
           </Link>
           <BuildEditButton buildCode={build.code} authorRef={build.authorRef} />
+          <BuildPublishControls buildCode={build.code} authorRef={build.authorRef} initialIsPublic={!!build.isPublic} />
         </div>
       </div>
+
+      {!build.isPublic && (
+        <div className="mb-6 bg-card-bg border border-border-subtle rounded-lg px-4 py-2.5 text-sm text-text-muted flex items-center gap-2">
+          <span className="px-2 py-0.5 rounded bg-text-muted/10 text-text-secondary text-xs uppercase tracking-wider">Private</span>
+          <span>Only people with this link can see this build. It won&apos;t appear in /builds.</span>
+        </div>
+      )}
 
       {/* Description */}
       {build.description && (

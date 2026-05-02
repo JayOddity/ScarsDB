@@ -20,6 +20,7 @@ function sanitizeTalentText(s: string): string {
   out = out.replace(/&lt;\/?(b|strong|i|em)&gt;/gi, (m) => m.replace(/&lt;/g, '<').replace(/&gt;/g, '>'));
   out = out.replace(/&lt;color=#?([0-9a-f]{3,8})&gt;/gi, (_m, hex) => `<span style="color:#${hex}">`);
   out = out.replace(/&lt;\/color&gt;/gi, '</span>');
+  out = out.replace(/\r\n/g, '\n').replace(/\n{2,}/g, '<br><br>').replace(/\n/g, '<br>');
   return out;
 }
 

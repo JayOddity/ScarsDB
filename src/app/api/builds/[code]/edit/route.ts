@@ -71,9 +71,12 @@ export async function PATCH(
       return NextResponse.json({ error: 'Nothing to update.' }, { status: 400 });
     }
 
+    // Any edit reverts the build to draft. Owners must re-publish to relist it.
+    patch.isPublic = false;
+
     await sanityWriteClient.patch(build._id).set(patch).commit();
 
-    return NextResponse.json({ ok: true, code });
+    return NextResponse.json({ ok: true, code, unpublished: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update build', details: String(error) }, { status: 500 });
   }

@@ -211,6 +211,10 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const [showGuideEditor, setShowGuideEditor] = useState(false);
   const [profanityWarning, setProfanityWarning] = useState<string | null>(null);
   const [isBanned, setIsBanned] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [publishing, setPublishing] = useState(false);
+  const [publishError, setPublishError] = useState<string | null>(null);
+  const [published, setPublished] = useState(false);
   const [buildEquipment, setBuildEquipment] = useState<EquippedItems>({});
   const [showClassPicker, setShowClassPicker] = useState(false);
   const [activeTab, setActiveTab] = useState<string>(initialTab && ['Equipment', 'Talents', 'Scars'].includes(initialTab) ? initialTab : 'Talents');
@@ -233,6 +237,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     if (readOnly) return;
     fetch('/api/user-status').then((r) => r.json()).then((data) => {
       if (data.banned) setIsBanned(true);
+      if (data.loggedIn) setLoggedIn(true);
     }).catch(() => {});
   }, [readOnly]);
 
@@ -663,6 +668,35 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     setSaving(false);
   }
   function loadBuild() { try { const saved = localStorage.getItem(`scarshq-talent-${gameClass.slug}`); if (saved) setAllocated(decodeAlloc(saved)); } catch {} }
+
+  async function publishBuild() {
+    if (!cloudCode) return;
+    if (!loggedIn) {
+      const cb = `/talents/${gameClass.slug}?build=${cloudCode}`;
+      window.location.href = `/login?callbackUrl=${encodeURIComponent(cb)}`;
+      return;
+    }
+    setPublishing(true); setPublishError(null);
+    try {
+      const res = await fetch(`/api/builds/${encodeURIComponent(cloudCode)}/publish`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ publish: true }),
+      });
+      const data = await res.json();
+      if (res.ok && data.isPublic) {
+        setPublished(true);
+      } else if (data.code === 'NEED_DISPLAY_NAME') {
+        window.location.href = `/onboarding?returnTo=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+        return;
+      } else {
+        setPublishError(data.error || 'Failed to publish');
+      }
+    } catch {
+      setPublishError('Network error');
+    }
+    setPublishing(false);
+  }
 
   // Load equipment from JSON string: fetch each item by ID
   async function loadEquipmentFromJson(json: string) {
@@ -1410,14 +1444,14 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
           <div className="w-px h-8 bg-[#2a4a64]/60" />
 
           {/* Actions */}
-          <button onClick={() => { if (totalPts > 0) { setSaveName(''); setSaveTags([]); setSaveDifficulty(''); setSaveDescription(''); setSaveGuide(''); setShowGuideEditor(false); setProfanityWarning(null); setShowSaveModal(true); } }} className={`px-4 py-2 rounded-lg text-sm transition-colors border ${totalPts > 0 ? 'bg-[#0f1f2c] border-[#2a4a64] text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim' : 'bg-[#0f1f2c] border-[#2a4a64] text-text-muted cursor-not-allowed opacity-50'}`} disabled={totalPts === 0}>Save</button>
+          <button onClick={() => { if (totalPts > 0) { setSaveName(''); setSaveTags([]); setSaveDifficulty(''); setSaveDescription(''); setSaveGuide(''); setShowGuideEditor(false); setProfanityWarning(null); setPublished(false); setPublishError(null); setShowSaveModal(true); } }} className={`px-4 py-2 rounded-lg text-sm transition-colors border ${totalPts > 0 ? 'bg-[#0f1f2c] border-[#2a4a64] text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim' : 'bg-[#0f1f2c] border-[#2a4a64] text-text-muted cursor-not-allowed opacity-50'}`} disabled={totalPts === 0}>Save</button>
           <button onClick={() => { setImportError(null); setShowLoadModal(true); }} className="px-4 py-2 bg-[#0f1f2c] border border-[#2a4a64] rounded-lg text-sm text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim transition-colors">Load</button>
           <button onClick={undo} disabled={history.length === 0} className={`px-4 py-2 rounded-lg text-sm transition-colors border ${history.length > 0 ? 'bg-[#0f1f2c] border-[#2a4a64] text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim' : 'bg-[#0f1f2c] border-[#2a4a64] text-text-muted cursor-not-allowed opacity-50'}`}>Undo</button>
         </div>}
 
       {/* Save Modal */}
       {!readOnly && showSaveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => { setShowSaveModal(false); setCloudCode(null); setCloudError(null); }}>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => { setShowSaveModal(false); setCloudCode(null); setCloudError(null); setPublished(false); setPublishError(null); }}>
           <div className={`bg-deep-night border border-border-subtle rounded-lg p-6 w-full shadow-2xl transition-all max-h-[90vh] overflow-y-auto ${showGuideEditor ? 'max-w-2xl' : 'max-w-sm'}`} onClick={(e) => e.stopPropagation()}>
             <h3 className="font-heading text-lg text-honor-gold mb-4">{isBanned ? 'Account Restricted' : cloudCode ? 'Build Saved!' : 'Save Build'}</h3>
             {isBanned ? (
@@ -1431,14 +1465,34 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               </div>
             ) : cloudCode ? (
               <div className="space-y-3">
+                <p className="text-xs text-text-muted">
+                  Saved as a private build. Anyone with this link can view it.
+                  {!published && ' Publish to add it to the community list.'}
+                </p>
                 <div><label className="text-xs text-text-muted block mb-1">Import Code</label>
                   <div className="flex gap-2"><input type="text" value={cloudCode} readOnly className="flex-1 bg-dark-surface border border-border-subtle rounded px-3 py-2 text-sm text-honor-gold font-mono" />
                     <button onClick={() => { navigator.clipboard.writeText(cloudCode); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="px-3 py-2 bg-dark-surface border border-border-subtle rounded text-xs text-text-secondary hover:text-honor-gold transition-colors">{copied ? 'Copied!' : 'Copy'}</button></div></div>
                 <div><label className="text-xs text-text-muted block mb-1">Build Link</label>
                   <div className="flex gap-2"><input type="text" value={`${typeof window !== 'undefined' ? window.location.origin : ''}/talents/${gameClass.slug}?build=${cloudCode}`} readOnly className="flex-1 bg-dark-surface border border-border-subtle rounded px-3 py-2 text-xs text-text-secondary font-mono truncate" />
                     <button onClick={copyBuildLink} className="px-3 py-2 bg-honor-gold/10 border border-honor-gold-dim rounded text-xs text-honor-gold hover:bg-honor-gold/20 transition-colors whitespace-nowrap">Copy Link</button></div></div>
-                <a href={`/builds/edit/${cloudCode}`} className="block w-full py-2 bg-honor-gold text-void-black font-heading font-semibold rounded hover:bg-honor-gold-light transition-colors text-sm text-center mt-1">Edit Full Guide</a>
-                <button onClick={() => { setShowSaveModal(false); setCloudCode(null); }} className="w-full py-1.5 text-xs text-text-muted hover:text-text-secondary transition-colors mt-2">Close</button>
+                {published ? (
+                  <div className="bg-honor-gold/10 border border-honor-gold-dim rounded p-2.5 text-xs text-honor-gold text-center">
+                    Listed in the community at /builds.
+                  </div>
+                ) : (
+                  <button
+                    onClick={publishBuild}
+                    disabled={publishing}
+                    className="w-full py-2 bg-honor-gold text-void-black font-heading font-semibold rounded hover:bg-honor-gold-light transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {publishing ? 'Publishing...' : loggedIn ? 'Publish to Community' : 'Sign In to Publish'}
+                  </button>
+                )}
+                {publishError && (
+                  <div className="bg-scar-red/10 border border-scar-red/30 rounded p-2 text-xs text-scar-red-light">{publishError}</div>
+                )}
+                <a href={`/builds/edit/${cloudCode}`} className="block w-full py-2 bg-[#0f1f2c] border border-[#2a4a64] rounded text-xs font-heading uppercase tracking-wider text-text-secondary hover:text-honor-gold hover:border-honor-gold-dim transition-colors text-center">Edit Full Guide</a>
+                <button onClick={() => { setShowSaveModal(false); setCloudCode(null); setPublished(false); setPublishError(null); }} className="w-full py-1.5 text-xs text-text-muted hover:text-text-secondary transition-colors">Close</button>
               </div>
             ) : (
               <div className="space-y-3">

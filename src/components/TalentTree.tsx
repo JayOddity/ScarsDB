@@ -24,6 +24,10 @@ function sanitizeTalentText(s: string): string {
   return out;
 }
 
+function stripTalentTags(s: string): string {
+  return s.replace(/<\/?[a-z][^>]*>/gi, '').replace(/\s+/g, ' ').trim();
+}
+
 interface TalentNode {
   id: number;
   dx: number;
@@ -814,6 +818,16 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const col = accentColor;
   const allocatedNodes = useMemo(() => nodes.filter((n) => (allocated[n.id] || 0) > 0), [nodes, allocated]);
 
+  const searchQuery = !readOnly ? talentSearch.trim().toLowerCase() : '';
+  const searchMatchIds = useMemo(() => {
+    if (!searchQuery) return null;
+    const ids = new Set<number>();
+    for (const n of nodes) {
+      if (n.name && stripTalentTags(n.name).toLowerCase().includes(searchQuery)) ids.add(n.id);
+    }
+    return ids;
+  }, [nodes, searchQuery]);
+
   const startCircle = useMemo(() => {
     const sn = nodes.filter((n) => n.nodeType === 'start');
     if (sn.length === 0) return null;
@@ -924,10 +938,13 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
           </div>
           {showTalentSearch && talentSearch.trim() && (
             <div className="absolute top-full right-0 mt-2 w-72 bg-[#171b24] border border-border-subtle rounded-lg shadow-xl p-2 z-40 max-h-64 overflow-y-auto">
-              {nodes
-                .filter((n) => n.name && n.name.toLowerCase().includes(talentSearch.trim().toLowerCase()))
-                .slice(0, 30)
-                .map((n) => (
+              {(() => {
+                const q = talentSearch.trim().toLowerCase();
+                const matches = nodes.filter((n) => n.name && stripTalentTags(n.name).toLowerCase().includes(q));
+                if (matches.length === 0) {
+                  return <div className="px-3 py-2 text-sm text-text-muted">No talents found.</div>;
+                }
+                return matches.slice(0, 30).map((n) => (
                   <button
                     key={n.id}
                     type="button"
@@ -939,13 +956,11 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                     }}
                     className="w-full text-left px-3 py-2 text-sm text-[#fffede] hover:bg-white/5 rounded transition-colors"
                   >
-                    <div className="font-heading">{n.name}</div>
+                    <div className="font-heading">{stripTalentTags(n.name)}</div>
                     <div className="text-xs text-text-muted capitalize">{n.nodeType}</div>
                   </button>
-                ))}
-              {nodes.filter((n) => n.name && n.name.toLowerCase().includes(talentSearch.trim().toLowerCase())).length === 0 && (
-                <div className="px-3 py-2 text-sm text-text-muted">No talents found.</div>
-              )}
+                ));
+              })()}
             </div>
           )}
         </div>
@@ -1096,7 +1111,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
           </>}
 
           {/* Edges - raw innerHTML for perf */}
-          <g dangerouslySetInnerHTML={{ __html: edgeSvg }} />
+          <g opacity={searchMatchIds ? 0.12 : 1} dangerouslySetInnerHTML={{ __html: edgeSvg }} />
 
           {/* Class character art in center — full-body KeyArt for implemented classes,
              small class icon for the not-yet-shipped ones. */}
@@ -1142,8 +1157,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               const fi = isM ? 'url(#ng-m)' : isP ? 'url(#ng-p)' : isSH ? 'url(#ng-p)' : isA ? 'url(#ng-a)' : 'url(#ng-u)';
               const sw = isA || isP ? 2 : 1.5;
 
+              const dimmed = searchMatchIds !== null && !searchMatchIds.has(node.id);
               return (
-                <g key={node.id} data-nid={node.id} transform={`translate(${node.dx},${node.dy})`} className="cursor-pointer">
+                <g key={node.id} data-nid={node.id} transform={`translate(${node.dx},${node.dy})`} className="cursor-pointer" opacity={dimmed ? 0.15 : 1}>
                   {isH && !isM && !isP && <circle r={r + 6} fill="none" stroke={isA ? '#e8c432' : '#aaa'} strokeWidth={1} opacity={0.3} />}
                   {(() => {
                     const frame = FRAME_BY_TYPE[node.nodeType];

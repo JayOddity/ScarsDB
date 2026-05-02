@@ -9,6 +9,16 @@ import { rarityColorClass, rarityBorderClass, rarityGlowClass, rarityBgClass } f
 
 const RARITIES = ['Common', 'Rare', 'Epic', 'Legendary'] as const;
 
+const RARITY_HEX: Record<string, string> = {
+  Common: '#9d9d9d',
+  Rare: '#4a8ff7',
+  Epic: '#a855f7',
+  Legendary: '#f59e0b',
+};
+function rarityHex(r?: string) {
+  return RARITY_HEX[r || ''] || '#6b7280';
+}
+
 interface ApiMeta {
   total: number;
   page: number;
@@ -67,20 +77,37 @@ const POOL_COLORS = [
 
 function ItemDetailPanel({ item }: { item: Item }) {
   const lists = item.stat_configuration?.lists || [];
+  const hex = rarityHex(item.rarity);
 
   return (
-    <div className="detail-panel-enter bg-card-bg border border-border-subtle rounded-lg overflow-hidden">
-      {/* Header */}
-      <div className="px-4 py-3 border-b border-border-subtle">
-        <span className="text-xs text-text-muted uppercase tracking-wider">Item Details</span>
-      </div>
+    <div
+      className="detail-panel-enter relative overflow-hidden"
+      style={{
+        backgroundColor: '#1a1a1a',
+        backgroundImage: 'url(/Icons/UI/tooltip-item-bg.png)',
+        backgroundSize: '100% 100%',
+        border: `1.5px solid ${hex}`,
+        borderRadius: '4px',
+        boxShadow: `0 0 24px ${hex}33, 0 6px 24px rgba(0,0,0,0.7)`,
+      }}
+    >
+      {/* Rarity colour sweep — sits in the top strip only, above the content via z-index 0. */}
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-[14px] pointer-events-none z-0"
+        style={{
+          background: `linear-gradient(to bottom, ${hex}cc 0%, ${hex}55 60%, transparent 100%)`,
+        }}
+      />
 
-      {/* Item header */}
-      <div className="p-4">
+      <div className="relative z-10 p-4">
+        {/* Item header */}
         <div className="flex items-start gap-4 mb-4">
-          <div className={`w-16 h-16 rounded-lg border-2 ${rarityBorderClass[item.rarity]} ${rarityGlowClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}>
+          <div
+            className={`w-16 h-16 rounded border-2 ${rarityBorderClass[item.rarity]} ${rarityGlowClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}
+          >
             {item.icon && !item.icon.includes('placehold') ? (
-              <Image src={item.icon} alt={item.name} width={64} height={64} className="object-cover" />
+              <Image src={item.icon} alt={item.name} width={64} height={64} className="object-cover w-full h-full" />
             ) : (
               <span className="text-lg text-text-muted">?</span>
             )}
@@ -105,7 +132,7 @@ function ItemDetailPanel({ item }: { item: Item }) {
 
         {/* Slot */}
         {item.slot_type && (
-          <div className="flex items-center gap-2 mb-4 text-sm">
+          <div className="flex items-center gap-2 mb-3 text-sm">
             <span className="text-text-muted">Slot</span>
             <span className="text-text-secondary">{item.slot_type}</span>
           </div>
@@ -119,7 +146,13 @@ function ItemDetailPanel({ item }: { item: Item }) {
           const colors = POOL_COLORS[li] || POOL_COLORS[0];
 
           return (
-            <div key={li} className={`${li > 0 ? 'mt-3 pt-3 border-t border-border-subtle/30' : ''}`}>
+            <div key={li} className={li > 0 ? 'mt-3 pt-3' : ''}>
+              {li > 0 && (
+                <div
+                  className="absolute left-4 right-4 -mt-3 h-[2px] pointer-events-none"
+                  style={{ backgroundImage: 'url(/Icons/UI/tooltip-stat-row-gradient.png)', backgroundSize: '100% 100%' }}
+                />
+              )}
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs text-text-muted uppercase tracking-wider">{POOL_LABELS[li] || `Stat Pool ${li + 1}`}</span>
                 <span className="text-xs text-text-muted">
@@ -133,13 +166,16 @@ function ItemDetailPanel({ item }: { item: Item }) {
                 const minPercent = (stat.min / maxVal) * 100;
                 return (
                   <div key={si}>
-                    <div className="flex items-center justify-between py-1 px-3">
-                      <span className="text-sm text-text-primary">{stat.label}</span>
+                    <div className="flex items-center justify-between py-1 px-1">
+                      <span className="text-sm text-text-primary flex items-center gap-2">
+                        <img src="/Icons/UI/tooltip-stat-bullet.png" alt="" aria-hidden className="w-2.5 h-2.5 opacity-80" />
+                        {stat.label}
+                      </span>
                       <span className="text-sm text-honor-gold font-medium ml-2 flex-shrink-0">
                         {stat.min === stat.max ? `+${stat.min}` : `${stat.min} – ${stat.max}`}
                       </span>
                     </div>
-                    <div className="mx-3 mb-1">
+                    <div className="mx-1 mb-1">
                       <div className="h-1.5 bg-dark-surface rounded-full overflow-hidden relative">
                         <div
                           className={`absolute inset-y-0 left-0 ${colors.barDim} rounded-full stat-bar-fill`}
@@ -160,7 +196,15 @@ function ItemDetailPanel({ item }: { item: Item }) {
 
         {/* Details grid */}
         {(item.sell_value > 0 || item.stack_size > 1) && (
-          <div className="mt-4 pt-3 border-t border-border-subtle/50">
+          <div
+            className="mt-4 pt-3 relative"
+            style={{
+              backgroundImage: 'url(/Icons/UI/tooltip-stat-row-gradient.png)',
+              backgroundSize: '100% 2px',
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'top',
+            }}
+          >
             <div className="flex gap-4 text-sm">
               {item.sell_value > 0 && (
                 <div>

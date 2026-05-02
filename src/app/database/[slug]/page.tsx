@@ -7,6 +7,16 @@ import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 import { classes } from '@/data/classes';
 import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
 
+const RARITY_HEX: Record<string, string> = {
+  Common: '#9d9d9d',
+  Rare: '#4a8ff7',
+  Epic: '#a855f7',
+  Legendary: '#f59e0b',
+};
+function rarityHex(r?: string) {
+  return RARITY_HEX[r || ''] || '#6b7280';
+}
+
 const classMap = new Map(classes.map((c) => [c.slug, c]));
 
 interface BuildMatch {
@@ -130,34 +140,65 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
         <span className={rarityColorClass[item.rarity]}>{item.name}</span>
       </nav>
 
-      {/* Item Header */}
-      <div className="bg-card-bg border border-border-subtle rounded-lg p-8 mb-8">
-        <div className="flex items-start gap-6">
-          <div className={`w-20 h-20 rounded-lg border-2 ${rarityBorderClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}>
-            {item.icon && !item.icon.includes('placehold') ? (
-              <Image src={item.icon} alt={item.name} width={80} height={80} className="object-cover" />
-            ) : (
-              <span className="text-2xl text-text-muted">?</span>
-            )}
-          </div>
-          <div>
-            <h1 className={`font-heading text-2xl md:text-3xl mb-2 ${rarityColorClass[item.rarity]}`}>
-              {item.name}
-            </h1>
-            <div className="flex flex-wrap gap-3 text-sm">
-              <span className="px-2 py-1 rounded bg-dark-surface text-text-secondary">{item.type}</span>
-              <span className={`px-2 py-1 rounded bg-dark-surface ${rarityColorClass[item.rarity]}`}>{item.rarity}</span>
-              {item.slot_type && (
-                <span className="px-2 py-1 rounded bg-dark-surface text-text-secondary">{item.slot_type}</span>
-              )}
+      {/* Item Header — in-game item tooltip styling */}
+      {(() => {
+        const hex = rarityHex(item.rarity);
+        return (
+          <div
+            className="relative mb-8 overflow-hidden"
+            style={{
+              backgroundColor: '#1a1a1a',
+              backgroundImage: 'url(/Icons/UI/tooltip-item-bg.png)',
+              backgroundSize: '100% 100%',
+              border: `1.5px solid ${hex}`,
+              borderRadius: '4px',
+              boxShadow: `0 0 28px ${hex}33, 0 8px 28px rgba(0,0,0,0.7)`,
+            }}
+          >
+            <div
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-[18px] pointer-events-none z-0"
+              style={{ background: `linear-gradient(to bottom, ${hex}cc 0%, ${hex}55 60%, transparent 100%)` }}
+            />
+            <div className="relative z-10 p-8">
+              <div className="flex items-start gap-6">
+                <div className={`w-24 h-24 rounded border-2 ${rarityBorderClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}>
+                  {item.icon && !item.icon.includes('placehold') ? (
+                    <Image src={item.icon} alt={item.name} width={96} height={96} className="object-cover w-full h-full" />
+                  ) : (
+                    <span className="text-2xl text-text-muted">?</span>
+                  )}
+                </div>
+                <div>
+                  <h1 className={`font-heading text-2xl md:text-3xl mb-2 ${rarityColorClass[item.rarity]}`}>
+                    {item.name}
+                  </h1>
+                  <div className="flex flex-wrap gap-3 text-sm">
+                    <span className="px-2 py-1 rounded bg-dark-surface text-text-secondary">{item.type}</span>
+                    <span className={`px-2 py-1 rounded bg-dark-surface ${rarityColorClass[item.rarity]}`}>{item.rarity}</span>
+                    {item.slot_type && (
+                      <span className="px-2 py-1 rounded bg-dark-surface text-text-secondary">{item.slot_type}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
+        );
+      })()}
 
       {/* Stats */}
       {item.stat_configuration?.lists?.length ? (
-        <div className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-8">
+        <div
+          className="mb-8 relative overflow-hidden p-6"
+          style={{
+            backgroundColor: '#1a1a1a',
+            backgroundImage: 'url(/Icons/UI/tooltip-item-bg.png)',
+            backgroundSize: '100% 100%',
+            border: `1px solid ${rarityHex(item.rarity)}66`,
+            borderRadius: '4px',
+          }}
+        >
           <h2 className="font-heading text-lg text-honor-gold mb-4">Stats</h2>
           {item.stat_configuration.lists.map((list, li) => {
             const minDmg = list.modifications.find((m) => m.stat === 'Weapon Min Damage');
@@ -219,10 +260,22 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
                   <span className="text-sm text-text-secondary font-heading uppercase tracking-wider">{poolLabel}</span>
                   <span className="text-xs text-text-muted">{rollLabel}</span>
                 </div>
-                <ul className="divide-y divide-border-subtle/40">
+                <ul>
                   {processed.map((stat, si) => (
-                    <li key={si} className="flex items-center justify-between py-2.5">
-                      <span className="text-sm text-text-primary">{stat.label}</span>
+                    <li
+                      key={si}
+                      className="flex items-center justify-between py-2.5"
+                      style={si > 0 ? {
+                        backgroundImage: 'url(/Icons/UI/tooltip-stat-row-gradient.png)',
+                        backgroundSize: '100% 1px',
+                        backgroundRepeat: 'no-repeat',
+                        backgroundPosition: 'top',
+                      } : undefined}
+                    >
+                      <span className="text-sm text-text-primary flex items-center gap-2">
+                        <img src="/Icons/UI/tooltip-stat-bullet.png" alt="" aria-hidden className="w-3 h-3 opacity-80" />
+                        {stat.label}
+                      </span>
                       <span className="text-sm text-honor-gold font-medium tabular-nums">{formatRange(stat)}</span>
                     </li>
                   ))}

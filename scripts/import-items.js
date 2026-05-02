@@ -1,5 +1,31 @@
 require('dotenv').config({ path: '.env.local' });
+const fs = require('fs');
+const path = require('path');
 const { createClient } = require('@sanity/client');
+
+// Locally-mirrored item icons, populated by scripts/mirror-item-icons.js.
+// We read this at startup so the daily cron preserves local paths for any
+// CDN URL whose filename (or its strip-suffix base name) matches a file we
+// already have on disk. Anything unmatched falls back to the BunnyCDN URL
+// the API returned — so newly-added items still appear if/when the CDN
+// works again, and re-mirroring picks them up later.
+const LOCAL_ICONS_DIR = path.join(__dirname, '..', 'public', 'Icons', 'items');
+const LOCAL_ICONS = (() => {
+  try {
+    if (!fs.existsSync(LOCAL_ICONS_DIR)) return new Set();
+    return new Set(fs.readdirSync(LOCAL_ICONS_DIR).filter((f) => f.toLowerCase().endsWith('.png')));
+  } catch { return new Set(); }
+})();
+function localizeIconUrl(url) {
+  if (!url) return url;
+  if (url.startsWith('/Icons/items/')) return url;
+  const fn = decodeURIComponent(url.split('/').pop().split('?')[0] || '');
+  if (!fn || fn === '40x40' || fn.includes('placehold')) return url;
+  if (LOCAL_ICONS.has(fn)) return `/Icons/items/${fn}`;
+  const base = fn.replace(/_\d+(\.png)$/i, '$1');
+  if (base !== fn && LOCAL_ICONS.has(base)) return `/Icons/items/${base}`;
+  return url;
+}
 
 const sanityClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
@@ -69,7 +95,7 @@ function mapItem(item, slug) {
     name: item.name,
     itemType: item.type,
     rarity: item.rarity,
-    icon: item.icon,
+    icon: localizeIconUrl(item.icon),
     slotType: item.slot_type,
     stackSize: item.stack_size,
     isDestructible: item.is_destructible,

@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 import AuthProvider from "@/components/AuthProvider";
+import { Analytics } from "@vercel/analytics/next";
 import { getSiteSettings } from "@/lib/sanity";
 
 const cinzel = Cinzel({
@@ -91,6 +92,7 @@ export default async function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer siteName={siteName} siteAbbrev={siteAbbrev} socials={socials} />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );

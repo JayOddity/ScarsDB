@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import DownloadContent from './DownloadContent';
 
 export const metadata: Metadata = {
-  title: 'Scars of Honor Download Guide - Free on Steam (2026) | ScarsHQ',
-  description: 'Step by step guide to download Scars of Honor on Steam. Playtest access, dates, system requirements, and what to do while you wait. Free to play, no key required. Next playtest: April 30 - May 11, 2026.',
+  title: 'Download Scars of Honor — Free on Steam (Playtest Live Now) | ScarsHQ',
+  description: 'Scars of Honor is free to play on Steam. Playtest is live now until May 11, 2026 — request access in one click. Step by step guide to get in game.',
   openGraph: {
-    title: 'Scars of Honor Download Guide - Free on Steam',
-    description: 'Step by step guide to playtest access, dates, and what to do while you wait. Next playtest: April 30 - May 11, 2026.',
+    title: 'How to Download and Play Scars of Honor',
+    description: 'Free to play MMORPG on Steam. Request playtest access on the Steam page. Step by step guide to get in game.',
     url: '/download',
     siteName: 'ScarsHQ',
     type: 'website',
@@ -21,8 +21,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Scars of Honor Download Guide - Free on Steam',
-    description: 'Step by step guide to playtest access, dates, and what to do while you wait. Next playtest: April 30 - May 11, 2026.',
+    title: 'How to Download Scars of Honor',
+    description: 'Free on Steam. Request playtest access on the Steam page. Next playtest: April 30 to May 11, 2026.',
     images: ['/images/og-download.jpg'],
   },
   alternates: {

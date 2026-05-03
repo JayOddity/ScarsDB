@@ -2,8 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Scars of Honor System Requirements: Minimum PC Specs (2026) | ScarsHQ',
-  description: 'Can your PC run Scars of Honor? Official minimum system requirements from Steam: Windows 10, GTX 970 / RX 480, 8 GB RAM, DirectX 11. Recommended specs not yet published.',
+  title: 'Scars of Honor System Requirements — Can You Run It? (2026) | ScarsHQ',
+  description: 'Scars of Honor minimum specs: Windows 10, GTX 970 / RX 480, 8 GB RAM, DirectX 11. Full official requirements from Steam, plus what you actually need for smooth play.',
   openGraph: {
     title: 'Scars of Honor System Requirements: Minimum PC Specs (2026)',
     description: 'Official minimum specs from Steam: Windows 10, GTX 970 / RX 480, 8 GB RAM, DirectX 11. Recommended specs not yet published.',

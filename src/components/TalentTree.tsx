@@ -1182,9 +1182,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               : gameClass.icon;
             const adj: Record<string, { scale: number; dx: number; dy: number }> = {
               ranger:  { scale: 1.00, dx: 0.12, dy: 0.00 },
-              paladin: { scale: 1.20, dx: 0.00, dy: 0.00 },
+              paladin: { scale: 1.40, dx: 0.00, dy: 0.00 },
               mage:    { scale: 1.00, dx: 0.00, dy: 0.18 },
-              druid:   { scale: 1.20, dx: 0.00, dy: 0.00 },
+              druid:   { scale: 1.50, dx: 0.00, dy: 0.00 },
             };
             const a = adj[gameClass.slug] ?? { scale: 1, dx: 0, dy: 0 };
             const baseScale = (hasKeyArt ? 1.125 : 1.2) * 1.1;
@@ -1299,7 +1299,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
             style={{
               left: tooltipMouseRef.current.x + 16,
               top: tooltipMouseRef.current.y + 16,
-              maxWidth: '366px',
+              maxWidth: '308px',
               background: '#0a0a10',
               borderStyle: 'solid',
               borderWidth: '4px',
@@ -1308,7 +1308,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               borderImageSlice: 4,
               borderImageWidth: '4px',
               borderImageRepeat: 'stretch',
-              padding: '11px 14px',
+              padding: '18px 22px',
             }}
           >
             <div
@@ -1321,19 +1321,26 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                 mixBlendMode: 'screen',
               }}
             />
-            <div className="relative flex items-center gap-2 mb-1">
-              <span
-                className="text-[16px] font-bold text-[#fffede] leading-tight [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white"
-                dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.name) }}
+            <div className="relative flex flex-col items-center gap-1.5">
+              <div className="flex items-center justify-center gap-2 flex-wrap">
+                <span
+                  className="text-[17px] font-bold text-white leading-tight text-center [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white"
+                  dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.name) }}
+                />
+                <span className="text-[12px] px-1.5 py-0.5 rounded capitalize" style={{ backgroundColor: col + '20', color: col }}>{hovered.nodeType}</span>
+              </div>
+              <div
+                aria-hidden
+                className="w-full h-px"
+                style={{ background: 'linear-gradient(to right, transparent, rgba(200,168,78,0.6) 50%, transparent)' }}
               />
-              <span className="text-[11px] px-1.5 py-0.5 rounded capitalize" style={{ backgroundColor: col + '20', color: col }}>{hovered.nodeType}</span>
+              {hovered.description && (
+                <p
+                  className="text-[14px] text-[#fffede] leading-snug text-center [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_i]:italic [&_em]:italic"
+                  dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.description) }}
+                />
+              )}
             </div>
-            {hovered.description && (
-              <p
-                className="relative text-[13px] text-text-muted leading-snug [&_b]:font-bold [&_b]:text-white [&_strong]:font-bold [&_strong]:text-white [&_i]:italic [&_em]:italic"
-                dangerouslySetInnerHTML={{ __html: sanitizeTalentText(hovered.description) }}
-              />
-            )}
           </div>
         )}
         {(() => {

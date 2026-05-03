@@ -19,6 +19,13 @@ export const article = defineType({
       type: 'string',
       options: { list: ['Guide', 'News', 'Lore', 'Patch Notes', 'Opinion'] },
     }),
+    defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'string',
+      initialValue: 'ScarsHQ',
+      description: 'Defaults to ScarsHQ. Change for guest posts.',
+    }),
     defineField({ name: 'excerpt', title: 'Excerpt', type: 'text', rows: 3 }),
     defineField({ name: 'featuredImage', title: 'Featured Image', type: 'image', options: { hotspot: true } }),
     defineField({
@@ -28,6 +35,7 @@ export const article = defineType({
       of: [
         { type: 'block' },
         { type: 'image', options: { hotspot: true } },
+        { type: 'youtubeEmbed' },
       ],
     }),
     defineField({ name: 'publishedAt', title: 'Published At', type: 'datetime' }),

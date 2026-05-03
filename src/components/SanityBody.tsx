@@ -44,8 +44,36 @@ const components: PortableTextComponents = {
         </figure>
       );
     },
+    youtubeEmbed: ({ value }) => {
+      const id = extractYouTubeId(value?.url);
+      if (!id) return null;
+      return (
+        <figure className="my-6">
+          <div className="relative w-full overflow-hidden rounded-lg border border-border-subtle" style={{ paddingTop: '56.25%' }}>
+            <iframe
+              src={`https://www.youtube-nocookie.com/embed/${id}`}
+              title={value?.caption || 'YouTube video'}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+              className="absolute inset-0 w-full h-full"
+            />
+          </div>
+          {value?.caption && <figcaption className="text-sm text-text-muted mt-2 text-center">{value.caption}</figcaption>}
+        </figure>
+      );
+    },
   },
 };
+
+function extractYouTubeId(url?: string): string | null {
+  if (!url) return null;
+  const m =
+    url.match(/[?&]v=([A-Za-z0-9_-]{11})/) ||
+    url.match(/youtu\.be\/([A-Za-z0-9_-]{11})/) ||
+    url.match(/youtube\.com\/(?:embed|shorts)\/([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SanityBody({ value }: { value: any[] }) {

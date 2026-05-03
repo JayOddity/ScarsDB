@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Scars of Honor Builds - Talent Trees & Gear Setups | ScarsHQ',
+  title: 'Scars of Honor Builds — Best Talent Trees for Every Class | ScarsHQ',
   description:
-    'Browse and share community talent builds for every Scars of Honor class. PvP, PvE, leveling, and beginner builds with votes and the community tier list.',
+    'Find the best Scars of Honor builds, voted by the community. PvP, PvE, leveling, and beginner builds for all 10 classes. Free build planner, talent calculator, and tier list.',
   alternates: { canonical: '/builds' },
 };
 

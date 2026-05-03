@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 import PlaytestCountdown from '@/components/PlaytestCountdown';
 
 export const metadata: Metadata = {
-  title: 'Scars of Honor Playtest: Apr 30 - May 11, 2026 | ScarsHQ',
-  description: 'Scars of Honor playtest starts April 30, 2026 on Steam and runs through May 11. All 10 classes, 6 races (Bearan and Gronthar new), Ondall\'s Fall, world bosses, PvP. Dungeons not included.',
+  title: 'Scars of Honor Playtest Date — Live Now Until May 11, 2026 | ScarsHQ',
+  description: 'The Scars of Honor playtest is live right now on Steam, ending May 11, 2026. Free to join. Request access on the Steam page in one click. 10 classes, 6 races, world bosses, PvP.',
   openGraph: {
-    title: 'Scars of Honor Playtest: Apr 30 - May 11, 2026',
-    description: 'Free Steam playtest. Starts April 30. All 10 classes, 6 races, world bosses, PvP. Content rolls out in 3 waves.',
+    title: 'Scars of Honor Playtest — Live Now Until May 11, 2026',
+    description: 'Free Steam playtest. Live right now. 10 classes, 6 races, world bosses, PvP. Request access in one click.',
     url: '/playtest',
     siteName: 'ScarsHQ',
     type: 'website',
@@ -16,14 +16,14 @@ export const metadata: Metadata = {
         url: '/images/og-playtest.jpg',
         width: 1200,
         height: 630,
-        alt: 'Scars of Honor playtest — April 30 to May 11, 2026',
+        alt: 'Scars of Honor playtest live until May 11, 2026',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Scars of Honor Playtest: Apr 30 - May 11, 2026',
-    description: 'Free Steam playtest starts April 30. 10 classes, 6 races, world bosses, PvP. Request access on Steam now.',
+    title: 'Scars of Honor Playtest — Live Now Until May 11, 2026',
+    description: 'Free Steam playtest live right now. 10 classes, 6 races, world bosses, PvP. Request access on Steam.',
   },
   alternates: {
     canonical: '/playtest',
@@ -98,7 +98,7 @@ export default function PlaytestPage() {
         <div className="relative max-w-6xl mx-auto">
           <p className="text-xs uppercase tracking-[0.25em] text-honor-gold/70 mb-4">Steam Technical Alpha</p>
           <h1 className="font-heading text-3xl md:text-5xl text-honor-gold mb-4">
-            Scars of Honor Playtest
+            Spring 2026 Playtest
           </h1>
           <p className="text-2xl text-parchment font-heading mb-2">April 30 - May 11, 2026</p>
           <p className="text-text-secondary max-w-3xl mx-auto mb-5">

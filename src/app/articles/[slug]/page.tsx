@@ -15,6 +15,7 @@ interface Article {
   title: string;
   slug: { current: string };
   category?: string;
+  author?: string;
   excerpt?: string;
   body?: unknown[];
   publishedAt?: string;
@@ -44,7 +45,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
   const { slug } = await params;
   const article = await sanityClient.fetch<Article>(
     `*[_type == "article" && slug.current == $slug][0]{
-      title, slug, category, excerpt, body, publishedAt, seo
+      title, slug, category, author, excerpt, body, publishedAt, seo
     }`,
     { slug }
   );
@@ -69,7 +70,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       </nav>
 
       <article className="bg-card-bg border border-border-subtle rounded-lg p-8">
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-3 mb-4 flex-wrap">
           {article.category && (
             <span className={`text-xs font-semibold px-2 py-1 rounded ${categoryColors[article.category] || 'bg-dark-surface text-text-muted'}`}>
               {article.category}
@@ -80,6 +81,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               {new Date(article.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
           )}
+          <span className="text-sm text-text-muted">By <span className="text-text-secondary">{article.author || 'ScarsHQ'}</span></span>
         </div>
 
         <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-6">{article.title}</h1>

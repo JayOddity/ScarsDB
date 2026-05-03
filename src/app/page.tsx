@@ -23,12 +23,22 @@ interface SanityNews {
   publishedAt?: string;
 }
 
+interface SanityArticle {
+  _id: string;
+  title: string;
+  slug: { current: string };
+  category?: string;
+  excerpt?: string;
+  featuredImage?: { asset: { _ref: string } };
+  publishedAt?: string;
+}
+
 interface FeedItem {
   id: string;
   title: string;
   excerpt?: string;
   date: string;
-  source: 'sanity' | 'steam';
+  source: 'sanity' | 'article' | 'steam';
   href: string;
   image?: string;
 }
@@ -80,10 +90,15 @@ function stripSteamMarkup(text: string): string {
 }
 
 export default async function HomePage() {
-  const [sanityNews, steamNews] = await Promise.all([
+  const [sanityNews, sanityArticles, steamNews] = await Promise.all([
     sanityClient.fetch<SanityNews[]>(
       `*[_type == "newsPost"] | order(publishedAt desc) [0...20] {
         _id, title, slug, excerpt, featuredImage, publishedAt
+      }`,
+    ),
+    sanityClient.fetch<SanityArticle[]>(
+      `*[_type == "article"] | order(publishedAt desc) [0...20] {
+        _id, title, slug, category, excerpt, featuredImage, publishedAt
       }`,
     ),
     getSteamNews(),
@@ -100,7 +115,19 @@ export default async function HomePage() {
       date: post.publishedAt || '',
       source: 'sanity',
       href: `/news/${post.slug.current}`,
-      image: post.featuredImage?.asset ? urlFor(post.featuredImage).width(224).height(160).url() : undefined,
+      image: post.featuredImage?.asset ? urlFor(post.featuredImage).width(480).height(270).fit('crop').url() : undefined,
+    });
+  }
+
+  for (const article of sanityArticles) {
+    feed.push({
+      id: article._id,
+      title: article.title,
+      excerpt: article.excerpt,
+      date: article.publishedAt || '',
+      source: 'article',
+      href: `/articles/${article.slug.current}`,
+      image: article.featuredImage?.asset ? urlFor(article.featuredImage).width(480).height(270).fit('crop').url() : undefined,
     });
   }
 
@@ -156,7 +183,7 @@ export default async function HomePage() {
         <h2 className="font-heading text-xl text-honor-gold mb-4">Things to Check Out</h2>
         <div className="grid grid-cols-3 gap-4">
           <Link href="/#news" className="group relative aspect-video rounded-lg overflow-hidden border border-border-subtle hover:border-honor-gold-dim transition-colors">
-            <Image src="/images/news-bg.avif" alt="News" fill priority className="object-cover scale-[1.15] group-hover:scale-[1.20] transition-transform duration-300" sizes="33vw" />
+            <Image src="/images/news-bg.avif" alt="News" fill priority className="object-cover group-hover:scale-105 transition-transform duration-300" sizes="33vw" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
             <span className="absolute bottom-3 left-3 font-heading text-2xl text-white">News</span>
           </Link>

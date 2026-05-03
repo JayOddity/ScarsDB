@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 interface NewsPost {
   title: string;
   slug: { current: string };
+  author?: string;
   excerpt?: string;
   body?: unknown[];
   publishedAt?: string;
@@ -35,7 +36,7 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
   const { slug } = await params;
   const post = await sanityClient.fetch<NewsPost>(
     `*[_type == "newsPost" && slug.current == $slug][0]{
-      title, slug, excerpt, body, publishedAt, seo
+      title, slug, author, excerpt, body, publishedAt, seo
     }`,
     { slug }
   );
@@ -58,13 +59,14 @@ export default async function NewsPostPage({ params }: { params: Promise<{ slug:
       </nav>
 
       <article className="bg-card-bg border border-border-subtle rounded-lg p-8">
-        <div className="flex items-center gap-3 mb-4">
+        <div className="flex items-center gap-3 mb-4 flex-wrap">
           <span className="text-xs font-semibold px-2 py-1 rounded bg-honor-gold/10 text-honor-gold">News</span>
           {post.publishedAt && (
             <span className="text-sm text-text-muted">
               {new Date(post.publishedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
             </span>
           )}
+          <span className="text-sm text-text-muted">By <span className="text-text-secondary">{post.author || 'ScarsHQ'}</span></span>
         </div>
 
         <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-6">{post.title}</h1>

@@ -8,5 +8,6 @@ import { talentBuild } from './talentBuild';
 import { newsletter } from './newsletter';
 import { user } from './user';
 import { buildVote } from './buildVote';
+import { youtubeEmbed } from './youtubeEmbed';
 
-export const schemaTypes = [item, spell, article, newsPost, page, siteSettings, talentBuild, buildVote, newsletter, user];
+export const schemaTypes = [item, spell, article, newsPost, page, siteSettings, talentBuild, buildVote, newsletter, user, youtubeEmbed];

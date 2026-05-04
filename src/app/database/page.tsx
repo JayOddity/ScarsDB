@@ -51,28 +51,34 @@ function reshapeStatPool(p: ParsedStatPool | null | undefined) {
       modif_weight: m.modifWeight,
       modif_min_value: String(m.modifMinValue),
       modif_max_value: String(m.modifMaxValue),
+      created_at: '',
+      updated_at: '',
     })),
   };
 }
 
 function toApiShape(it: ParsedItem) {
   const lists = [];
-  if (it.stats?.base) lists.push(reshapeStatPool(it.stats.base));
-  if (it.stats?.primary) lists.push(reshapeStatPool(it.stats.primary));
-  if (it.stats?.secondary) lists.push(reshapeStatPool(it.stats.secondary));
+  if (it.stats?.base) lists.push(reshapeStatPool(it.stats.base)!);
+  if (it.stats?.primary) lists.push(reshapeStatPool(it.stats.primary)!);
+  if (it.stats?.secondary) lists.push(reshapeStatPool(it.stats.secondary)!);
   return {
     id: String(it.id),
     external_id: it.beastBurstId || null,
-    slug: it.slug || null,
+    slug: it.slug || '',
     name: it.name,
+    description_key: null,
     type: it.itemType,
-    rarity: it.rarity,
+    rarity: it.rarity as 'Common' | 'Rare' | 'Epic' | 'Legendary',
     icon: it.icon || '',
     slot_type: it.slotType === 'None' ? '' : it.slotType,
     stack_size: it.stackSize,
     sell_value: it.sellValue,
     is_destructible: it.isDestructible,
     added_in_patch: it.addedInPatch || null,
+    created_at: '',
+    updated_at: '',
+    sets: [],
     stat_configuration: lists.length ? { lists } : null,
   };
 }

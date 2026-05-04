@@ -50,6 +50,8 @@ function reshapeStatPool(p: PlaytestStatPool | null | undefined) {
       modif_weight: m.modifWeight,
       modif_min_value: String(m.modifMinValue),
       modif_max_value: String(m.modifMaxValue),
+      created_at: '',
+      updated_at: '',
     })),
   };
 }

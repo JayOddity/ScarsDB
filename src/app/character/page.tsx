@@ -94,7 +94,7 @@ export default function CharacterPage() {
               'Adds identity beyond your class, race, and talent choices.',
             ].map((point) => (
               <div key={point} className="flex gap-3 rounded-lg border border-border-subtle bg-void-black/25 px-4 py-3">
-                <span className="mt-1 h-2.5 w-2.5 rotate-45 bg-honor-gold shrink-0" />
+                <span className="mt-1 h-2.5 w-2.5 gem-bullet shrink-0" />
                 <p className="text-sm text-text-secondary">{point}</p>
               </div>
             ))}

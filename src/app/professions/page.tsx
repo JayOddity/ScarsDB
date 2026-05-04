@@ -30,7 +30,7 @@ export default function ProfessionsPage() {
           {gathering.map((prof) => (
             <div key={prof.slug} id={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-green-500/30 transition-colors glow-gold-hover scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+                <div className="w-3 h-3 gem-bullet shrink-0" />
                 <div>
                   <h3 className="font-heading text-lg text-text-primary">{prof.name}</h3>
                   <span className="text-xs px-2 py-0.5 rounded bg-green-500/10 text-green-400">Gathering</span>
@@ -65,14 +65,14 @@ export default function ProfessionsPage() {
       {/* Crafting */}
       <section>
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-3 h-3 bg-honor-gold rotate-45" />
+          <div className="w-3 h-3 gem-bullet" />
           <h2 className="font-heading text-2xl text-honor-gold">Crafting Professions</h2>
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           {crafting.map((prof) => (
             <div key={prof.slug} id={prof.slug} className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover scroll-mt-24">
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+                <div className="w-3 h-3 gem-bullet shrink-0" />
                 <div>
                   <h3 className="font-heading text-lg text-text-primary">{prof.name}</h3>
                   <span className="text-xs px-2 py-0.5 rounded bg-honor-gold/10 text-honor-gold">Crafting</span>

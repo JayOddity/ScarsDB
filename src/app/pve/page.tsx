@@ -34,7 +34,7 @@ export default function PvePage() {
     <div>
       <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8">
         <div className="flex items-center gap-3 mb-5">
-          <div className="h-3 w-3 rotate-45 bg-honor-gold" />
+          <div className="h-3 w-3 gem-bullet" />
           <p className="text-xs uppercase tracking-[0.22em] text-honor-gold">PvE</p>
         </div>
         <h1 className="font-heading text-3xl md:text-5xl text-honor-gold mb-4 max-w-3xl">

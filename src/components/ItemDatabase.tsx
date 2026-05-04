@@ -65,16 +65,16 @@ function HoverPanel({ item, mousePos }: { item: Item; mousePos: { x: number; y: 
 interface InitialData {
   items: Item[];
   meta: ApiMeta;
-  filters: { slots: string[]; types: string[]; rarities: string[]; stats: string[] };
+  filters: { slots: string[]; types: string[]; rarities: string[]; stats: string[]; patches?: string[] };
 }
 
-export default function ItemDatabase({ initialData }: { initialData?: InitialData }) {
+export default function ItemDatabase({ initialData, apiUrl = '/api/items', titleSuffix }: { initialData?: InitialData; apiUrl?: string; titleSuffix?: string }) {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || '';
   const urlCat = searchParams.get('cat') || null;
   const [items, setItems] = useState<Item[]>(initialData?.items || []);
   const [meta, setMeta] = useState<ApiMeta | null>(initialData?.meta || null);
-  const [filters, setFilters] = useState<{ slots: string[]; types: string[]; rarities: string[]; stats: string[] } | null>(initialData?.filters || null);
+  const [filters, setFilters] = useState<{ slots: string[]; types: string[]; rarities: string[]; stats: string[]; patches?: string[] } | null>(initialData?.filters || null);
   const [loading, setLoading] = useState(!initialData);
   const [ready, setReady] = useState(!!initialData);
   const [search, setSearch] = useState(initialSearch);
@@ -90,20 +90,24 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
   }, [urlCat]);
   const [subFilter, setSubFilter] = useState<string | null>(null);
   const [statFilters, setStatFilters] = useState<string[]>([]);
-  const [sourceFilter, setSourceFilter] = useState<string>('');
+  const latestPatch = initialData?.filters?.patches?.[0] || '';
+  const [patchFilter, setPatchFilter] = useState<string>(latestPatch);
+  const [patchOpen, setPatchOpen] = useState(false);
+  const patchRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!patchOpen) return;
+    function onClick(e: MouseEvent) {
+      if (patchRef.current && !patchRef.current.contains(e.target as Node)) setPatchOpen(false);
+    }
+    window.addEventListener('mousedown', onClick);
+    return () => window.removeEventListener('mousedown', onClick);
+  }, [patchOpen]);
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<'name' | 'rarity' | 'slot_type' | 'tier' | 'damage' | 'strength' | 'dexterity' | 'intelligence' | 'vitality' | 'armor'>('rarity');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [hoveredItem, setHoveredItem] = useState<Item | null>(null);
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [advancedOpen, setAdvancedOpen] = useState(false);
-  const [counts, setCounts] = useState<{ items: number; spells: number } | null>(null);
-
-  useEffect(() => {
-    fetch('/api/counts').then((r) => r.json()).then((d) => {
-      if (typeof d?.items === 'number' && typeof d?.spells === 'number') setCounts(d);
-    }).catch(() => { /* ignore */ });
-  }, []);
 
   // Category definitions (static, defined outside would be ideal but kept here for locality — use stable ref via `category` key)
   const activeCategory = category ? CATEGORIES_MAP[category] : null;
@@ -126,6 +130,7 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
     if (debouncedSearch) params.set('search', debouncedSearch);
     if (rarityFilter) params.set('rarity', rarityFilter);
     if (statFilters.length) params.set('stats', statFilters.join(','));
+    if (patchFilter) params.set('patch', patchFilter);
 
     // Category → API params
     if (subFilter) {
@@ -136,7 +141,7 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
     }
 
     try {
-      const res = await fetch(`/api/items?${params}`);
+      const res = await fetch(`${apiUrl}?${params}`);
       const data = await res.json();
       setItems(data.items || []);
       setMeta(data.meta || null);
@@ -147,7 +152,7 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
       setLoading(false);
       setReady(true);
     }
-  }, [page, debouncedSearch, rarityFilter, category, subFilter, statFilters]);
+  }, [page, debouncedSearch, rarityFilter, category, subFilter, statFilters, patchFilter, apiUrl]);
 
   useEffect(() => { fetchItems(); }, [fetchItems]);
 
@@ -279,12 +284,12 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
     setCategory(null);
     setSubFilter(null);
     setStatFilters([]);
-    setSourceFilter('');
+    setPatchFilter(latestPatch);
     setSearch('');
     setPage(1);
   }
 
-  const hasActiveFilters = rarityFilter || category || subFilter || statFilters.length || sourceFilter || search;
+  const hasActiveFilters = rarityFilter || category || subFilter || statFilters.length || patchFilter !== latestPatch || search;
 
   if (!ready) {
     return (
@@ -310,17 +315,17 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-6">Item Database</h1>
+      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-6">Item Database{titleSuffix ? ` — ${titleSuffix}` : ''}</h1>
 
       <div className="flex gap-2 mb-6">
         <span className="px-4 py-2 rounded-lg text-sm font-medium bg-honor-gold text-void-black">
-          Items {meta && <span className="ml-1 opacity-70">({meta.total.toLocaleString()})</span>}
+          Items
         </span>
         <Link
           href="/database/spells"
           className="px-4 py-2 rounded-lg text-sm font-medium bg-dark-surface text-text-muted hover:text-text-primary transition-all"
         >
-          Spells {counts && <span className="ml-1 opacity-60">({counts.spells.toLocaleString()})</span>}
+          Spells
         </Link>
       </div>
 
@@ -374,7 +379,7 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
           </div>
         )}
 
-        {/* Row 3: Rarity + Source + Search + Clear/Advanced */}
+        {/* Row 3: Rarity + Patch + Search + Clear/Advanced */}
         <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
           <select
             value={rarityFilter || ''}
@@ -385,18 +390,32 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
             {RARITIES.map((r) => <option key={r} value={r}>{r}</option>)}
           </select>
 
-          <select
-            value={sourceFilter}
-            onChange={(e) => { setSourceFilter(e.target.value); setPage(1); }}
-            className="bg-dark-surface border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-honor-gold-dim"
-          >
-            <option value="">All Sources</option>
-            <option value="Drop">Drop</option>
-            <option value="Quest Reward">Quest Reward</option>
-            <option value="Vendor">Vendor</option>
-            <option value="Crafted">Crafted</option>
-            <option value="Other">Other</option>
-          </select>
+          {filters?.patches && filters.patches.length > 0 && (
+            <div ref={patchRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setPatchOpen((v) => !v)}
+                className="bg-dark-surface border border-border-subtle rounded-lg px-3 py-2 text-sm text-text-primary focus:outline-none focus:border-honor-gold-dim min-w-[120px] text-left flex items-center justify-between gap-2"
+              >
+                <span>{patchFilter === 'all' ? 'All patches' : patchFilter === latestPatch ? 'Latest' : patchFilter}</span>
+                <span className="opacity-60 text-xs">▼</span>
+              </button>
+              {patchOpen && (
+                <div className="absolute top-full left-0 mt-1 bg-dark-surface border border-border-subtle rounded-lg shadow-lg z-20 min-w-full whitespace-nowrap py-1">
+                  {filters.patches.map((p, i) => (
+                    <button
+                      key={p}
+                      type="button"
+                      onClick={() => { setPatchFilter(p); setPatchOpen(false); setPage(1); }}
+                      className={`w-full text-left px-3 py-2 text-sm hover:bg-card-bg ${patchFilter === p ? 'text-honor-gold' : 'text-text-primary'}`}
+                    >
+                      {i === 0 ? `Latest — ${p}` : p}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="relative flex-1">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -511,7 +530,7 @@ export default function ItemDatabase({ initialData }: { initialData?: InitialDat
                           className="border-b border-border-subtle/30 hover:bg-dark-surface/30 transition-colors"
                         >
                           <td className="py-2.5 px-3">
-                            <Link href={item.slug ? `/database/${item.slug}` : `/items/${item.id}`} className="flex items-center gap-3">
+                            <Link href={item.slug ? `/database/${item.slug}` : item.external_id ? `/items/${item.external_id}` : `/items/${item.id}`} className="flex items-center gap-3">
                               <div className={`w-9 h-9 rounded border ${rarityBorderClass[item.rarity]} overflow-hidden bg-dark-surface flex items-center justify-center flex-shrink-0`}>
                                 {item.icon && !item.icon.includes('placehold') ? (
                                   <Image src={item.icon} alt={item.name} width={36} height={36} className="object-cover" />

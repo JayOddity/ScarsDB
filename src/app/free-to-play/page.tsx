@@ -180,7 +180,7 @@ export default function FreeToPlayPage() {
 
           <div className="rounded-2xl border border-honor-gold/20 bg-card-bg p-6">
             <div className="flex items-center gap-3 mb-5">
-              <div className="h-3 w-3 rotate-45 bg-honor-gold" />
+              <div className="h-3 w-3 gem-bullet" />
               <h2 className="font-heading text-2xl text-honor-gold">What the Store Sells</h2>
             </div>
             <div className="space-y-3">

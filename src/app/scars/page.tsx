@@ -28,13 +28,13 @@ export default function ScarsPage() {
       {/* What they are */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-3 h-3 bg-honor-gold rotate-45" />
+          <div className="w-3 h-3 gem-bullet" />
           <h2 className="font-heading text-2xl text-honor-gold">What Scars Do</h2>
         </div>
         <div className="grid sm:grid-cols-2 gap-6">
           <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <div className="w-3 h-3 gem-bullet shrink-0" />
               <h3 className="font-heading text-lg text-text-primary">Permanent</h3>
             </div>
             <p className="text-sm text-text-secondary">
@@ -44,7 +44,7 @@ export default function ScarsPage() {
           </div>
           <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <div className="w-3 h-3 gem-bullet shrink-0" />
               <h3 className="font-heading text-lg text-text-primary">Earned, Not Bought</h3>
             </div>
             <p className="text-sm text-text-secondary">
@@ -54,7 +54,7 @@ export default function ScarsPage() {
           </div>
           <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <div className="w-3 h-3 gem-bullet shrink-0" />
               <h3 className="font-heading text-lg text-text-primary">On Top of Everything Else</h3>
             </div>
             <p className="text-sm text-text-secondary">
@@ -64,7 +64,7 @@ export default function ScarsPage() {
           </div>
           <div className="bg-card-bg border border-border-subtle rounded-lg p-6 hover:border-honor-gold-dim transition-colors glow-gold-hover">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-3 h-3 bg-honor-gold rotate-45 shrink-0" />
+              <div className="w-3 h-3 gem-bullet shrink-0" />
               <h3 className="font-heading text-lg text-text-primary">Choices That Matter</h3>
             </div>
             <p className="text-sm text-text-secondary">
@@ -82,7 +82,7 @@ export default function ScarsPage() {
       {/* Why it matters */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-3 h-3 bg-honor-gold rotate-45" />
+          <div className="w-3 h-3 gem-bullet" />
           <h2 className="font-heading text-2xl text-honor-gold">Why This Matters</h2>
         </div>
         <div className="bg-card-bg border border-border-subtle rounded-lg p-6">

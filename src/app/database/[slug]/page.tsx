@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import Link from 'next/link';
 import { sanityClient } from '@/lib/sanity';
 import type { Item } from '@/lib/api';
@@ -7,6 +9,67 @@ import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
 import ItemTooltipPanel from '@/components/ItemTooltipPanel';
 import { classes } from '@/data/classes';
 import { rarityColorClass } from '@/lib/rarityStyles';
+
+interface PlaytestStatPool {
+  minStatCount: number;
+  maxStatCount: number;
+  modifications: { stat: string; modifType: string; modifWeight: number; modifMinValue: number; modifMaxValue: number }[];
+}
+interface PlaytestItem {
+  id: number;
+  name: string;
+  slug?: string;
+  rarity: string;
+  itemType: string;
+  slotType: string;
+  stackSize: number;
+  sellValue: number;
+  isDestructible: boolean;
+  icon?: string;
+  stats?: { base: PlaytestStatPool | null; primary: PlaytestStatPool | null; secondary: PlaytestStatPool | null };
+}
+
+let playtestCache: { items: PlaytestItem[]; mtime: number } | null = null;
+function loadPlaytest(): PlaytestItem[] {
+  const file = path.join(process.cwd(), 'public', 'data', 'playtest-items.json');
+  const mtime = fs.statSync(file).mtimeMs;
+  if (playtestCache && playtestCache.mtime === mtime) return playtestCache.items;
+  const raw = JSON.parse(fs.readFileSync(file, 'utf8')) as { obtainable: PlaytestItem[] };
+  playtestCache = { items: raw.obtainable, mtime };
+  return playtestCache.items;
+}
+
+function reshapeStatPool(p: PlaytestStatPool | null | undefined) {
+  if (!p) return null;
+  return {
+    min_stat_count: p.minStatCount,
+    max_stat_count: p.maxStatCount,
+    modifications: p.modifications.map((m) => ({
+      stat: m.stat,
+      modif_type: m.modifType,
+      modif_weight: m.modifWeight,
+      modif_min_value: String(m.modifMinValue),
+      modif_max_value: String(m.modifMaxValue),
+    })),
+  };
+}
+
+function applyPlaytestOverlay(item: Item, slug: string): Item {
+  const all = loadPlaytest();
+  const matches = all.filter((p) => p.slug === slug);
+  if (!matches.length) return item;
+  // Pick the rarity that matches the Sanity item; fall back to first.
+  const m = matches.find((p) => p.rarity === item.rarity) || matches[0];
+  if (m.icon) item.icon = m.icon;
+  if (m.stats && (m.stats.base || m.stats.primary || m.stats.secondary)) {
+    const lists: NonNullable<Item['stat_configuration']>['lists'] = [];
+    if (m.stats.base) lists.push(reshapeStatPool(m.stats.base)!);
+    if (m.stats.primary) lists.push(reshapeStatPool(m.stats.primary)!);
+    if (m.stats.secondary) lists.push(reshapeStatPool(m.stats.secondary)!);
+    if (lists.length) item.stat_configuration = { lists };
+  }
+  return item;
+}
 
 const classMap = new Map(classes.map((c) => [c.slug, c]));
 
@@ -76,6 +139,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
       { slug }
     );
     if (!item) throw new Error('Not found');
+    item = applyPlaytestOverlay(item, slug);
   } catch {
     return (
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">

@@ -148,7 +148,7 @@ export default function GameplayPage() {
         <div className="grid xl:grid-cols-[1.2fr_0.8fr] gap-6 items-start">
           <div className="rounded-2xl border border-border-subtle bg-card-bg p-6 md:p-8">
             <div className="flex items-center gap-3 mb-5">
-              <div className="h-3 w-3 rotate-45 bg-honor-gold" />
+              <div className="h-3 w-3 gem-bullet" />
               <p className="text-xs uppercase tracking-[0.22em] text-honor-gold">Gameplay</p>
             </div>
             <h1 className="font-heading text-3xl md:text-5xl text-honor-gold mb-4">

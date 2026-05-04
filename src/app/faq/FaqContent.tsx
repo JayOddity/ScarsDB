@@ -109,7 +109,7 @@ export default function FaqContent() {
         {faqs.map((section) => (
           <section key={section.category}>
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-3 h-3 bg-honor-gold rotate-45" />
+              <div className="w-3 h-3 gem-bullet" />
               <h2 className="font-heading text-2xl text-honor-gold">{section.category}</h2>
             </div>
             <div className="space-y-2">

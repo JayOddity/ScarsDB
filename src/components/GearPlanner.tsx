@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, type ReactNode } from 'react';
 import Image from 'next/image';
 import type { Item } from '@/lib/api';
 import { rarityColorClass, rarityBorderClass } from '@/lib/rarityStyles';
+import SectionDivider from '@/components/SectionDivider';
 
 const SLOT_SVGS: Record<string, ReactNode> = {
   helmet: (
@@ -84,8 +85,9 @@ const EQUIPMENT_ROWS = [
     { key: 'Pants', label: 'Pants', icon: 'pants', emptyIcon: '/Icons/Slots/empty/pants.png' },
   ],
   [
-    { key: 'Ring 1', label: 'Ring', icon: 'ring', emptyIcon: '/Icons/Slots/empty/Ring.png' },
+    { key: 'Cape', label: 'Cape', icon: 'cape', emptyIcon: '/Icons/Slots/empty/cape.png' },
     { key: 'Boots', label: 'Boots', icon: 'boots', emptyIcon: '/Icons/Slots/empty/boots.png' },
+    { key: 'Ring 1', label: 'Ring', icon: 'ring', emptyIcon: '/Icons/Slots/empty/Ring.png' },
     { key: 'Ring 2', label: 'Ring', icon: 'ring', emptyIcon: '/Icons/Slots/empty/Ring.png' },
   ],
 ];
@@ -203,18 +205,12 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
         <div className="flex-shrink-0 w-[380px]">
           <div className="bg-[#0a0a0f] border border-border-subtle rounded-lg p-6">
             {/* Section Header: Equipped Items */}
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex-1 h-px bg-honor-gold/40" />
-              <div className="w-2 h-2 bg-honor-gold rotate-45" />
-              <span className="font-heading text-xs text-honor-gold tracking-widest uppercase">Equipped Items</span>
-              <div className="w-2 h-2 bg-honor-gold rotate-45" />
-              <div className="flex-1 h-px bg-honor-gold/40" />
-            </div>
+            <SectionDivider label="Equipped Items" className="mb-6" />
 
             {/* Equipment Grid */}
             <div className="space-y-4 mb-8">
               {EQUIPMENT_ROWS.map((row, ri) => (
-                <div key={ri} className="flex justify-center gap-4">
+                <div key={ri} className="flex justify-center gap-3">
                   {row.map((slot) => {
                     const item = equipped[slot.key];
                     return (
@@ -222,7 +218,7 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
                         <button
                           onClick={() => { if (readOnly) return; item ? unequipSlot(slot.key) : setSelectorSlot(slot.key); }}
                           onContextMenu={(e) => { e.preventDefault(); if (!readOnly) unequipSlot(slot.key); }}
-                          className={`w-[72px] h-[72px] rounded-md border-2 flex items-center justify-center transition-all relative group ${
+                          className={`w-[72px] h-[72px] rounded-md border-2 flex items-center justify-center overflow-hidden transition-all relative group ${
                             readOnly ? '' : 'hover:scale-105'
                           } ${
                             item
@@ -234,12 +230,16 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
                         >
                           {item ? (
                             item.icon && !item.icon.includes('placehold') ? (
-                              <Image src={item.icon} alt={item.name} width={56} height={56} className="object-cover rounded" />
+                              <div className="relative w-[56px] h-[56px]">
+                                <Image src={item.icon} alt={item.name} fill sizes="56px" className="object-cover rounded" />
+                              </div>
                             ) : (
                               <span className={`text-xs font-bold ${rarityColorClass[item.rarity]}`}>{item.name.substring(0, 3)}</span>
                             )
                           ) : slot.emptyIcon ? (
-                            <Image src={slot.emptyIcon} alt={slot.label} width={56} height={56} className="object-contain opacity-60" />
+                            <div className="relative w-[52px] h-[52px]">
+                              <Image src={slot.emptyIcon} alt={slot.label} fill sizes="52px" className="object-contain opacity-80" />
+                            </div>
                           ) : (
                             <SlotIcon name={slot.icon} className="w-12 h-12 text-text-secondary opacity-40" />
                           )}
@@ -257,43 +257,35 @@ export default function GearPlanner({ equipped: controlledEquipped, onEquippedCh
             </div>
 
             {/* Section Header: Gathering Tools */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 h-px bg-honor-gold/40" />
-              <div className="w-2 h-2 bg-honor-gold rotate-45" />
-              <span className="font-heading text-xs text-honor-gold tracking-widest uppercase">Gathering Tools</span>
-              <div className="w-2 h-2 bg-honor-gold rotate-45" />
-              <div className="flex-1 h-px bg-honor-gold/40" />
-            </div>
+            <SectionDivider label="Gathering Tools" />
 
             <div className="flex justify-center gap-3 mb-8">
               {GATHERING_TOOLS.map((tool) => (
                 <div
                   key={tool.label}
-                  className="w-12 h-12 rounded border-2 border-[#2a2a35] bg-[#12121a] flex items-center justify-center"
+                  className="w-12 h-12 rounded border-2 border-[#2a2a35] bg-[#12121a] flex items-center justify-center overflow-hidden"
                   title={tool.label}
                 >
-                  <Image src={tool.icon} alt={tool.label} width={36} height={36} className="object-contain opacity-60" />
+                  <div className="relative w-[36px] h-[36px]">
+                    <Image src={tool.icon} alt={tool.label} fill sizes="36px" className="object-contain opacity-80" />
+                  </div>
                 </div>
               ))}
             </div>
 
             {/* Section Header: Potions */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="flex-1 h-px bg-honor-gold/40" />
-              <div className="w-2 h-2 bg-honor-gold rotate-45" />
-              <span className="font-heading text-xs text-honor-gold tracking-widest uppercase">Potions</span>
-              <div className="w-2 h-2 bg-honor-gold rotate-45" />
-              <div className="flex-1 h-px bg-honor-gold/40" />
-            </div>
+            <SectionDivider label="Potions" />
 
             <div className="flex justify-center gap-5 mb-2">
               {POTIONS.map((pot) => (
                 <div
                   key={pot.label}
-                  className="w-14 h-14 rotate-45 rounded-sm border-2 border-[#2a2a35] bg-[#12121a] flex items-center justify-center"
+                  className="w-14 h-14 rotate-45 rounded-sm border-2 border-[#2a2a35] bg-[#12121a] flex items-center justify-center overflow-hidden"
                   title={pot.label}
                 >
-                  <Image src={pot.icon} alt={pot.label} width={32} height={32} className="-rotate-45 object-contain opacity-30" />
+                  <div className="relative w-[32px] h-[32px] -rotate-45">
+                    <Image src={pot.icon} alt={pot.label} fill sizes="32px" className="object-contain opacity-50" />
+                  </div>
                 </div>
               ))}
             </div>

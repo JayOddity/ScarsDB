@@ -1,6 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sanityClient } from '@/lib/sanity';
 
+interface Spell {
+  _id: string;
+  name?: string;
+  slug?: string;
+  externalId?: string;
+  description?: string;
+  icon?: string;
+  maxRange?: number | null;
+  targetType?: string | null;
+  channelTime?: number | null;
+  castTime?: number | null;
+  cooldown?: number | null;
+  globalCooldown?: number | null;
+  requiredAmount?: number | null;
+  requiredResource?: string | null;
+  schoolType?: string | null;
+  flags?: string[];
+  tags?: string[];
+  classSpecLevels?: Array<{ class?: string; spec?: string; level?: number }>;
+}
+
 const SPELL_PROJECTION = `{
   _id,
   name,
@@ -35,7 +56,9 @@ export async function GET(request: NextRequest) {
     const page = Number(searchParams.get('page')) || 1;
     const perPage = Number(searchParams.get('per_page')) || 50;
 
-    const conditions: string[] = ['_type == "spell"'];
+    // Hide spells with no in-game icon. The matcher script clears `icon` for any
+    // spell that doesn't have a datamined PNG, so this filter excludes them site-wide.
+    const conditions: string[] = ['_type == "spell"', 'icon match "/Icons/Spells/*"'];
     const params: Record<string, unknown> = {};
 
     if (search) {
@@ -60,48 +83,77 @@ export async function GET(request: NextRequest) {
     }
 
     const filter = conditions.join(' && ');
-    const start = (page - 1) * perPage;
-    const end = start + perPage;
 
-    // For sortable fields, push nulls/empties to the bottom regardless of
-    // direction. GROQ uses coalesce + a sentinel string ("zzz" for asc, ""
-    // for desc — this works because we sort on a string field with secondary
-    // name asc as tie-breaker). For numeric fields, missing values get a
-    // sentinel that sorts last in the chosen direction.
-    const STR_NULL_ASC = '"zzz_null_zzz"';
-    const STR_NULL_DESC = '""';
-    const NUM_NULL_ASC = '999999999';
-    const NUM_NULL_DESC = '-1';
-    const sortFields: Record<string, { type: 'str' | 'num'; field: string }> = {
-      name: { type: 'str', field: 'name' },
-      class: { type: 'str', field: 'classSpecLevels[0].class' },
-      school: { type: 'str', field: 'schoolType' },
-      resource: { type: 'str', field: 'requiredResource' },
-      target: { type: 'str', field: 'targetType' },
-      cast: { type: 'num', field: 'castTime' },
-      cooldown: { type: 'num', field: 'cooldown' },
-      range: { type: 'num', field: 'maxRange' },
-    };
-    const sf = sortFields[sortBy] || sortFields.class;
-    const sentinel = sf.type === 'str'
-      ? (sortDir === 'asc' ? STR_NULL_ASC : STR_NULL_DESC)
-      : (sortDir === 'asc' ? NUM_NULL_ASC : NUM_NULL_DESC);
-    const orderBy = `coalesce(${sf.field}, ${sentinel}) ${sortDir}, name asc`;
-
-    const [spells, total, schools, resources, flags, classes] = await Promise.all([
-      sanityClient.fetch(
-        `*[${filter}] | order(${orderBy}) [${start}...${end}] ${SPELL_PROJECTION}`,
+    // Fetch all matching docs (the visible-spell set is small after the icon filter,
+    // currently ~82 rows) so we can dedupe sibling entries — BeastBurst returns
+    // multiple spell docs for the same display name (different ranks/specs/internal
+    // variants, all with identical name/icon). Pick the one with classSpecLevels
+    // populated as the canonical row, then sort + paginate in JS.
+    const [allSpells, schools, resources, flags, classes] = await Promise.all([
+      sanityClient.fetch<Spell[]>(
+        `*[${filter}] ${SPELL_PROJECTION}`,
         params,
       ),
-      sanityClient.fetch<number>(`count(*[${filter}])`, params),
-      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell" && defined(schoolType)].schoolType) | order(@ asc)`),
-      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell" && defined(requiredResource)].requiredResource) | order(@ asc)`),
-      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell"].flags[]) | order(@ asc)`),
-      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell"].classSpecLevels[].class) | order(@ asc)`),
+      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell" && icon match "/Icons/Spells/*" && defined(schoolType)].schoolType) | order(@ asc)`),
+      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell" && icon match "/Icons/Spells/*" && defined(requiredResource)].requiredResource) | order(@ asc)`),
+      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell" && icon match "/Icons/Spells/*"].flags[]) | order(@ asc)`),
+      sanityClient.fetch<string[]>(`array::unique(*[_type == "spell" && icon match "/Icons/Spells/*"].classSpecLevels[].class) | order(@ asc)`),
     ]);
 
+    const byName = new Map<string, Spell>();
+    for (const s of allSpells) {
+      const key = s.name || s._id;
+      const existing = byName.get(key);
+      if (!existing) { byName.set(key, s); continue; }
+      const existingRank = (existing.classSpecLevels?.length || 0);
+      const candidateRank = (s.classSpecLevels?.length || 0);
+      if (candidateRank > existingRank) byName.set(key, s);
+    }
+    const unique = Array.from(byName.values());
+
+    const sortMul = sortDir === 'asc' ? 1 : -1;
+    const cmp = (a: Spell, b: Spell): number => {
+      const numField = (s: Spell) => {
+        switch (sortBy) {
+          case 'cast': return s.castTime;
+          case 'cooldown': return s.cooldown;
+          case 'range': return s.maxRange;
+          default: return null;
+        }
+      };
+      const strField = (s: Spell) => {
+        switch (sortBy) {
+          case 'name': return s.name;
+          case 'school': return s.schoolType;
+          case 'resource': return s.requiredResource;
+          case 'target': return s.targetType;
+          case 'class': return s.classSpecLevels?.[0]?.class;
+          default: return null;
+        }
+      };
+      const isNum = ['cast', 'cooldown', 'range'].includes(sortBy);
+      if (isNum) {
+        const av = numField(a), bv = numField(b);
+        const an = av == null ? Number.POSITIVE_INFINITY : av;
+        const bn = bv == null ? Number.POSITIVE_INFINITY : bv;
+        if (an !== bn) return (an - bn) * sortMul;
+      } else {
+        const av = strField(a) || '￿';
+        const bv = strField(b) || '￿';
+        const c = av.localeCompare(bv);
+        if (c !== 0) return c * sortMul;
+      }
+      return (a.name || '').localeCompare(b.name || '');
+    };
+    unique.sort(cmp);
+
+    const total = unique.length;
+    const start = (page - 1) * perPage;
+    const end = start + perPage;
+    const paged = unique.slice(start, end);
+
     return NextResponse.json({
-      spells,
+      spells: paged,
       meta: {
         total,
         page,

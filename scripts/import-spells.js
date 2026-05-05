@@ -73,13 +73,21 @@ async function fetchPage(page) {
   return res.json();
 }
 
-function mapSpell(s, slug) {
+// See pickIcon comment in src/app/api/import-spells/route.ts for rationale.
+function pickIcon(incoming, existingLocal) {
+  if (existingLocal) return existingLocal;
+  if (!incoming) return null;
+  if (/bb-game\.b-cdn\.net|placehold\.co/i.test(incoming)) return null;
+  return incoming;
+}
+
+function mapSpell(s, slug, existingLocal) {
   return {
     _type: 'spell',
     _id: 'spell-' + s.id,
     name: s.name,
     description: s.description || '',
-    icon: s.icon,
+    icon: pickIcon(s.icon, existingLocal),
     externalId: s.id,
     maxRange: s.max_range,
     targetType: s.target_type,
@@ -129,17 +137,21 @@ async function main() {
   console.log(`\nTotal spells fetched: ${allSpells.length}`);
 
   const existingRows = await sanityClient.fetch(
-    `*[_type == "spell" && defined(slug.current)]{ externalId, "slug": slug.current }`,
+    `*[_type == "spell"]{ externalId, "slug": slug.current, icon }`,
   );
   const existing = new Map();
-  for (const r of existingRows) existing.set(r.externalId, r.slug);
+  const localIcons = new Map();
+  for (const r of existingRows) {
+    if (r.slug) existing.set(r.externalId, r.slug);
+    if (r.icon && r.icon.startsWith('/Icons/')) localIcons.set(r.externalId, r.icon);
+  }
 
   const slugMap = assignSlugs(
     allSpells.map((s) => ({ id: s.id, name: s.name })),
     existing,
   );
 
-  const docs = allSpells.map((s) => mapSpell(s, slugMap.get(s.id)));
+  const docs = allSpells.map((s) => mapSpell(s, slugMap.get(s.id), localIcons.get(s.id) || null));
   const BATCH_SIZE = 20;
   let written = 0;
   for (let i = 0; i < docs.length; i += BATCH_SIZE) {

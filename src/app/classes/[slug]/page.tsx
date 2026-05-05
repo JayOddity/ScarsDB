@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { classes, allRaces } from '@/data/classes';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
+import { isPlayableSlug, loadClassAbilities, type ClassTreeAbilities } from '@/lib/classTalents';
 
 export function generateStaticParams() {
   return classes.map((cls) => ({ slug: cls.slug }));
@@ -12,9 +13,16 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
   return params.then(({ slug }) => {
     const cls = classes.find((c) => c.slug === slug);
     if (!cls) return { title: 'Not Found' };
+    const playable = isPlayableSlug(slug);
+    const title = playable
+      ? `Scars of Honor ${cls.name}: Abilities, Talents & Builds | ScarsHQ`
+      : `${cls.name} Class Guide | ScarsHQ`;
+    const description = playable
+      ? `${cls.name} is playable in the Spring 2026 Scars of Honor playtest. Full active and starting ability list from the playtest client, talent tree, and available races.`
+      : cls.description;
     return {
-      title: `${cls.name} Class Guide - ScarsHQ`,
-      description: cls.description,
+      title,
+      description,
       alternates: { canonical: `/classes/${cls.slug}` },
     };
   });
@@ -24,6 +32,9 @@ export default async function ClassPage({ params }: { params: Promise<{ slug: st
   const { slug } = await params;
   const cls = classes.find((c) => c.slug === slug);
   if (!cls) notFound();
+
+  const playable = isPlayableSlug(slug);
+  const abilities: ClassTreeAbilities | null = playable ? loadClassAbilities(slug) : null;
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
@@ -94,9 +105,86 @@ export default async function ClassPage({ params }: { params: Promise<{ slug: st
         </div>
       </section>
 
+      {/* Abilities (playable in Spring 2026 playtest) */}
+      {abilities ? (
+        <section className="mb-10">
+          <div className="flex items-center gap-3 mb-4">
+            <h2 className="font-heading text-xl text-honor-gold">Abilities from the playtest client</h2>
+            <span className="text-[10px] uppercase tracking-[0.18em] px-2 py-0.5 rounded border border-emerald-400/30 text-emerald-300 bg-emerald-500/10">
+              Playable now
+            </span>
+          </div>
+          <p className="text-text-secondary text-sm mb-6 max-w-3xl">
+            Pulled directly from the Spring 2026 playtest client. Spell text is verbatim from the game data, including any minor typos.
+          </p>
+
+          {abilities.active.length > 0 ? (
+            <div className="mb-6">
+              <h3 className="font-heading text-sm uppercase tracking-[0.18em] text-honor-gold-light mb-3">
+                Active abilities ({abilities.active.length})
+              </h3>
+              <ul className="grid sm:grid-cols-2 gap-3">
+                {abilities.active.map((a, i) => (
+                  <li key={`active-${i}`} className="flex gap-3 p-3 bg-card-bg border border-border-subtle rounded-lg">
+                    {a.iconUrl ? (
+                      <img src={a.iconUrl} alt="" className="w-10 h-10 flex-shrink-0 rounded" />
+                    ) : (
+                      <div className="w-10 h-10 flex-shrink-0 rounded bg-dark-surface/80" />
+                    )}
+                    <div className="min-w-0">
+                      <p className="text-sm text-text-primary font-heading">{a.name}</p>
+                      <p className="text-xs text-text-muted leading-snug">{a.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {abilities.start.length > 0 ? (
+            <div>
+              <h3 className="font-heading text-sm uppercase tracking-[0.18em] text-honor-gold-light mb-3">
+                Starting talents ({abilities.start.length})
+              </h3>
+              <ul className="grid sm:grid-cols-2 gap-3">
+                {abilities.start.map((a, i) => (
+                  <li key={`start-${i}`} className="flex gap-3 p-3 bg-card-bg border border-border-subtle rounded-lg">
+                    {a.iconUrl ? (
+                      <img src={a.iconUrl} alt="" className="w-10 h-10 flex-shrink-0 rounded" />
+                    ) : (
+                      <div className="w-10 h-10 flex-shrink-0 rounded bg-dark-surface/80" />
+                    )}
+                    <div className="min-w-0">
+                      <p className="text-sm text-text-primary font-heading">{a.name}</p>
+                      <p className="text-xs text-text-muted leading-snug">{a.description}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </section>
+      ) : (
+        <section className="mb-10">
+          <div className="bg-card-bg border border-border-subtle rounded-lg p-5">
+            <p className="text-[10px] uppercase tracking-[0.18em] px-2 py-0.5 rounded border border-border-subtle text-text-muted bg-dark-surface/40 inline-block mb-3">
+              Not in current playtest
+            </p>
+            <p className="text-sm text-text-secondary">
+              {cls.name} is not in the Spring 2026 playtest. The four playable classes this test are{' '}
+              <Link href="/classes/druid" className="text-honor-gold hover:text-honor-gold-light">Druid</Link>,{' '}
+              <Link href="/classes/mage" className="text-honor-gold hover:text-honor-gold-light">Mage</Link>,{' '}
+              <Link href="/classes/paladin" className="text-honor-gold hover:text-honor-gold-light">Paladin</Link>, and{' '}
+              <Link href="/classes/ranger" className="text-honor-gold hover:text-honor-gold-light">Ranger</Link>. Real ability data for {cls.name} will be added once it is datamined from a future playtest.
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* Source */}
       <p className="text-xs text-text-muted mb-10">
         Source: <a href="https://www.scarsofhonor.com/classes" target="_blank" rel="noopener noreferrer" className="text-honor-gold hover:text-honor-gold-light transition-colors">scarsofhonor.com/classes</a>
+        {playable ? '; ability text from the Spring 2026 playtest client.' : '.'}
       </p>
 
       {/* CTAs */}

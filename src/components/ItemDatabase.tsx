@@ -75,7 +75,6 @@ export default function ItemDatabase({ initialData, apiUrl = '/api/items', title
   const [items, setItems] = useState<Item[]>(initialData?.items || []);
   const [meta, setMeta] = useState<ApiMeta | null>(initialData?.meta || null);
   const [filters, setFilters] = useState<{ slots: string[]; types: string[]; rarities: string[]; stats: string[]; patches?: string[] } | null>(initialData?.filters || null);
-  const [loading, setLoading] = useState(!initialData);
   const [ready, setReady] = useState(!!initialData);
   const [search, setSearch] = useState(initialSearch);
   const [debouncedSearch, setDebouncedSearch] = useState(initialSearch);
@@ -149,7 +148,6 @@ export default function ItemDatabase({ initialData, apiUrl = '/api/items', title
     } catch {
       setItems([]);
     } finally {
-      setLoading(false);
       setReady(true);
     }
   }, [page, debouncedSearch, rarityFilter, category, subFilter, statFilters, patchFilter, apiUrl]);
@@ -203,26 +201,6 @@ export default function ItemDatabase({ initialData, apiUrl = '/api/items', title
     });
   }, [items, sortBy, sortDir]);
 
-  function getMainStats(item: Item): string {
-    if (!item.stat_configuration?.lists?.length) return '-';
-    // Combine all pools into a summary
-    const allMods = item.stat_configuration.lists.flatMap((l) => l.modifications);
-    const minDmg = allMods.find((m) => m.stat === 'Weapon Min Damage');
-    const maxDmg = allMods.find((m) => m.stat === 'Weapon Max Damage');
-    const rest = allMods.filter((m) => m.stat !== 'Weapon Min Damage' && m.stat !== 'Weapon Max Damage');
-
-    const parts: string[] = [];
-    if (minDmg && maxDmg) {
-      parts.push(`${parseFloat(minDmg.modif_min_value)}-${parseFloat(maxDmg.modif_max_value)} Dmg`);
-    }
-    for (const m of rest) {
-      const min = parseFloat(m.modif_min_value);
-      const max = parseFloat(m.modif_max_value);
-      const short = m.stat.replace('Armor Penetration', 'ArPen').replace('Magic Penetration', 'MPen').replace('Magic Defence', 'MDef').replace('Cooldown Reduction', 'CDR').replace('Crit Chance', 'Crit');
-      parts.push(min === max ? `${short} ${min}` : `${short} ${min}-${max}`);
-    }
-    return parts.join(', ');
-  }
 
   // Extract a specific stat's value across all pools, combining weapon damage
   function getStatValue(item: Item, statName: string): string {

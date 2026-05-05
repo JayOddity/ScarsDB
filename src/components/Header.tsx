@@ -10,7 +10,6 @@ import { classes } from '@/data/classes';
 
 interface HeaderProps {
   siteName: string;
-  siteAbbrev: string;
 }
 
 interface SubMenuItem {
@@ -143,7 +142,7 @@ const navItems: NavItem[] = [
   { label: 'Talent Calculator', href: '/talents' },
 ];
 
-export default function Header({ siteName, siteAbbrev }: HeaderProps) {
+export default function Header({ siteName }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);

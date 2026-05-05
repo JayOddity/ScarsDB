@@ -88,7 +88,7 @@ export default async function RootLayout({
           }}
         />
         <AuthProvider>
-          <Header siteName={siteName} siteAbbrev={siteAbbrev} />
+          <Header siteName={siteName} />
           <main className="flex-1">{children}</main>
           <Footer siteName={siteName} siteAbbrev={siteAbbrev} socials={socials} />
         </AuthProvider>

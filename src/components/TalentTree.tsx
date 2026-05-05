@@ -12,7 +12,6 @@ import { checkProfanity } from '@/lib/profanityClient';
 
 const MAX_POINTS = 70;
 const MAX_STARTS = 2;
-const PENDING_BUILD_KEY = 'scarshq-pending-build';
 import { hasRealData, isClassImplemented, type RealTalentData } from '@/lib/talentData';
 
 function sanitizeTalentText(s: string): string {
@@ -112,8 +111,6 @@ const STARS: { x: number; y: number; r: number; o: number }[] = (() => {
   }
   return stars;
 })();
-const ROUND_ICON_PLACEHOLDER = '/Icons/Talents/frames/minor.png';
-const SQUARE_ICON_PLACEHOLDER = '/Icons/Talents/frames/active.png';
 const FRAME_BY_TYPE: Record<string, string> = {
   start: '/Icons/Talents/frames/start.png',
   minor: '/Icons/Talents/frames/minor.png',
@@ -192,7 +189,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const tooltipMouseRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const tooltipRafRef = useRef<number>(0);
   const [copied, setCopied] = useState(false);
-  const [savedBuildExists, setSavedBuildExists] = useState(false);
   const [cloudCode, setCloudCode] = useState<string | null>(null);
   const [showImportModal, setShowImportModal] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
@@ -218,7 +214,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   const [buildEquipment, setBuildEquipment] = useState<EquippedItems>({});
   const [showClassPicker, setShowClassPicker] = useState(false);
   const [activeTab, setActiveTab] = useState<string>(initialTab && ['Equipment', 'Talents', 'Scars'].includes(initialTab) ? initialTab : 'Talents');
-  const [comingSoonTab, setComingSoonTab] = useState<string | null>(null);
   const [showBuildBrowser, setShowBuildBrowser] = useState<'all' | 'mine' | null>(null);
   const [browserBuilds, setBrowserBuilds] = useState<{ code: string; classSlug: string; name: string; totalPoints: number; createdAt: string; authorName?: string }[]>([]);
   const [browserTotal, setBrowserTotal] = useState(0);
@@ -252,7 +247,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
   }, []);
   const [importCode, setImportCode] = useState('');
   const [showClassDropdown, setShowClassDropdown] = useState(false);
-  const [buildName, setBuildName] = useState('');
   const [saving, setSaving] = useState(false);
   const [cloudError, setCloudError] = useState<string | null>(null);
   const [importError, setImportError] = useState<string | null>(null);
@@ -361,7 +355,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
   useEffect(() => { if (nodes.length === 0) return; const h = window.location.hash.slice(1); if (h) setAllocated(decodeAlloc(h)); }, [nodes]);
   useEffect(() => { if (readOnly || nodes.length === 0) return; const enc = encodeAlloc(allocated); const search = window.location.search; window.history.replaceState(null, '', `${window.location.pathname}${search}${enc ? '#' + enc : ''}`); }, [allocated, nodes, readOnly]);
-  useEffect(() => { if (readOnly) return; try { setSavedBuildExists(!!localStorage.getItem(`scarshq-talent-${gameClass.slug}`)); } catch {} }, [gameClass.slug, readOnly]);
   useEffect(() => {
     if (readOnly) return;
     try { localStorage.setItem('scarshq-last-class', gameClass.slug); } catch {}
@@ -664,10 +657,9 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       totalPoints: totalPts,
       cloudCode: cloudCode || undefined,
     });
-    try { localStorage.setItem(`scarshq-talent-${gameClass.slug}`, enc); setSavedBuildExists(true); } catch {}
+    try { localStorage.setItem(`scarshq-talent-${gameClass.slug}`, enc); } catch {}
     setSaving(false);
   }
-  function loadBuild() { try { const saved = localStorage.getItem(`scarshq-talent-${gameClass.slug}`); if (saved) setAllocated(decodeAlloc(saved)); } catch {} }
 
   async function publishBuild() {
     if (!cloudCode) return;
@@ -739,7 +731,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
         if (data.allocation && data.classSlug === gameClass.slug) {
           setAllocated(decodeAlloc(data.allocation));
           setCloudCode(data.code);
-          if (data.name) setBuildName(data.name);
           if (data.equipment) loadEquipmentFromJson(data.equipment);
         }
       }).catch(() => {});
@@ -751,7 +742,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
     const code = importCode.trim(); if (!code) return; setImportError(null);
     try { const res = await fetch(`/api/builds/${encodeURIComponent(code)}`); const data = await res.json();
       if (res.ok && data.allocation) { if (data.classSlug !== gameClass.slug) { setImportError(`This build is for ${data.classSlug}, not ${gameClass.slug}`); return; }
-        setAllocated(decodeAlloc(data.allocation)); setCloudCode(data.code); if (data.name) setBuildName(data.name); if (data.equipment) loadEquipmentFromJson(data.equipment); setShowImportModal(false); setImportCode('');
+        setAllocated(decodeAlloc(data.allocation)); setCloudCode(data.code); if (data.equipment) loadEquipmentFromJson(data.equipment); setShowImportModal(false); setImportCode('');
       } else setImportError(data.error || 'Build not found');
     } catch { setImportError('Network error'); }
   }
@@ -788,7 +779,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       if (data.allocation && data.classSlug === gameClass.slug) {
         setAllocated(decodeAlloc(data.allocation));
         setCloudCode(data.code);
-        if (data.name) setBuildName(data.name);
         setShowBuildBrowser(null);
       } else if (data.allocation) {
         // Different class - navigate there
@@ -869,7 +859,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
   const hovered = hoveredId != null ? nodeMap.get(hoveredId) ?? null : null;
   const col = accentColor;
-  const allocatedNodes = useMemo(() => nodes.filter((n) => (allocated[n.id] || 0) > 0), [nodes, allocated]);
 
   // Debounce the search query so 303-node re-renders don't fire on every keystroke
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -1213,9 +1202,6 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
               const isH = hoveredId === node.id, isP = hoveredPath.has(node.id);
               const isSH = node.nodeType === 'start' && !isA && !hasStartAlloc;
               const r = SIZE[node.nodeType] || 12;
-              const sc = isP ? PG : isSH ? PG : isA ? '#e8c432' : '#d9d9d9';
-              const fi = isM ? 'url(#ng-m)' : isP ? 'url(#ng-p)' : isSH ? 'url(#ng-p)' : isA ? 'url(#ng-a)' : 'url(#ng-u)';
-              const sw = isA || isP ? 2 : 1.5;
 
               const dimmed = searchMatchIds !== null && !searchMatchIds.has(node.id);
               return (

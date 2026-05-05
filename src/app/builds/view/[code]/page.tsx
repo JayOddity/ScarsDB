@@ -192,24 +192,3 @@ export default async function BuildViewPage({ params }: PageProps) {
   );
 }
 
-function EquipmentSection({ equipment }: { equipment: string }) {
-  try {
-    const map: Record<string, string> = JSON.parse(equipment);
-    const entries = Object.entries(map);
-    if (entries.length === 0) return <p className="text-sm text-text-muted bg-card-bg border border-border-subtle rounded-lg p-5">No equipment specified for this build.</p>;
-    return (
-      <div className="bg-card-bg border border-border-subtle rounded-lg p-5">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {entries.map(([slot, itemId]) => (
-            <Link key={slot} href={`/items/${itemId}`} className="flex items-center gap-3 bg-dark-surface/50 rounded-lg px-4 py-3 hover:bg-dark-surface transition-colors group">
-              <span className="text-xs text-text-muted shrink-0">{slot}</span>
-              <span className="text-xs text-honor-gold group-hover:text-honor-gold-light truncate">{itemId}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    );
-  } catch {
-    return null;
-  }
-}

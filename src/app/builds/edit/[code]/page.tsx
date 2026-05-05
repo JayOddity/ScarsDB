@@ -1,8 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { checkProfanity } from '@/lib/profanityClient';
 import { classes } from '@/data/classes';
@@ -26,8 +24,6 @@ interface Build {
 
 export default function EditBuildPage({ params }: { params: Promise<{ code: string }> }) {
   const { code } = use(params);
-  const { data: session } = useSession();
-  const router = useRouter();
 
   const [build, setBuild] = useState<Build | null>(null);
   const [loading, setLoading] = useState(true);

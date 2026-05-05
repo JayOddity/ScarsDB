@@ -103,7 +103,7 @@ export default async function SpellPage({ params }: { params: Promise<{ slug: st
   const { slug } = await params;
 
   const spell = await sanityClient.fetch<Spell | null>(
-    `*[_type == "spell" && slug.current == $slug][0] ${SPELL_PROJECTION}`,
+    `*[_type == "spell" && slug.current == $slug && icon match "/Icons/Spells/*"][0] ${SPELL_PROJECTION}`,
     { slug },
   );
 

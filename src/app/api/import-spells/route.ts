@@ -67,13 +67,25 @@ async function fetchPage(page: number) {
   return res.json();
 }
 
-function mapSpell(s: BeastBurstSpell, slug: string | undefined) {
+// Preserve locally-mirrored icons across cron imports. BB's CDN serves dead URLs
+// (`bb-game.b-cdn.net` returned 403 "Domain suspended" as of 2026-05-05) and they
+// also hand out `placehold.co` URLs for spells without art. We map both to null so
+// the UI shows nothing rather than a broken image. Any `/Icons/*` path already
+// stored in Sanity is preserved by reading the prior icon outside this fn.
+function pickIcon(incoming: string | undefined, existingLocal: string | null): string | null {
+  if (existingLocal) return existingLocal;
+  if (!incoming) return null;
+  if (/bb-game\.b-cdn\.net|placehold\.co/i.test(incoming)) return null;
+  return incoming;
+}
+
+function mapSpell(s: BeastBurstSpell, slug: string | undefined, existingLocal: string | null) {
   const doc: { _id: string; _type: string; [key: string]: unknown } = {
     _type: 'spell',
     _id: 'spell-' + s.id,
     name: s.name,
     description: s.description || '',
-    icon: s.icon,
+    icon: pickIcon(s.icon, existingLocal),
     externalId: s.id,
     maxRange: s.max_range,
     targetType: s.target_type,
@@ -118,17 +130,21 @@ export async function GET(request: NextRequest) {
       allSpells = allSpells.concat(list);
     }
 
-    const existingRows = await sanityWriteClient.fetch<Array<{ externalId: string; slug: string }>>(
-      `*[_type == "spell" && defined(slug.current)]{ externalId, "slug": slug.current }`,
+    const existingRows = await sanityWriteClient.fetch<Array<{ externalId: string; slug?: string; icon?: string }>>(
+      `*[_type == "spell"]{ externalId, "slug": slug.current, icon }`,
     );
     const existing = new Map<string, string>();
-    for (const r of existingRows) existing.set(r.externalId, r.slug);
+    const localIcons = new Map<string, string>();
+    for (const r of existingRows) {
+      if (r.slug) existing.set(r.externalId, r.slug);
+      if (r.icon && r.icon.startsWith('/Icons/')) localIcons.set(r.externalId, r.icon);
+    }
     const slugMap = assignSlugs(
       allSpells.map((s) => ({ id: s.id, name: s.name })),
       existing,
     );
 
-    const docs = allSpells.map((s) => mapSpell(s, slugMap.get(s.id)));
+    const docs = allSpells.map((s) => mapSpell(s, slugMap.get(s.id), localIcons.get(s.id) || null));
     const BATCH_SIZE = 20;
     let written = 0;
     for (let i = 0; i < docs.length; i += BATCH_SIZE) {

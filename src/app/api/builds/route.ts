@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sanityClient, sanityWriteClient } from '@/lib/sanity';
+import { sanityWriteClient } from '@/lib/sanity';
 import { generateShortCode } from '@/lib/shortCode';
 import { checkRateLimit } from '@/lib/rateLimit';
 import { getBuildViewCounts } from '@/lib/buildViewTracker';

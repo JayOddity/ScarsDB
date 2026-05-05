@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { factions, classes, allRaces } from '@/data/classes';
+import { factions, classes } from '@/data/classes';
 
 const classMap = new Map(classes.map((c) => [c.slug, c]));
 

@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import DownloadContent from './DownloadContent';
 
 export const metadata: Metadata = {
-  title: 'Download Scars of Honor — Free on Steam (Playtest Live Now) | ScarsHQ',
-  description: 'Scars of Honor is free to play on Steam. Playtest is live now until May 11, 2026 — request access in one click. Step by step guide to get in game.',
+  title: 'Download Scars of Honor: Free on Steam, Playtest Live Now | ScarsHQ',
+  description: 'Scars of Honor is free on Steam and the playtest is live until May 11, 2026. No key needed. Step by step guide to get in game in under 2 minutes.',
   openGraph: {
     title: 'How to Download and Play Scars of Honor',
     description: 'Free to play MMORPG on Steam. Request playtest access on the Steam page. Step by step guide to get in game.',

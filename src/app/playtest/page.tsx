@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 import PlaytestCountdown from '@/components/PlaytestCountdown';
 
 export const metadata: Metadata = {
-  title: 'Scars of Honor Playtest Date — Live Now Until May 11, 2026 | ScarsHQ',
-  description: 'The Scars of Honor playtest is live right now on Steam, ending May 11, 2026. Free to join. Request access on the Steam page in one click. 10 classes, 6 races, world bosses, PvP.',
+  title: 'Scars of Honor Playtest Date: Live Now Until May 11, 2026 | ScarsHQ',
+  description: 'Scars of Honor playtest is live until May 11, 2026. Free, no key needed. Sign up on Steam in one click. All 10 classes, 6 races, world bosses, PvP.',
   openGraph: {
     title: 'Scars of Honor Playtest — Live Now Until May 11, 2026',
     description: 'Free Steam playtest. Live right now. 10 classes, 6 races, world bosses, PvP. Request access in one click.',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 const features = [
   {
     title: 'Classes & Races',
-    description: '6 races (Human, Dwarf, Infernal Demon, Undead, plus Bearan and Gronthar for the first time) and all 10 classes — both factions get every class.',
+    description: '6 of 8 races playable: Human, Sun Elf, Bearan for Sacred Order; Infernal Demon, Undead, Gronthar for Domination. Dwarf and Orc come later. 4 classes this test: Druid, Mage, Paladin, Ranger.',
   },
   {
     title: 'World & Progression',
@@ -64,7 +64,7 @@ const faqs = [
   },
   {
     q: 'What classes and races can I play?',
-    a: 'Six races are playable: Human, Dwarf, Infernal Demon, Undead, plus Bearan and Gronthar for the first time. Both factions have access to all 10 classes.',
+    a: 'Six of the eight races are playable this test: Human, Sun Elf, and Bearan on the Sacred Order side; Infernal Demon, Undead, and Gronthar on the Domination side. Dwarf and Orc are excluded for this test but will be in the final game. Four classes are in: Druid, Mage, Paladin, and Ranger. The other six classes (Assassin, Mystic, Necromancer, Pirate, Priest, Warrior) are not yet available.',
   },
   {
     q: 'What content is available?',
@@ -102,7 +102,7 @@ export default function PlaytestPage() {
           </h1>
           <p className="text-2xl text-parchment font-heading mb-2">April 30 - May 11, 2026</p>
           <p className="text-text-secondary max-w-3xl mx-auto mb-5">
-            All 10 classes and 6 races (including Bearan and Gronthar for the first time) are playable. Ondall&apos;s Fall opens for exploration, with world bosses and PvP rolling in across three content waves. Dungeons sit this one out.
+            Four classes playable (Druid, Mage, Paladin, Ranger) and six of the eight races. Bearan and Gronthar are in for the first time; Dwarf and Orc are held back for the final game. Ondall&apos;s Fall opens for exploration, with world bosses and PvP rolling in across three content waves. Dungeons sit this one out.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -190,28 +190,38 @@ export default function PlaytestPage() {
           <span className="diamond" />
         </div>
         <h2 className="font-heading text-2xl text-honor-gold text-center mb-3">Playtest Races & Classes</h2>
-        <p className="text-text-muted text-sm text-center mb-6">Six playable races and all 10 classes — both factions get every class.</p>
+        <p className="text-text-muted text-sm text-center mb-6">Six playable races and four classes (Druid, Mage, Paladin, Ranger). The remaining six classes are not in this test.</p>
         <div className="grid sm:grid-cols-2 gap-6">
           <div className="bg-card-bg border border-border-subtle rounded-lg p-6">
-            <h3 className="font-heading text-lg text-honor-gold-light mb-3">Races (6)</h3>
-            <ul className="text-sm text-text-secondary space-y-1.5">
+            <h3 className="font-heading text-lg text-honor-gold-light mb-3">Races</h3>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-text-muted mb-2">Playable this test (6)</p>
+            <ul className="text-sm text-text-primary space-y-1.5 mb-4">
               <li>Human</li>
-              <li>Dwarf</li>
-              <li>Bearan <span className="text-honor-gold/70 text-xs">— new</span></li>
+              <li>Sun Elf</li>
+              <li>Bearan <span className="text-honor-gold/70 text-xs">new</span></li>
               <li>Infernal Demon</li>
               <li>Undead</li>
-              <li>Gronthar <span className="text-honor-gold/70 text-xs">— new</span></li>
+              <li>Gronthar <span className="text-honor-gold/70 text-xs">new</span></li>
+            </ul>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-text-muted mb-2">Held back for final game (2)</p>
+            <ul className="text-sm text-text-muted space-y-1.5">
+              <li>Dwarf</li>
+              <li>Orc</li>
             </ul>
           </div>
           <div className="bg-card-bg border border-border-subtle rounded-lg p-6">
-            <h3 className="font-heading text-lg text-honor-gold-light mb-3">Classes (10)</h3>
-            <ul className="text-sm text-text-secondary grid grid-cols-2 gap-y-1.5 gap-x-4">
+            <h3 className="font-heading text-lg text-honor-gold-light mb-3">Classes</h3>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-text-muted mb-2">Playable this test (4)</p>
+            <ul className="text-sm text-text-primary grid grid-cols-2 gap-y-1.5 gap-x-4 mb-4">
+              <li><Link href="/classes/druid" className="hover:text-honor-gold-light transition-colors">Druid</Link></li>
+              <li><Link href="/classes/mage" className="hover:text-honor-gold-light transition-colors">Mage</Link></li>
+              <li><Link href="/classes/paladin" className="hover:text-honor-gold-light transition-colors">Paladin</Link></li>
+              <li><Link href="/classes/ranger" className="hover:text-honor-gold-light transition-colors">Ranger</Link></li>
+            </ul>
+            <p className="text-[11px] uppercase tracking-[0.18em] text-text-muted mb-2">Not in this test (6)</p>
+            <ul className="text-sm text-text-muted grid grid-cols-2 gap-y-1.5 gap-x-4">
               <li>Warrior</li>
-              <li>Paladin</li>
-              <li>Mage</li>
               <li>Priest</li>
-              <li>Ranger</li>
-              <li>Druid</li>
               <li>Assassin</li>
               <li>Necromancer</li>
               <li>Pirate</li>

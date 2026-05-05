@@ -1,22 +1,23 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { classes, allRaces } from '@/data/classes';
+import { PLAYABLE_CLASS_SLUGS } from '@/lib/classTalents';
 
 export const metadata = {
-  title: 'Scars of Honor Classes: All 10 Playable Classes | ScarsHQ',
-  description: 'All 10 playable classes in Scars of Honor. Warrior, Paladin, Mage, Priest, Ranger, Druid, Assassin, Necromancer, Pirate, and Mystic. No fixed subclasses — your talent tree defines your role.',
+  title: 'Scars of Honor Classes: 4 Playable in Spring 2026 Playtest | ScarsHQ',
+  description: 'All 10 Scars of Honor classes. Druid, Mage, Paladin, and Ranger are playable in the Spring 2026 playtest, each with full ability lists on its own page. The other 6 classes are not in this test.',
   openGraph: {
-    title: 'Scars of Honor Classes: All 10 Playable Classes',
-    description: 'All 10 playable classes in Scars of Honor. No fixed subclasses — your talent tree defines your role.',
+    title: 'Scars of Honor Classes: 4 Playable, 6 Coming Later',
+    description: 'Druid, Mage, Paladin, Ranger playable in the Spring 2026 playtest. Open each class for its full abilities and talent tree.',
     url: '/classes',
     siteName: 'ScarsHQ',
     type: 'website',
-    images: [{ url: '/images/og-classes.jpg', width: 1200, height: 630, alt: 'Scars of Honor — 10 Playable Classes' }],
+    images: [{ url: '/images/og-classes.jpg', width: 1200, height: 630, alt: 'Scars of Honor playable classes' }],
   },
   twitter: {
     card: 'summary_large_image' as const,
-    title: 'Scars of Honor Classes: All 10 Playable Classes',
-    description: 'All 10 playable classes in Scars of Honor. No fixed subclasses — your talent tree defines your role.',
+    title: 'Scars of Honor Classes: 4 Playable in Spring 2026 Playtest',
+    description: 'Druid, Mage, Paladin, Ranger playable now. Open each class for its full abilities and talent tree.',
     images: ['/images/og-classes.jpg'],
   },
   alternates: {
@@ -26,13 +27,33 @@ export const metadata = {
 
 export default function ClassesPage() {
   const sortedClasses = [...classes].sort((a, b) => a.name.localeCompare(b.name));
+  const playableSet = new Set<string>(PLAYABLE_CLASS_SLUGS);
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Scars of Honor Classes',
+    numberOfItems: classes.length,
+    itemListElement: classes.map((cls, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: cls.name,
+      url: `https://scarshq.com/classes/${cls.slug}`,
+    })),
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-4">Classes of Aragon</h1>
+      <p className="text-text-secondary max-w-3xl mb-3">
+        Scars of Honor has 10 classes with no fixed subclasses. Each class has a talent tree of 190 to 210 nodes — your picks define the role.
+      </p>
       <p className="text-text-secondary max-w-3xl mb-8">
-        Scars of Honor features 10 playable classes with no fixed subclasses. Instead, each class
-        has a massive talent tree with 240+ interconnected nodes. Your choices define your role
-        and playstyle entirely.
+        Four classes are playable in the Spring 2026 playtest (April 30 to May 11): <Link href="/classes/druid" className="text-honor-gold hover:text-honor-gold-light">Druid</Link>, <Link href="/classes/mage" className="text-honor-gold hover:text-honor-gold-light">Mage</Link>, <Link href="/classes/paladin" className="text-honor-gold hover:text-honor-gold-light">Paladin</Link>, and <Link href="/classes/ranger" className="text-honor-gold hover:text-honor-gold-light">Ranger</Link>. The other six are listed below for reference.
       </p>
 
       {/* Quick nav */}
@@ -65,6 +86,11 @@ export default function ClassesPage() {
                 <img src={cls.icon} alt={cls.name} className="w-16 h-16 mb-1" />
                 <h2 className="font-heading text-xl text-honor-gold">{cls.name}</h2>
                 <span className="text-[10px] text-text-muted">{cls.subtitle}</span>
+                {playableSet.has(cls.slug) ? (
+                  <span className="mt-2 text-[10px] uppercase tracking-[0.18em] px-2 py-0.5 rounded border border-emerald-400/30 text-emerald-300 bg-emerald-500/10">Playtest playable</span>
+                ) : (
+                  <span className="mt-2 text-[10px] uppercase tracking-[0.18em] px-2 py-0.5 rounded border border-border-subtle text-text-muted bg-dark-surface/40">Not in current test</span>
+                )}
               </div>
 
               {/* Description */}
@@ -94,7 +120,7 @@ export default function ClassesPage() {
 
       {/* Source */}
       <p className="text-xs text-text-muted mt-8">
-        Source: <a href="https://www.scarsofhonor.com/classes" target="_blank" rel="noopener noreferrer" className="text-honor-gold hover:text-honor-gold-light transition-colors">scarsofhonor.com/classes</a>
+        Source: <a href="https://www.scarsofhonor.com/classes" target="_blank" rel="noopener noreferrer" className="text-honor-gold hover:text-honor-gold-light transition-colors">scarsofhonor.com/classes</a>. Per-class ability lists on each individual class page are pulled from the Spring 2026 playtest client.
       </p>
     </div>
   );

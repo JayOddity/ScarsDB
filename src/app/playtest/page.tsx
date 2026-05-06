@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 const features = [
   {
     title: 'Classes & Races',
-    description: '6 of 8 races playable: Human, Sun Elf, Bearan for Sacred Order; Infernal Demon, Undead, Gronthar for Domination. Dwarf and Orc come later. 4 classes this test: Druid, Mage, Paladin, Ranger.',
+    description: '6 of 8 races playable: Human, Dwarf, Bearan for Sacred Order; Infernal Demon, Undead, Gronthar for Domination. Sun Elf and Orc come later. 4 classes this test: Druid, Mage, Paladin, Ranger.',
   },
   {
     title: 'World & Progression',
@@ -64,7 +64,7 @@ const faqs = [
   },
   {
     q: 'What classes and races can I play?',
-    a: 'Six of the eight races are playable this test: Human, Sun Elf, and Bearan on the Sacred Order side; Infernal Demon, Undead, and Gronthar on the Domination side. Dwarf and Orc are excluded for this test but will be in the final game. Four classes are in: Druid, Mage, Paladin, and Ranger. The other six classes (Assassin, Mystic, Necromancer, Pirate, Priest, Warrior) are not yet available.',
+    a: 'Six of the eight races are playable this test: Human, Dwarf, and Bearan on the Sacred Order side; Infernal Demon, Undead, and Gronthar on the Domination side. Sun Elf and Orc are excluded for this test but will be in the final game. Four classes are in: Druid, Mage, Paladin, and Ranger. The other six classes (Assassin, Mystic, Necromancer, Pirate, Priest, Warrior) are not yet available.',
   },
   {
     q: 'What content is available?',
@@ -102,7 +102,7 @@ export default function PlaytestPage() {
           </h1>
           <p className="text-2xl text-parchment font-heading mb-2">April 30 - May 11, 2026</p>
           <p className="text-text-secondary max-w-3xl mx-auto mb-5">
-            Four classes playable (Druid, Mage, Paladin, Ranger) and six of the eight races. Bearan and Gronthar are in for the first time; Dwarf and Orc are held back for the final game. Ondall&apos;s Fall opens for exploration, with world bosses and PvP rolling in across three content waves. Dungeons sit this one out.
+            Four classes playable (Druid, Mage, Paladin, Ranger) and six of the eight races. Bearan and Gronthar are in for the first time; Sun Elf and Orc are held back for the final game. Ondall&apos;s Fall opens for exploration, with world bosses and PvP rolling in across three content waves. Dungeons sit this one out.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -197,7 +197,7 @@ export default function PlaytestPage() {
             <p className="text-[11px] uppercase tracking-[0.18em] text-text-muted mb-2">Playable this test (6)</p>
             <ul className="text-sm text-text-primary space-y-1.5 mb-4">
               <li>Human</li>
-              <li>Sun Elf</li>
+              <li>Dwarf</li>
               <li>Bearan <span className="text-honor-gold/70 text-xs">new</span></li>
               <li>Infernal Demon</li>
               <li>Undead</li>
@@ -205,7 +205,7 @@ export default function PlaytestPage() {
             </ul>
             <p className="text-[11px] uppercase tracking-[0.18em] text-text-muted mb-2">Held back for final game (2)</p>
             <ul className="text-sm text-text-muted space-y-1.5">
-              <li>Dwarf</li>
+              <li>Sun Elf</li>
               <li>Orc</li>
             </ul>
           </div>

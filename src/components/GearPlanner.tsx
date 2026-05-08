@@ -99,7 +99,7 @@ const GATHERING_TOOLS = [
   { label: 'Woodcutting', icon: '/Icons/Slots/empty/woodcutting.png' },
   { label: 'Herbalism', icon: '/Icons/Slots/empty/herbalism.png' },
   { label: 'Fishing', icon: '/Icons/Slots/empty/fishing.png' },
-  { label: 'Skinning', icon: '/Icons/Slots/empty/skinning.png' },
+  { label: 'Carving', icon: '/Icons/Slots/empty/skinning.png' },
 ];
 const POTIONS = [
   { label: 'Potion 1', icon: '/Icons/Slots/potion.avif' },

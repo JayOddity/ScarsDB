@@ -44,7 +44,7 @@ const faqs = [
       },
       {
         q: 'Are there professions?',
-        a: 'Yes. There are gathering professions (mining, herbalism, woodcutting, fishing) and crafting professions (blacksmithing, cooking, alchemy, enchanting). Gathering feeds into crafting.',
+        a: 'Yes. Five gathering professions (mining, woodcutting, herbalism, carving, fishing) feed into three crafting actions at three station types: blacksmithing at a forge, cooking at a cauldron, and alchemy at an alchemy stand.',
       },
     ],
   },

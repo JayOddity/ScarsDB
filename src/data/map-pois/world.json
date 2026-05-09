@@ -1,0 +1,3428 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/world-irongarth.png",
+    "imageWidth": 4096,
+    "imageHeight": 4096,
+    "note": "Datamined from playtest client. Scene 'IrongarthTerrain' world extents [-627.09155, -979.9353]..[16606.146, 16214.0625] mapped to image pixels."
+  },
+  "pois": [
+    {
+      "id": "ondals-fall",
+      "category": "region",
+      "name": "Ondals Fall",
+      "x": 1516.7,
+      "y": 1491.2,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "brevestone-cliffs",
+      "category": "region",
+      "name": "Brevestone Cliffs",
+      "x": 2728.3,
+      "y": 1474.2,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "ironfern",
+      "category": "region",
+      "name": "Ironfern",
+      "x": 2011.8,
+      "y": 1353.2,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "enarlond",
+      "category": "region",
+      "name": "Enarlond",
+      "x": 1576.0,
+      "y": 1117.1,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "elyssian-trail",
+      "category": "region",
+      "name": "Elyssian Trail",
+      "x": 1958.1,
+      "y": 872.7,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "fate-s-end",
+      "category": "region",
+      "name": "Fate's End",
+      "x": 1144.9,
+      "y": 1917.8,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "greyfell-highlands",
+      "category": "region",
+      "name": "Greyfell Highlands",
+      "x": 1144.9,
+      "y": 1290.1,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "charred-island",
+      "category": "region",
+      "name": "Charred Island",
+      "x": 3016.1,
+      "y": 1062.8,
+      "source": "Datamined MapRegionsContainer (MapRegionsContainer.txt)"
+    },
+    {
+      "id": "spawn-maelynlanding-0",
+      "category": "spawnPoint",
+      "name": "MaelynLanding",
+      "x": 1457.4,
+      "y": 2790.7,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=9)"
+    },
+    {
+      "id": "spawn-gloomset-22",
+      "category": "spawnPoint",
+      "name": "Gloomset",
+      "x": 745.8,
+      "y": 3063.2,
+      "source": "Datamined SceneGroupList SpawnPointData (2, mapId=9)"
+    },
+    {
+      "id": "spawn-maelynslanding-21",
+      "category": "spawnPoint",
+      "name": "MaelynsLanding",
+      "x": 1457.4,
+      "y": 2790.7,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=9)"
+    },
+    {
+      "id": "of-secretpassagewest",
+      "category": "subZone",
+      "name": "Secret Passage (West)",
+      "x": 1440.6,
+      "y": 1846.8,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1,697 placements in scene OF_SecretPassageWest."
+    },
+    {
+      "id": "of-midisland",
+      "category": "subZone",
+      "name": "Mid Island",
+      "x": 1443.0,
+      "y": 1902.5,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1,408 placements in scene OF_MidIsland."
+    },
+    {
+      "id": "of-fishingvillageorder",
+      "category": "settlement",
+      "name": "Fishing Village",
+      "x": 1479.3,
+      "y": 1783.3,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 4,504 placements in scene OF_FishingVillageOrder."
+    },
+    {
+      "id": "of-smugglers",
+      "category": "settlement",
+      "name": "Smugglers' Hideout",
+      "x": 1490.1,
+      "y": 1853.9,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 507 placements in scene OF_Smugglers."
+    },
+    {
+      "id": "of-hearthlinepost",
+      "category": "settlement",
+      "name": "Hearthline Post",
+      "x": 1506.1,
+      "y": 1846.0,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1,748 placements in scene OF_HearthlinePost."
+    },
+    {
+      "id": "of-waterfall",
+      "category": "subZone",
+      "name": "The Waterfall",
+      "x": 1442.5,
+      "y": 1758.9,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 769 placements in scene OF_Waterfall."
+    },
+    {
+      "id": "of-forest",
+      "category": "subZone",
+      "name": "The Forest",
+      "x": 1402.7,
+      "y": 1981.8,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1,275 placements in scene OF_Forest."
+    },
+    {
+      "id": "of-emberlightridge",
+      "category": "subZone",
+      "name": "Emberlight Ridge",
+      "x": 1241.1,
+      "y": 1943.9,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 3,431 placements in scene OF_EmberlightRidge."
+    },
+    {
+      "id": "pm-primrosetown",
+      "category": "city",
+      "name": "Primrose Town",
+      "x": 1874.8,
+      "y": 1611.4,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 901 placements in scene PM_PrimroseTown."
+    },
+    {
+      "id": "of-ondal-sgate",
+      "category": "settlement",
+      "name": "Ondal's Gate",
+      "x": 1585.2,
+      "y": 1819.8,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 3,350 placements in scene OF_Ondal'sGate."
+    },
+    {
+      "id": "of-capitolarea",
+      "category": "settlement",
+      "name": "Capitol Outskirts",
+      "x": 1695.4,
+      "y": 1986.2,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1,975 placements in scene OF_CapitolArea."
+    },
+    {
+      "id": "of-capitol",
+      "category": "city",
+      "name": "The Capitol",
+      "x": 1752.3,
+      "y": 1985.8,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 4,741 placements in scene OF_Capitol."
+    },
+    {
+      "id": "of-secretpassageeast",
+      "category": "subZone",
+      "name": "Secret Passage (East)",
+      "x": 1530.1,
+      "y": 1928.5,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 606 placements in scene OF_SecretPassageEast."
+    },
+    {
+      "id": "of-quarryscene",
+      "category": "subZone",
+      "name": "The Quarry",
+      "x": 1324.6,
+      "y": 2061.9,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 3,862 placements in scene OF_QuarryScene."
+    },
+    {
+      "id": "gf-siegeweaponsassembly",
+      "category": "settlement",
+      "name": "Siege Weapons Assembly",
+      "x": 1184.1,
+      "y": 1728.8,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 316 placements in scene GF_SiegeWeaponsAssembly."
+    },
+    {
+      "id": "gf-foundry",
+      "category": "settlement",
+      "name": "The Foundry",
+      "x": 880.9,
+      "y": 1952.9,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 1,061 placements in scene GF_Foundry."
+    },
+    {
+      "id": "of-whisperingbarrens",
+      "category": "subZone",
+      "name": "Whispering Barrens",
+      "x": 1572.2,
+      "y": 2020.4,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1,888 placements in scene OF_WhisperingBarrens."
+    },
+    {
+      "id": "pm-theundergroundforest",
+      "category": "subZone",
+      "name": "The Underground Forest",
+      "x": 1983.4,
+      "y": 1851.4,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 928 placements in scene PM_TheUndergroundForest."
+    },
+    {
+      "id": "gf-halendal",
+      "category": "settlement",
+      "name": "Halendal",
+      "x": 894.4,
+      "y": 1850.6,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 618 placements in scene GF_Halendal."
+    },
+    {
+      "id": "fe-prison",
+      "category": "settlement",
+      "name": "Fate's End Prison",
+      "x": 788.9,
+      "y": 2189.5,
+      "continent": "Fate's End",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Fate's End. 38 placements in scene FE_Prison."
+    },
+    {
+      "id": "of-shadowdriftbend",
+      "category": "subZone",
+      "name": "Shadowdrift Bend",
+      "x": 1357.7,
+      "y": 1859.7,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1,632 placements in scene OF_ShadowdriftBend."
+    },
+    {
+      "id": "of-gateofundead",
+      "category": "settlement",
+      "name": "Gate of the Undead",
+      "x": 1254.7,
+      "y": 1818.3,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 746 placements in scene OF_GateofUndead."
+    },
+    {
+      "id": "of-thornshade",
+      "category": "subZone",
+      "name": "Thornshade",
+      "x": 1411.5,
+      "y": 2111.9,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 208 placements in scene OF_Thornshade."
+    },
+    {
+      "id": "gf-dwarvenfortress",
+      "category": "settlement",
+      "name": "Dwarven Fortress",
+      "x": 613.3,
+      "y": 1897.9,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 445 placements in scene GF_DwarvenFortress."
+    },
+    {
+      "id": "gf-ossuary",
+      "category": "settlement",
+      "name": "The Ossuary",
+      "x": 722.7,
+      "y": 1873.4,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 243 placements in scene GF_Ossuary."
+    },
+    {
+      "id": "of-wgroove",
+      "category": "subZone",
+      "name": "Whispering Groove",
+      "x": 1459.5,
+      "y": 2066.7,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 931 placements in scene OF_WGroove."
+    },
+    {
+      "id": "of-restrictionwall",
+      "category": "subZone",
+      "name": "Restriction Wall",
+      "x": 1502.9,
+      "y": 1942.9,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 110 placements in scene OF_RestrictionWall."
+    },
+    {
+      "id": "of-dominionoutpost",
+      "category": "settlement",
+      "name": "Dominion Outpost",
+      "x": 1126.1,
+      "y": 1998.1,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 443 placements in scene OF_DominionOutpost."
+    },
+    {
+      "id": "gf-lumbercamps",
+      "category": "settlement",
+      "name": "Lumber Camps",
+      "x": 1030.9,
+      "y": 1874.1,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 898 placements in scene GF_LumberCamps."
+    },
+    {
+      "id": "gf-undeadasylum",
+      "category": "settlement",
+      "name": "Undead Asylum",
+      "x": 1055.2,
+      "y": 1769.8,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 1,301 placements in scene GF_UndeadAsylum."
+    },
+    {
+      "id": "pm-krumangeekeep",
+      "category": "settlement",
+      "name": "Krumangee Keep",
+      "x": 1788.7,
+      "y": 1753.4,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 477 placements in scene PM_KrumangeeKeep."
+    },
+    {
+      "id": "pm-waterwineyard",
+      "category": "settlement",
+      "name": "Water Vineyard",
+      "x": 2097.9,
+      "y": 1425.0,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 884 placements in scene PM_WaterWineyard."
+    },
+    {
+      "id": "pm-kingspark",
+      "category": "subZone",
+      "name": "King's Park",
+      "x": 2178.7,
+      "y": 1461.8,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 917 placements in scene PM_KingsPark."
+    },
+    {
+      "id": "gf-demonicprison",
+      "category": "settlement",
+      "name": "Demonic Prison",
+      "x": 817.2,
+      "y": 1637.6,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 1,159 placements in scene GF_DemonicPrison."
+    },
+    {
+      "id": "bsc-copperpot-env",
+      "category": "settlement",
+      "name": "Copperpot",
+      "x": 2249.1,
+      "y": 1276.5,
+      "continent": "Brevestone Cliffs",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Brevestone Cliffs. 33 placements in scene BSC_Copperpot_ENV."
+    },
+    {
+      "id": "pm-wineyard",
+      "category": "settlement",
+      "name": "Vineyard",
+      "x": 2058.8,
+      "y": 1592.6,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 254 placements in scene PM_Wineyard."
+    },
+    {
+      "id": "bsc-maelinslanding-env",
+      "category": "city",
+      "name": "Maelyn's Landing",
+      "x": 2759.1,
+      "y": 1659.4,
+      "continent": "Brevestone Cliffs",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Brevestone Cliffs. 195 placements in scene BSC_MaelinsLanding_ENV."
+    },
+    {
+      "id": "pm-theburningfarm",
+      "category": "subZone",
+      "name": "The Burning Farm",
+      "x": 2253.7,
+      "y": 1748.3,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 138 placements in scene PM_TheBurningFarm."
+    },
+    {
+      "id": "pm-islandgardens",
+      "category": "subZone",
+      "name": "Island Gardens",
+      "x": 2206.0,
+      "y": 1722.7,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 672 placements in scene PM_IslandGardens."
+    },
+    {
+      "id": "fe-city",
+      "category": "city",
+      "name": "Fate's End City",
+      "x": 972.5,
+      "y": 2284.3,
+      "continent": "Fate's End",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Fate's End. 237 placements in scene FE_City."
+    },
+    {
+      "id": "fe-gate",
+      "category": "subZone",
+      "name": "Fate's End Gate",
+      "x": 902.5,
+      "y": 2062.4,
+      "continent": "Fate's End",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Fate's End. 135 placements in scene FE_Gate."
+    },
+    {
+      "id": "fe-labs",
+      "category": "subZone",
+      "name": "The Labs",
+      "x": 872.2,
+      "y": 2199.1,
+      "continent": "Fate's End",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Fate's End. 101 placements in scene FE_Labs."
+    },
+    {
+      "id": "pm-dawsonwindmills",
+      "category": "settlement",
+      "name": "Dawson Windmills",
+      "x": 1895.5,
+      "y": 1681.9,
+      "continent": "Ironfern",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ironfern. 116 placements in scene PM_DawsonWindmills."
+    },
+    {
+      "id": "gf-destroyedtower",
+      "category": "subZone",
+      "name": "Destroyed Tower",
+      "x": 1124.8,
+      "y": 1869.6,
+      "continent": "Greyfell Highlands",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Greyfell Highlands. 54 placements in scene GF_DestroyedTower."
+    },
+    {
+      "id": "odf-goldport-env",
+      "category": "settlement",
+      "name": "Goldport",
+      "x": 870.0,
+      "y": 2896.1,
+      "continent": "Ondals Fall",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Ondals Fall. 1 placements in scene ODF_Goldport_ENV."
+    },
+    {
+      "id": "fe-rottingeast",
+      "category": "subZone",
+      "name": "Rotting East",
+      "x": 1302.8,
+      "y": 2378.1,
+      "continent": "Fate's End",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Fate's End. 214 placements in scene FE_RottingEast."
+    },
+    {
+      "id": "wsc-whitesongcity-env",
+      "category": "capital",
+      "name": "Whitesong City",
+      "x": 2328.7,
+      "y": 1658.2,
+      "continent": "Brevestone Cliffs",
+      "source": "Datamined MapGridsData_SO sub-scene centroid",
+      "blurb": "Within Brevestone Cliffs. 1 placements in scene WSC_WhitesongCity_ENV."
+    },
+    {
+      "id": "marker-1",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1577.5,
+      "y": 1811.9,
+      "blurb": "Meet Advisor Fjorna Deepriver in Elderbrand Outpost. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #1 (template=1, caption='Main Quest', questTargetId=1)"
+    },
+    {
+      "id": "marker-2",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1568.3,
+      "y": 1756.1,
+      "blurb": "Investigate North Farm. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #2 (template=1, caption='Main Quest', questTargetId=2)"
+    },
+    {
+      "id": "marker-3",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1568.2,
+      "y": 1757.6,
+      "blurb": "Kill Gorejaws around the North Farm. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #3 (template=1, caption='Main Quest', questTargetId=3)"
+    },
+    {
+      "id": "marker-4",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1583.6,
+      "y": 1819.2,
+      "blurb": "Debrief Commander Hal back at the Outpost. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #4 (template=1, caption='Main Quest', questTargetId=4)"
+    },
+    {
+      "id": "marker-5",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1510.5,
+      "y": 1790.4,
+      "blurb": "Gather small bones from Skeleton Warriors. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #5 (template=1, caption='Main Quest', questTargetId=5)"
+    },
+    {
+      "id": "marker-6",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1482.3,
+      "y": 1789.7,
+      "blurb": "Get a Big Bone from a Skeleton Berserker. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #6 (template=1, caption='Main Quest', questTargetId=6)"
+    },
+    {
+      "id": "marker-7",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1487.4,
+      "y": 1781.6,
+      "blurb": "Speak with Master Haldor about Bone Bleeder. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #7 (template=1, caption='Main Quest', questTargetId=7)"
+    },
+    {
+      "id": "marker-8",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1469.1,
+      "y": 1758.3,
+      "blurb": "Find a Large fishing spot for a Fish Scale. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #8 (template=1, caption='Main Quest', questTargetId=8)"
+    },
+    {
+      "id": "marker-9",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1487.4,
+      "y": 1781.6,
+      "blurb": "Deliver the Bone Bleeder materials to Master Haldor. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #9 (template=1, caption='Main Quest', questTargetId=11)"
+    },
+    {
+      "id": "marker-10",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1577.5,
+      "y": 1811.9,
+      "blurb": "Present the Bone Bleeder to Advisor Deepriver. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #10 (template=1, caption='Main Quest', questTargetId=15)"
+    },
+    {
+      "id": "marker-11",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1589.7,
+      "y": 1888.0,
+      "blurb": "Find the entrance to the crypt under Stormrise Tower. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #11 (template=1, caption='Main Quest', questTargetId=16)"
+    },
+    {
+      "id": "marker-12",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1602.1,
+      "y": 1884.1,
+      "blurb": "Eliminate the Demon spawn. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #12 (template=1, caption='Main Quest', questTargetId=17)"
+    },
+    {
+      "id": "marker-13",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1569.4,
+      "y": 1882.4,
+      "blurb": "Investigate the Demon Scar. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #13 (template=1, caption='Main Quest', questTargetId=18)"
+    },
+    {
+      "id": "marker-14",
+      "category": "questObjective",
+      "name": "Bleeding Scars",
+      "x": 1577.5,
+      "y": 1811.9,
+      "blurb": "Talk to Advisor Fjorna Deepriver. Main Quest: Bleeding Scars",
+      "continent": "Bleeding Scars",
+      "source": "Datamined PlayerMapDatabase marker #14 (template=1, caption='Main Quest', questTargetId=19)"
+    },
+    {
+      "id": "marker-15",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1764.0,
+      "y": 2043.9,
+      "blurb": "Enquire about Advisor Fjorna to the Citizens of Goldport. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #15 (template=1, caption='Main Quest', questTargetId=20)"
+    },
+    {
+      "id": "marker-16",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1795.8,
+      "y": 1926.3,
+      "blurb": "Talk to Advisor Fjorna Deepriver. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #16 (template=1, caption='Main Quest', questTargetId=22)"
+    },
+    {
+      "id": "marker-17",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1682.8,
+      "y": 1972.8,
+      "blurb": "Travel to Goldport Island. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #17 (template=1, caption='Main Quest', questTargetId=23)"
+    },
+    {
+      "id": "marker-18",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1664.5,
+      "y": 1954.6,
+      "blurb": "Eliminate the Gorejaw Alpha at the Scar. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #18 (template=1, caption='Main Quest', questTargetId=24)"
+    },
+    {
+      "id": "marker-19",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1660.6,
+      "y": 1951.1,
+      "blurb": "Investigate the Demon Scar. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #19 (template=1, caption='Main Quest', questTargetId=25)"
+    },
+    {
+      "id": "marker-20",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1518.4,
+      "y": 2027.5,
+      "blurb": "Travel to King's Gate. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #20 (template=1, caption='Main Quest', questTargetId=26)"
+    },
+    {
+      "id": "marker-21",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1510.3,
+      "y": 2023.9,
+      "blurb": "Eliminate All Enemies. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #21 (template=1, caption='Main Quest', questTargetId=27)"
+    },
+    {
+      "id": "marker-22",
+      "category": "questObjective",
+      "name": "The Stitched Trail",
+      "x": 1518.4,
+      "y": 2027.5,
+      "blurb": "Talk to Advisor Fjorna Deepriver. Main Quest: The Stitched Trail",
+      "continent": "The Stitched Trail",
+      "source": "Datamined PlayerMapDatabase marker #22 (template=1, caption='Main Quest', questTargetId=28)"
+    },
+    {
+      "id": "marker-23",
+      "category": "questObjective",
+      "name": "The Goblin Threat",
+      "x": 1491.8,
+      "y": 1837.8,
+      "blurb": "Travel to Heartline Post. Side Quest: The Goblin Threat",
+      "continent": "The Goblin Threat",
+      "source": "Datamined PlayerMapDatabase marker #23 (template=1, caption='Main Quest', questTargetId=29)"
+    },
+    {
+      "id": "marker-24",
+      "category": "questObjective",
+      "name": "The Goblin Threat",
+      "x": 1491.4,
+      "y": 1843.7,
+      "blurb": "Talk to Thire Mercy. Side Quest: The Goblin Threat",
+      "continent": "The Goblin Threat",
+      "source": "Datamined PlayerMapDatabase marker #24 (template=1, caption='Main Quest', questTargetId=30)"
+    },
+    {
+      "id": "marker-25",
+      "category": "questObjective",
+      "name": "The Goblin Threat",
+      "x": 1445.2,
+      "y": 1899.8,
+      "blurb": "Travel to Talonsreach Cradle. Side Quest: The Goblin Threat",
+      "continent": "The Goblin Threat",
+      "source": "Datamined PlayerMapDatabase marker #25 (template=1, caption='Main Quest', questTargetId=31)"
+    },
+    {
+      "id": "marker-26",
+      "category": "questObjective",
+      "name": "The Goblin Threat",
+      "x": 1445.2,
+      "y": 1899.8,
+      "blurb": "Talk to Advisor Fjorna Deepriver. Side Quest: The Goblin Threat",
+      "continent": "The Goblin Threat",
+      "source": "Datamined PlayerMapDatabase marker #26 (template=1, caption='Main Quest', questTargetId=32)"
+    },
+    {
+      "id": "marker-27",
+      "category": "questObjective",
+      "name": "The Goblin Threat",
+      "x": 1439.2,
+      "y": 1900.1,
+      "blurb": "Defeat Advisor Fjorna Deepriver. Side Quest: The Goblin Threat",
+      "continent": "The Goblin Threat",
+      "source": "Datamined PlayerMapDatabase marker #27 (template=1, caption='Main Quest', questTargetId=33)"
+    },
+    {
+      "id": "marker-28",
+      "category": "questObjective",
+      "name": "The Goblin Threat",
+      "x": 1439.2,
+      "y": 1900.1,
+      "blurb": "Retrieve Advisor Fjorna Deepriver's Severed Head. Side Quest: The Goblin Threat",
+      "continent": "The Goblin Threat",
+      "source": "Datamined PlayerMapDatabase marker #28 (template=1, caption='Main Quest', questTargetId=34)"
+    },
+    {
+      "id": "marker-29",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1211.5,
+      "y": 1925.4,
+      "blurb": "Deliver Letter to IsKryzath Rhulkar in Lanternback Slopes. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #29 (template=1, caption='Main Quest', questTargetId=35)"
+    },
+    {
+      "id": "marker-30",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1228.7,
+      "y": 1924.1,
+      "blurb": "Collect 3 Gorejaw Pelts. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #30 (template=1, caption='Main Quest', questTargetId=37)"
+    },
+    {
+      "id": "marker-31",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1211.5,
+      "y": 1925.4,
+      "blurb": "Deliver the proof to IsKryzath Rhulkar. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #31 (template=1, caption='Main Quest', questTargetId=38)"
+    },
+    {
+      "id": "marker-32",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1294.6,
+      "y": 1892.5,
+      "blurb": "Speak to Commander Drak at Ravens Reach.. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #32 (template=1, caption='Main Quest', questTargetId=39)"
+    },
+    {
+      "id": "marker-33",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1368.9,
+      "y": 1848.2,
+      "blurb": "Gather small bones from Skeleton Warriors. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #33 (template=1, caption='Main Quest', questTargetId=40)"
+    },
+    {
+      "id": "marker-34",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1368.9,
+      "y": 1848.2,
+      "blurb": "Use a crafting bench to make a basic longsword. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #34 (template=1, caption='Main Quest', questTargetId=45)"
+    },
+    {
+      "id": "marker-35",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1294.6,
+      "y": 1892.5,
+      "blurb": "Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #35 (template=1, caption='Main Quest', questTargetId=49)"
+    },
+    {
+      "id": "marker-36",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1325.2,
+      "y": 2073.5,
+      "blurb": "Present the Bone Bleeder to Commander Drak. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #36 (template=1, caption='Main Quest', questTargetId=50)"
+    },
+    {
+      "id": "marker-37",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1346.6,
+      "y": 2068.6,
+      "blurb": "Travel to Splintered Quarry. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #37 (template=1, caption='Main Quest', questTargetId=51)"
+    },
+    {
+      "id": "marker-38",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1346.6,
+      "y": 2068.6,
+      "blurb": "Eliminate All Enemies. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #38 (template=1, caption='Main Quest', questTargetId=52)"
+    },
+    {
+      "id": "marker-39",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1411.7,
+      "y": 2099.6,
+      "blurb": "Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #39 (template=1, caption='Main Quest', questTargetId=53)"
+    },
+    {
+      "id": "marker-40",
+      "category": "questObjective",
+      "name": "Twisted Scars",
+      "x": 1412.4,
+      "y": 2101.6,
+      "blurb": "Speak with the Advisor at the ruined village. Main Quest: Twisted Scars",
+      "continent": "Twisted Scars",
+      "source": "Datamined PlayerMapDatabase marker #40 (template=1, caption='Main Quest', questTargetId=54)"
+    },
+    {
+      "id": "marker-41",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1406.2,
+      "y": 2096.4,
+      "blurb": "Talk to Commander Drak at Goathead Town. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #41 (template=1, caption='Main Quest', questTargetId=55)"
+    },
+    {
+      "id": "marker-42",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1412.0,
+      "y": 2100.4,
+      "blurb": "Search Goathead Town For Scar. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #42 (template=1, caption='Main Quest', questTargetId=56)"
+    },
+    {
+      "id": "marker-43",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1472.2,
+      "y": 2076.6,
+      "blurb": "Speak with Advisor Rushassa. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #43 (template=1, caption='Main Quest', questTargetId=57)"
+    },
+    {
+      "id": "marker-44",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1472.4,
+      "y": 2062.5,
+      "blurb": "Kill the Attackers. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #44 (template=1, caption='Main Quest', questTargetId=58)"
+    },
+    {
+      "id": "marker-45",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1473.3,
+      "y": 2057.4,
+      "blurb": "Eliminate All Enemies. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #45 (template=1, caption='Main Quest', questTargetId=59)"
+    },
+    {
+      "id": "marker-46",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1412.0,
+      "y": 2100.4,
+      "blurb": "Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #46 (template=1, caption='Main Quest', questTargetId=60)"
+    },
+    {
+      "id": "marker-47",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1479.5,
+      "y": 2021.2,
+      "blurb": "Return to Goathead Town and Debrief with Advisor Rushassa. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #47 (template=1, caption='Main Quest', questTargetId=61)"
+    },
+    {
+      "id": "marker-48",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1468.4,
+      "y": 2017.5,
+      "blurb": "Travel to King's Gate. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #48 (template=1, caption='Main Quest', questTargetId=62)"
+    },
+    {
+      "id": "marker-49",
+      "category": "questObjective",
+      "name": "Flawed Land",
+      "x": 1439.2,
+      "y": 1900.1,
+      "blurb": "Talk to Wounded Advisor. Main Quest: Flawed Land",
+      "continent": "Flawed Land",
+      "source": "Datamined PlayerMapDatabase marker #49 (template=1, caption='Main Quest', questTargetId=63)"
+    },
+    {
+      "id": "marker-50",
+      "category": "questObjective",
+      "name": "Rupture",
+      "x": 1439.2,
+      "y": 1900.1,
+      "blurb": "Talk to Advisor Rushassa at Talonsreach Cradle. Main Quest: Rupture",
+      "continent": "Rupture",
+      "source": "Datamined PlayerMapDatabase marker #50 (template=1, caption='Main Quest', questTargetId=64)"
+    },
+    {
+      "id": "marker-51",
+      "category": "questObjective",
+      "name": "Rupture",
+      "x": 1435.7,
+      "y": 1898.2,
+      "blurb": "Talk to Advisor Rushassa at Talonsreach Cradle. Main Quest: Rupture",
+      "continent": "Rupture",
+      "source": "Datamined PlayerMapDatabase marker #51 (template=1, caption='Main Quest', questTargetId=65)"
+    },
+    {
+      "id": "marker-52",
+      "category": "questObjective",
+      "name": "Rupture",
+      "x": 1445.2,
+      "y": 1899.8,
+      "blurb": "Defeat Commander Drak. Main Quest: Rupture",
+      "continent": "Rupture",
+      "source": "Datamined PlayerMapDatabase marker #52 (template=1, caption='Main Quest', questTargetId=66)"
+    },
+    {
+      "id": "marker-53",
+      "category": "questObjective",
+      "name": "Rupture",
+      "x": 1439.2,
+      "y": 1900.1,
+      "blurb": "Retrieve Advisor Fjorna Deepriver's Severed Head. Main Quest: Rupture",
+      "continent": "Rupture",
+      "source": "Datamined PlayerMapDatabase marker #53 (template=1, caption='Main Quest', questTargetId=67)"
+    },
+    {
+      "id": "marker-54",
+      "category": "questObjective",
+      "name": "Rupture",
+      "x": 1439.2,
+      "y": 1900.1,
+      "blurb": "Defeat Advisor Rushassa. Main Quest: Rupture",
+      "continent": "Rupture",
+      "source": "Datamined PlayerMapDatabase marker #54 (template=1, caption='Main Quest', questTargetId=68)"
+    },
+    {
+      "id": "marker-55",
+      "category": "questObjective",
+      "name": "Rupture",
+      "x": 1578.1,
+      "y": 1845.7,
+      "blurb": "Retrieve Advisor Rushassa's Severed Head. Main Quest: Rupture",
+      "continent": "Rupture",
+      "source": "Datamined PlayerMapDatabase marker #55 (template=2, caption='Side Quest', questTargetId=69)"
+    },
+    {
+      "id": "marker-56",
+      "category": "questObjective",
+      "name": "The Harvest Below",
+      "x": 1574.6,
+      "y": 1817.9,
+      "blurb": "Investigate the South Farm. Side Quest: The Harvest Below",
+      "continent": "The Harvest Below",
+      "source": "Datamined PlayerMapDatabase marker #56 (template=2, caption='Side Quest', questTargetId=70)"
+    },
+    {
+      "id": "marker-57",
+      "category": "questObjective",
+      "name": "The Harvest Below",
+      "x": 1624.4,
+      "y": 1837.5,
+      "blurb": "Present the suspicious crop to Thomas Fielden. Side Quest: The Harvest Below",
+      "continent": "The Harvest Below",
+      "source": "Datamined PlayerMapDatabase marker #57 (template=2, caption='Side Quest', questTargetId=71)"
+    },
+    {
+      "id": "marker-58",
+      "category": "questObjective",
+      "name": "The Harvest Below",
+      "x": 1624.4,
+      "y": 1837.5,
+      "blurb": "Find Pritch's farm. Side Quest: The Harvest Below",
+      "continent": "The Harvest Below",
+      "source": "Datamined PlayerMapDatabase marker #58 (template=2, caption='Side Quest', questTargetId=72)"
+    },
+    {
+      "id": "marker-59",
+      "category": "questObjective",
+      "name": "The Harvest Below",
+      "x": 1624.4,
+      "y": 1837.5,
+      "blurb": "Confront Farmer Pritch. Side Quest: The Harvest Below",
+      "continent": "The Harvest Below",
+      "source": "Datamined PlayerMapDatabase marker #59 (template=2, caption='Side Quest', questTargetId=73)"
+    },
+    {
+      "id": "marker-60",
+      "category": "questObjective",
+      "name": "The Harvest Below",
+      "x": 1557.4,
+      "y": 1855.7,
+      "blurb": "Kill the Skeleton. Side Quest: The Harvest Below",
+      "continent": "The Harvest Below",
+      "source": "Datamined PlayerMapDatabase marker #60 (template=2, caption='Side Quest', questTargetId=74)"
+    },
+    {
+      "id": "marker-61",
+      "category": "questObjective",
+      "name": "The Harvest Below",
+      "x": 1511.3,
+      "y": 1765.6,
+      "blurb": "Return to Tomas Fielden. Side Quest: The Harvest Below",
+      "continent": "The Harvest Below",
+      "source": "Datamined PlayerMapDatabase marker #61 (template=2, caption='Side Quest', questTargetId=75)"
+    },
+    {
+      "id": "marker-62",
+      "category": "questObjective",
+      "name": "A Warrior's Duty",
+      "x": 1499.4,
+      "y": 1743.1,
+      "blurb": "Side Quest: A Warrior's Duty",
+      "continent": "A Warrior's Duty",
+      "source": "Datamined PlayerMapDatabase marker #62 (template=2, caption='Side Quest', questTargetId=77)"
+    },
+    {
+      "id": "marker-63",
+      "category": "questObjective",
+      "name": "A Warrior's Duty",
+      "x": 1509.0,
+      "y": 1769.3,
+      "blurb": "Side Quest: A Warrior's Duty",
+      "continent": "A Warrior's Duty",
+      "source": "Datamined PlayerMapDatabase marker #63 (template=2, caption='Side Quest', questTargetId=79)"
+    },
+    {
+      "id": "marker-64",
+      "category": "questObjective",
+      "name": "Strengthening Defenses",
+      "x": 1578.1,
+      "y": 1793.2,
+      "blurb": "Gather Resin by chopping down Brownhorns. Side Quest: Strengthening Defenses",
+      "continent": "Strengthening Defenses",
+      "source": "Datamined PlayerMapDatabase marker #64 (template=2, caption='Side Quest', questTargetId=80)"
+    },
+    {
+      "id": "marker-65",
+      "category": "questObjective",
+      "name": "Strengthening Defenses",
+      "x": 1581.1,
+      "y": 1820.9,
+      "blurb": "Gather Lightwood by chopping down Spiketrees. Side Quest: Strengthening Defenses",
+      "continent": "Strengthening Defenses",
+      "source": "Datamined PlayerMapDatabase marker #65 (template=2, caption='Side Quest', questTargetId=81)"
+    },
+    {
+      "id": "marker-66",
+      "category": "questObjective",
+      "name": "Strengthening Defenses",
+      "x": 1581.1,
+      "y": 1820.9,
+      "blurb": "Deliver the materials to Hargan Deepthon. Side Quest: Strengthening Defenses",
+      "continent": "Strengthening Defenses",
+      "source": "Datamined PlayerMapDatabase marker #66 (template=2, caption='Side Quest', questTargetId=82)"
+    },
+    {
+      "id": "marker-67",
+      "category": "questObjective",
+      "name": "Strengthening Defenses",
+      "x": 1538.2,
+      "y": 1863.3,
+      "blurb": "Side Quest: Strengthening Defenses",
+      "continent": "Strengthening Defenses",
+      "source": "Datamined PlayerMapDatabase marker #67 (template=2, caption='Side Quest', questTargetId=83)"
+    },
+    {
+      "id": "marker-68",
+      "category": "questObjective",
+      "name": "Strengthening Defenses",
+      "x": 1491.3,
+      "y": 1862.8,
+      "blurb": "Collect Gorejaw Pelts from Gorejaws around the outpost. Side Quest: Strengthening Defenses",
+      "continent": "Strengthening Defenses",
+      "source": "Datamined PlayerMapDatabase marker #68 (template=2, caption='Side Quest', questTargetId=84)"
+    },
+    {
+      "id": "marker-69",
+      "category": "questObjective",
+      "name": "Strengthening Defenses",
+      "x": 1508.6,
+      "y": 1834.3,
+      "blurb": "Deliver the materials to Jorma Steelsmith. Side Quest: Strengthening Defenses",
+      "continent": "Strengthening Defenses",
+      "source": "Datamined PlayerMapDatabase marker #69 (template=2, caption='Side Quest', questTargetId=85)"
+    },
+    {
+      "id": "marker-70",
+      "category": "questObjective",
+      "name": "Strengthening Defenses",
+      "x": 1582.8,
+      "y": 2090.8,
+      "blurb": "Side Quest: Strengthening Defenses",
+      "continent": "Strengthening Defenses",
+      "source": "Datamined PlayerMapDatabase marker #70 (template=2, caption='Side Quest', questTargetId=86)"
+    },
+    {
+      "id": "marker-71",
+      "category": "questObjective",
+      "name": "Families in the Wind",
+      "x": 1779.9,
+      "y": 2053.6,
+      "blurb": "HiddenObjective. Side Quest: Families in the Wind",
+      "continent": "Families in the Wind",
+      "source": "Datamined PlayerMapDatabase marker #71 (template=2, caption='Side Quest', questTargetId=87)"
+    },
+    {
+      "id": "marker-72",
+      "category": "questObjective",
+      "name": "Families in the Wind",
+      "x": 1767.3,
+      "y": 2046.9,
+      "blurb": "Ask about the Amulet in Goldport. Side Quest: Families in the Wind",
+      "continent": "Families in the Wind",
+      "source": "Datamined PlayerMapDatabase marker #72 (template=2, caption='Side Quest', questTargetId=88)"
+    },
+    {
+      "id": "marker-73",
+      "category": "questObjective",
+      "name": "Families in the Wind",
+      "x": 1818.3,
+      "y": 1927.3,
+      "blurb": "Return the Amulet to its Rightful Owner. Side Quest: Families in the Wind",
+      "continent": "Families in the Wind",
+      "source": "Datamined PlayerMapDatabase marker #73 (template=2, caption='Side Quest', questTargetId=89)"
+    },
+    {
+      "id": "marker-74",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1802.8,
+      "y": 1927.8,
+      "blurb": "Talk to Herbalist Perrin Duskvale. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #74 (template=2, caption='Side Quest', questTargetId=90)"
+    },
+    {
+      "id": "marker-75",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1818.3,
+      "y": 1927.3,
+      "blurb": "Kill 5 Cultist Thugs. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #75 (template=2, caption='Side Quest', questTargetId=91)"
+    },
+    {
+      "id": "marker-76",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1799.5,
+      "y": 1924.5,
+      "blurb": "Deliver the Medalion to Perrin Duskvale. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #76 (template=2, caption='Side Quest', questTargetId=92)"
+    },
+    {
+      "id": "marker-77",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1833.9,
+      "y": 1947.9,
+      "blurb": "Find Toxic spiders in the woods to the west and retrieve their Venom Sacks. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #77 (template=2, caption='Side Quest', questTargetId=93)"
+    },
+    {
+      "id": "marker-78",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1710.9,
+      "y": 1997.9,
+      "blurb": "Collect Ghostleaf for the Antipodes. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #78 (template=2, caption='Side Quest', questTargetId=94)"
+    },
+    {
+      "id": "marker-79",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1710.9,
+      "y": 1997.9,
+      "blurb": "Deliver the Spider Venom to Gramli Hearthvein. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #79 (template=2, caption='Side Quest', questTargetId=95)"
+    },
+    {
+      "id": "marker-80",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1714.8,
+      "y": 1995.5,
+      "blurb": "Deliver the Ghostleaf flowers to Gramli Hearthvein. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #80 (template=2, caption='Side Quest', questTargetId=96)"
+    },
+    {
+      "id": "marker-81",
+      "category": "questObjective",
+      "name": "Venomous Healing",
+      "x": 1709.2,
+      "y": 1922.9,
+      "blurb": "Heal Fallen Soldier. Side Quest: Venomous Healing",
+      "continent": "Venomous Healing",
+      "source": "Datamined PlayerMapDatabase marker #81 (template=2, caption='Side Quest', questTargetId=97)"
+    },
+    {
+      "id": "marker-82",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1722.3,
+      "y": 1884.7,
+      "blurb": "Recover the Sack of Hops. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #82 (template=2, caption='Side Quest', questTargetId=98)"
+    },
+    {
+      "id": "marker-83",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1703.9,
+      "y": 1999.6,
+      "blurb": "Recover the Sack of Wheat. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #83 (template=2, caption='Side Quest', questTargetId=99)"
+    },
+    {
+      "id": "marker-84",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1703.9,
+      "y": 1999.6,
+      "blurb": "Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #84 (template=2, caption='Side Quest', questTargetId=101)"
+    },
+    {
+      "id": "marker-85",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1756.5,
+      "y": 2060.9,
+      "blurb": "Listen to Urdine Deepthorn's Request. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #85 (template=2, caption='Side Quest', questTargetId=102)"
+    },
+    {
+      "id": "marker-86",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1760.9,
+      "y": 2054.8,
+      "blurb": "Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #86 (template=2, caption='Side Quest', questTargetId=104)"
+    },
+    {
+      "id": "marker-87",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1787.7,
+      "y": 2089.3,
+      "blurb": "Report to Urdine Deepthorn. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #87 (template=2, caption='Side Quest', questTargetId=105)"
+    },
+    {
+      "id": "marker-88",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1787.5,
+      "y": 2089.6,
+      "blurb": "Find Cultists Hideout. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #88 (template=2, caption='Side Quest', questTargetId=106)"
+    },
+    {
+      "id": "marker-89",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1787.5,
+      "y": 2089.6,
+      "blurb": "Eliminate the Cultist Leader. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #89 (template=2, caption='Side Quest', questTargetId=107)"
+    },
+    {
+      "id": "marker-90",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1760.9,
+      "y": 2054.8,
+      "blurb": "Take the loot from the Pirate Leader. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #90 (template=2, caption='Side Quest', questTargetId=108)"
+    },
+    {
+      "id": "marker-91",
+      "category": "questObjective",
+      "name": "Greedy Monsters",
+      "x": 1192.1,
+      "y": 1961.5,
+      "blurb": "Debrief Urdine Deepthorn. Side Quest: Greedy Monsters",
+      "continent": "Greedy Monsters",
+      "source": "Datamined PlayerMapDatabase marker #91 (template=2, caption='Side Quest', questTargetId=109)"
+    },
+    {
+      "id": "marker-92",
+      "category": "questObjective",
+      "name": "Bolstering Ranks",
+      "x": 1151.1,
+      "y": 1978.8,
+      "blurb": "Collect Spider Limbs from the Dead Spiders. Side Quest: Bolstering Ranks",
+      "continent": "Bolstering Ranks",
+      "source": "Datamined PlayerMapDatabase marker #92 (template=2, caption='Side Quest', questTargetId=110)"
+    },
+    {
+      "id": "marker-93",
+      "category": "questObjective",
+      "name": "Bolstering Ranks",
+      "x": 1151.1,
+      "y": 1978.8,
+      "blurb": "Bring the Spider Limbs back to Friedrik Noirwald. Side Quest: Bolstering Ranks",
+      "continent": "Bolstering Ranks",
+      "source": "Datamined PlayerMapDatabase marker #93 (template=2, caption='Side Quest', questTargetId=111)"
+    },
+    {
+      "id": "marker-94",
+      "category": "questObjective",
+      "name": "Bolstering Ranks",
+      "x": 1267.8,
+      "y": 1965.5,
+      "blurb": "Collect the Oily Goo from Friedrik Noirwald. Side Quest: Bolstering Ranks",
+      "continent": "Bolstering Ranks",
+      "source": "Datamined PlayerMapDatabase marker #94 (template=2, caption='Side Quest', questTargetId=112)"
+    },
+    {
+      "id": "marker-95",
+      "category": "questObjective",
+      "name": "Bolstering Ranks",
+      "x": 1303.8,
+      "y": 1909.1,
+      "blurb": "Bring the Oily Goo to Sergeant Elfrida Morhain. Side Quest: Bolstering Ranks",
+      "continent": "Bolstering Ranks",
+      "source": "Datamined PlayerMapDatabase marker #95 (template=2, caption='Side Quest', questTargetId=113)"
+    },
+    {
+      "id": "marker-96",
+      "category": "questObjective",
+      "name": "Bolstering Ranks",
+      "x": 1267.8,
+      "y": 1965.5,
+      "blurb": "Give the Oily Goo to Prisoner. Side Quest: Bolstering Ranks",
+      "continent": "Bolstering Ranks",
+      "source": "Datamined PlayerMapDatabase marker #96 (template=2, caption='Side Quest', questTargetId=114)"
+    },
+    {
+      "id": "marker-97",
+      "category": "questObjective",
+      "name": "Bolstering Ranks",
+      "x": 1265.6,
+      "y": 1963.9,
+      "blurb": "Report Back to Sergeant Elfrida Morhain. Side Quest: Bolstering Ranks",
+      "continent": "Bolstering Ranks",
+      "source": "Datamined PlayerMapDatabase marker #97 (template=2, caption='Side Quest', questTargetId=115)"
+    },
+    {
+      "id": "marker-98",
+      "category": "questObjective",
+      "name": "Back in the Game",
+      "x": 1265.6,
+      "y": 1963.9,
+      "blurb": "Get and Deliver the Armor to Reginald Ashbourne . Side Quest: Back in the Game",
+      "continent": "Back in the Game",
+      "source": "Datamined PlayerMapDatabase marker #98 (template=2, caption='Side Quest', questTargetId=116)"
+    },
+    {
+      "id": "marker-99",
+      "category": "questObjective",
+      "name": "Back in the Game",
+      "x": 1341.2,
+      "y": 1893.3,
+      "blurb": "Get and Deliver the Weapon to Reginald Ashbourne . Side Quest: Back in the Game",
+      "continent": "Back in the Game",
+      "source": "Datamined PlayerMapDatabase marker #99 (template=2, caption='Side Quest', questTargetId=117)"
+    },
+    {
+      "id": "marker-100",
+      "category": "questObjective",
+      "name": "Lost in Transport",
+      "x": 1384.1,
+      "y": 1882.5,
+      "blurb": "Find the Missing Crate. Side Quest: Lost in Transport",
+      "continent": "Lost in Transport",
+      "source": "Datamined PlayerMapDatabase marker #100 (template=2, caption='Side Quest', questTargetId=118)"
+    },
+    {
+      "id": "marker-101",
+      "category": "questObjective",
+      "name": "Lost in Transport",
+      "x": 1222.6,
+      "y": 1983.6,
+      "blurb": "Retrieve Items from Crate. Side Quest: Lost in Transport",
+      "continent": "Lost in Transport",
+      "source": "Datamined PlayerMapDatabase marker #101 (template=2, caption='Side Quest', questTargetId=119)"
+    },
+    {
+      "id": "marker-102",
+      "category": "questObjective",
+      "name": "Lost in Transport",
+      "x": 1222.6,
+      "y": 1983.6,
+      "blurb": "Give Items to Ambrose Nightveil. Side Quest: Lost in Transport",
+      "continent": "Lost in Transport",
+      "source": "Datamined PlayerMapDatabase marker #102 (template=2, caption='Side Quest', questTargetId=120)"
+    },
+    {
+      "id": "marker-103",
+      "category": "questObjective",
+      "name": "Lost in Transport",
+      "x": 1353.8,
+      "y": 1810.5,
+      "blurb": "Continue talking to Ambrose Nightveil. Side Quest: Lost in Transport",
+      "continent": "Lost in Transport",
+      "source": "Datamined PlayerMapDatabase marker #103 (template=2, caption='Side Quest', questTargetId=121)"
+    },
+    {
+      "id": "marker-104",
+      "category": "questObjective",
+      "name": "A Soundless Sin",
+      "x": 1353.8,
+      "y": 1810.5,
+      "blurb": "Search the area for Monsters. Side Quest: A Soundless Sin",
+      "continent": "A Soundless Sin",
+      "source": "Datamined PlayerMapDatabase marker #104 (template=2, caption='Side Quest', questTargetId=122)"
+    },
+    {
+      "id": "marker-105",
+      "category": "questObjective",
+      "name": "A Soundless Sin",
+      "x": 1353.8,
+      "y": 1810.5,
+      "blurb": "Defeat the Monster. Side Quest: A Soundless Sin",
+      "continent": "A Soundless Sin",
+      "source": "Datamined PlayerMapDatabase marker #105 (template=2, caption='Side Quest', questTargetId=123)"
+    },
+    {
+      "id": "marker-106",
+      "category": "questObjective",
+      "name": "A Soundless Sin",
+      "x": 1483.3,
+      "y": 2068.9,
+      "blurb": "Return to IsVryssar Khazrah. Side Quest: A Soundless Sin",
+      "continent": "A Soundless Sin",
+      "source": "Datamined PlayerMapDatabase marker #106 (template=2, caption='Side Quest', questTargetId=124)"
+    },
+    {
+      "id": "marker-107",
+      "category": "questObjective",
+      "name": "Out on a Limb",
+      "x": 1358.0,
+      "y": 1931.0,
+      "blurb": "Search area for IsDrevar Vashrah. Side Quest: Out on a Limb",
+      "continent": "Out on a Limb",
+      "source": "Datamined PlayerMapDatabase marker #107 (template=2, caption='Side Quest', questTargetId=125)"
+    },
+    {
+      "id": "marker-108",
+      "category": "questObjective",
+      "name": "Out on a Limb",
+      "x": 1483.3,
+      "y": 2068.9,
+      "blurb": "Defeat Enemies. Side Quest: Out on a Limb",
+      "continent": "Out on a Limb",
+      "source": "Datamined PlayerMapDatabase marker #108 (template=2, caption='Side Quest', questTargetId=126)"
+    },
+    {
+      "id": "marker-109",
+      "category": "questObjective",
+      "name": "Out on a Limb",
+      "x": 1380.7,
+      "y": 1947.6,
+      "blurb": "Talk to IsDrevar Vashrah. Side Quest: Out on a Limb",
+      "continent": "Out on a Limb",
+      "source": "Datamined PlayerMapDatabase marker #109 (template=2, caption='Side Quest', questTargetId=127)"
+    },
+    {
+      "id": "marker-110",
+      "category": "questObjective",
+      "name": "Out on a Limb",
+      "x": 1380.7,
+      "y": 1947.6,
+      "blurb": "Search for the Lost Sword. Side Quest: Out on a Limb",
+      "continent": "Out on a Limb",
+      "source": "Datamined PlayerMapDatabase marker #110 (template=2, caption='Side Quest', questTargetId=128)"
+    },
+    {
+      "id": "marker-111",
+      "category": "questObjective",
+      "name": "Out on a Limb",
+      "x": 1358.0,
+      "y": 1931.0,
+      "blurb": "Eliminate the Ambushers. Side Quest: Out on a Limb",
+      "continent": "Out on a Limb",
+      "source": "Datamined PlayerMapDatabase marker #111 (template=2, caption='Side Quest', questTargetId=129)"
+    },
+    {
+      "id": "marker-112",
+      "category": "questObjective",
+      "name": "Out on a Limb",
+      "x": 1380.7,
+      "y": 1947.6,
+      "blurb": "Return to IsDrevar Vashrah. Side Quest: Out on a Limb",
+      "continent": "Out on a Limb",
+      "source": "Datamined PlayerMapDatabase marker #112 (template=2, caption='Side Quest', questTargetId=130)"
+    },
+    {
+      "id": "marker-113",
+      "category": "questObjective",
+      "name": "Out on a Limb",
+      "x": 1407.9,
+      "y": 2094.9,
+      "blurb": "Return to IsDrevar Vashrah. Side Quest: Out on a Limb",
+      "continent": "Out on a Limb",
+      "source": "Datamined PlayerMapDatabase marker #113 (template=2, caption='Side Quest', questTargetId=131)"
+    },
+    {
+      "id": "marker-114",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1409.7,
+      "y": 2103.2,
+      "blurb": "Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #114 (template=2, caption='Side Quest', questTargetId=136)"
+    },
+    {
+      "id": "marker-115",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1494.0,
+      "y": 2033.5,
+      "blurb": "Return to Genevieve Mourningdale. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #115 (template=2, caption='Side Quest', questTargetId=137)"
+    },
+    {
+      "id": "marker-116",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1271.5,
+      "y": 1947.7,
+      "blurb": "Collect ingredients to craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #116 (template=2, caption='Side Quest', questTargetId=138)"
+    },
+    {
+      "id": "marker-117",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1307.3,
+      "y": 1891.3,
+      "blurb": "Collect ingredients to craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #117 (template=2, caption='Side Quest', questTargetId=139)"
+    },
+    {
+      "id": "marker-118",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1421.2,
+      "y": 2105.7,
+      "blurb": "Craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #118 (template=2, caption='Side Quest', questTargetId=140)"
+    },
+    {
+      "id": "marker-119",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1409.7,
+      "y": 2103.2,
+      "blurb": "Deliver Poisoned Food to IsXalniss Vorrik. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #119 (template=2, caption='Side Quest', questTargetId=141)"
+    },
+    {
+      "id": "marker-120",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1409.7,
+      "y": 2103.3,
+      "blurb": "Craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #120 (template=2, caption='Side Quest', questTargetId=140)"
+    },
+    {
+      "id": "marker-121",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1409.7,
+      "y": 2103.3,
+      "blurb": "Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #121 (template=2, caption='Side Quest', questTargetId=136)"
+    },
+    {
+      "id": "marker-122",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1494.1,
+      "y": 2033.5,
+      "blurb": "Return to Genevieve Mourningdale. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #122 (template=2, caption='Side Quest', questTargetId=137)"
+    },
+    {
+      "id": "marker-123",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1271.6,
+      "y": 1947.7,
+      "blurb": "Collect ingredients to craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #123 (template=2, caption='Side Quest', questTargetId=138)"
+    },
+    {
+      "id": "marker-124",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1307.3,
+      "y": 1891.3,
+      "blurb": "Collect ingredients to craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #124 (template=2, caption='Side Quest', questTargetId=139)"
+    },
+    {
+      "id": "marker-125",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1421.1,
+      "y": 2105.7,
+      "blurb": "Craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #125 (template=2, caption='Side Quest', questTargetId=140)"
+    },
+    {
+      "id": "marker-126",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1409.7,
+      "y": 2103.3,
+      "blurb": "Deliver Poisoned Food to IsXalniss Vorrik. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #126 (template=2, caption='Side Quest', questTargetId=141)"
+    },
+    {
+      "id": "marker-127",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1408.0,
+      "y": 2094.9,
+      "blurb": "Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #127 (template=2, caption='Side Quest', questTargetId=133)"
+    },
+    {
+      "id": "marker-128",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1408.0,
+      "y": 2094.9,
+      "blurb": "Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #128 (template=2, caption='Side Quest', questTargetId=134)"
+    },
+    {
+      "id": "marker-129",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1408.0,
+      "y": 2094.9,
+      "blurb": "Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #129 (template=2, caption='Side Quest', questTargetId=135)"
+    },
+    {
+      "id": "marker-130",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1409.7,
+      "y": 2103.3,
+      "blurb": "Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #130 (template=2, caption='Side Quest', questTargetId=136)"
+    },
+    {
+      "id": "marker-131",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1494.1,
+      "y": 2033.5,
+      "blurb": "Return to Genevieve Mourningdale. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #131 (template=2, caption='Side Quest', questTargetId=137)"
+    },
+    {
+      "id": "marker-132",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1271.6,
+      "y": 1947.7,
+      "blurb": "Collect ingredients to craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #132 (template=2, caption='Side Quest', questTargetId=138)"
+    },
+    {
+      "id": "marker-133",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1307.3,
+      "y": 1891.3,
+      "blurb": "Collect ingredients to craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #133 (template=2, caption='Side Quest', questTargetId=139)"
+    },
+    {
+      "id": "marker-134",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1421.1,
+      "y": 2105.7,
+      "blurb": "Craft the Poison. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #134 (template=2, caption='Side Quest', questTargetId=140)"
+    },
+    {
+      "id": "marker-135",
+      "category": "questObjective",
+      "name": "A Spy Among Us",
+      "x": 1409.7,
+      "y": 2103.3,
+      "blurb": "Deliver Poisoned Food to IsXalniss Vorrik. Side Quest: A Spy Among Us",
+      "continent": "A Spy Among Us",
+      "source": "Datamined PlayerMapDatabase marker #135 (template=2, caption='Side Quest', questTargetId=141)"
+    },
+    {
+      "id": "of-spawners-0",
+      "category": "spawner",
+      "name": "OF_Spawners #1",
+      "x": 1787.5,
+      "y": 1998.3,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-1",
+      "category": "spawner",
+      "name": "OF_Spawners #2",
+      "x": 1800.6,
+      "y": 2030.5,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-2",
+      "category": "spawner",
+      "name": "OF_Spawners #3",
+      "x": 1794.4,
+      "y": 1947.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-3",
+      "category": "spawner",
+      "name": "OF_Spawners #4",
+      "x": 1442.6,
+      "y": 2015.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-4",
+      "category": "spawner",
+      "name": "OF_Spawners #5",
+      "x": 1445.7,
+      "y": 1967.3,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-5",
+      "category": "spawner",
+      "name": "OF_Spawners #6",
+      "x": 1477.8,
+      "y": 2023.0,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-6",
+      "category": "spawner",
+      "name": "OF_Spawners #7",
+      "x": 1303.0,
+      "y": 1900.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-7",
+      "category": "spawner",
+      "name": "OF_Spawners #8",
+      "x": 1371.2,
+      "y": 1903.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-8",
+      "category": "spawner",
+      "name": "OF_Spawners #9",
+      "x": 1696.3,
+      "y": 1980.8,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-9",
+      "category": "spawner",
+      "name": "OF_Spawners #10",
+      "x": 1479.9,
+      "y": 1765.6,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-10",
+      "category": "spawner",
+      "name": "OF_Spawners #11",
+      "x": 1471.9,
+      "y": 2080.6,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-11",
+      "category": "spawner",
+      "name": "OF_Spawners #12",
+      "x": 1385.2,
+      "y": 2103.9,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-12",
+      "category": "spawner",
+      "name": "OF_Spawners #13",
+      "x": 1415.6,
+      "y": 1896.8,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-13",
+      "category": "spawner",
+      "name": "OF_Spawners #14",
+      "x": 1460.3,
+      "y": 1897.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-14",
+      "category": "spawner",
+      "name": "OF_Spawners #15",
+      "x": 1468.1,
+      "y": 1890.2,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-15",
+      "category": "spawner",
+      "name": "OF_Spawners #16",
+      "x": 1409.5,
+      "y": 1949.6,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-16",
+      "category": "spawner",
+      "name": "OF_Spawners #17",
+      "x": 1553.0,
+      "y": 2060.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-17",
+      "category": "spawner",
+      "name": "OF_Spawners #18",
+      "x": 1641.0,
+      "y": 1895.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-18",
+      "category": "spawner",
+      "name": "OF_Spawners #19",
+      "x": 1601.8,
+      "y": 1916.2,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-19",
+      "category": "spawner",
+      "name": "OF_Spawners #20",
+      "x": 1602.7,
+      "y": 1881.6,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-20",
+      "category": "spawner",
+      "name": "OF_Spawners #21",
+      "x": 1288.9,
+      "y": 2017.9,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-21",
+      "category": "spawner",
+      "name": "OF_Spawners #22",
+      "x": 1259.3,
+      "y": 2021.8,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-22",
+      "category": "spawner",
+      "name": "OF_Spawners #23",
+      "x": 1278.4,
+      "y": 1979.4,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-23",
+      "category": "spawner",
+      "name": "OF_Spawners #24",
+      "x": 1228.1,
+      "y": 1972.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-24",
+      "category": "spawner",
+      "name": "OF_Spawners #25",
+      "x": 1271.4,
+      "y": 1934.0,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-25",
+      "category": "spawner",
+      "name": "OF_Spawners #26",
+      "x": 1210.3,
+      "y": 1923.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-26",
+      "category": "spawner",
+      "name": "OF_Spawners #27",
+      "x": 1245.2,
+      "y": 1907.8,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-27",
+      "category": "spawner",
+      "name": "OF_Spawners #28",
+      "x": 1337.7,
+      "y": 2064.0,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-28",
+      "category": "spawner",
+      "name": "OF_Spawners #29",
+      "x": 1379.5,
+      "y": 2054.3,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-29",
+      "category": "spawner",
+      "name": "OF_Spawners #30",
+      "x": 1276.6,
+      "y": 2109.3,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-30",
+      "category": "spawner",
+      "name": "OF_Spawners #31",
+      "x": 1706.2,
+      "y": 1902.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-31",
+      "category": "spawner",
+      "name": "OF_Spawners #32",
+      "x": 1747.9,
+      "y": 1954.8,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-32",
+      "category": "spawner",
+      "name": "OF_Spawners #33",
+      "x": 1624.5,
+      "y": 1831.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-33",
+      "category": "spawner",
+      "name": "OF_Spawners #34",
+      "x": 1595.9,
+      "y": 1850.8,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-34",
+      "category": "spawner",
+      "name": "OF_Spawners #35",
+      "x": 1616.7,
+      "y": 1787.4,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-35",
+      "category": "spawner",
+      "name": "OF_Spawners #36",
+      "x": 1582.5,
+      "y": 1818.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-36",
+      "category": "spawner",
+      "name": "OF_Spawners #37",
+      "x": 1376.9,
+      "y": 1977.9,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-37",
+      "category": "spawner",
+      "name": "OF_Spawners #38",
+      "x": 1334.6,
+      "y": 1961.9,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-38",
+      "category": "spawner",
+      "name": "OF_Spawners #39",
+      "x": 1530.6,
+      "y": 1795.8,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-39",
+      "category": "spawner",
+      "name": "OF_Spawners #40",
+      "x": 1484.4,
+      "y": 1791.6,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-40",
+      "category": "spawner",
+      "name": "OF_Spawners #41",
+      "x": 1523.4,
+      "y": 1826.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-41",
+      "category": "spawner",
+      "name": "OF_Spawners #42",
+      "x": 1552.0,
+      "y": 1854.3,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-42",
+      "category": "spawner",
+      "name": "OF_Spawners #43",
+      "x": 1495.1,
+      "y": 1842.9,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-43",
+      "category": "spawner",
+      "name": "OF_Spawners #44",
+      "x": 1569.0,
+      "y": 1755.5,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-44",
+      "category": "spawner",
+      "name": "OF_Spawners #45",
+      "x": 1501.6,
+      "y": 1739.9,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-45",
+      "category": "spawner",
+      "name": "OF_Spawners #46",
+      "x": 1291.3,
+      "y": 1852.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-46",
+      "category": "spawner",
+      "name": "OF_Spawners #47",
+      "x": 1364.2,
+      "y": 1845.4,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-47",
+      "category": "spawner",
+      "name": "OF_Spawners #48",
+      "x": 1378.7,
+      "y": 1823.2,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-48",
+      "category": "spawner",
+      "name": "OF_Spawners #49",
+      "x": 1188.1,
+      "y": 1996.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-49",
+      "category": "spawner",
+      "name": "OF_Spawners #50",
+      "x": 1129.1,
+      "y": 1996.1,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-50",
+      "category": "spawner",
+      "name": "OF_Spawners #51",
+      "x": 1156.7,
+      "y": 1968.3,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 003e9613...)"
+    },
+    {
+      "id": "of-spawners-51",
+      "category": "spawner",
+      "name": "OF_Spawners #52",
+      "x": 1776.9,
+      "y": 2058.7,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    },
+    {
+      "id": "of-spawners-52",
+      "category": "spawner",
+      "name": "OF_Spawners #53",
+      "x": 1451.9,
+      "y": 1807.2,
+      "source": "Datamined MapGridsData_SO (OF_Spawners, GUID 5363df85...)"
+    }
+  ],
+  "polygons": [
+    {
+      "id": "ondals-fall",
+      "name": "Ondals Fall",
+      "category": "region",
+      "points": [
+        [
+          1847.8,
+          2254.7
+        ],
+        [
+          2039.7,
+          2154.0
+        ],
+        [
+          1957.3,
+          2026.9
+        ],
+        [
+          1909.3,
+          1971.4
+        ],
+        [
+          1877.9,
+          1933.5
+        ],
+        [
+          1829.0,
+          1885.4
+        ],
+        [
+          1776.4,
+          1854.0
+        ],
+        [
+          1684.1,
+          1822.5
+        ],
+        [
+          1644.4,
+          1779.0
+        ],
+        [
+          1599.1,
+          1708.7
+        ],
+        [
+          1577.0,
+          1693.0
+        ],
+        [
+          1530.8,
+          1681.9
+        ],
+        [
+          1431.1,
+          1668.9
+        ],
+        [
+          1376.7,
+          1657.8
+        ],
+        [
+          1361.9,
+          1681.9
+        ],
+        [
+          1344.4,
+          1725.4
+        ],
+        [
+          1311.2,
+          1755.9
+        ],
+        [
+          1268.7,
+          1779.9
+        ],
+        [
+          1220.7,
+          1826.2
+        ],
+        [
+          1196.7,
+          1857.7
+        ],
+        [
+          1155.2,
+          1893.7
+        ],
+        [
+          1085.0,
+          1923.3
+        ],
+        [
+          1057.3,
+          1927.0
+        ],
+        [
+          1019.5,
+          1974.2
+        ],
+        [
+          993.6,
+          2013.1
+        ],
+        [
+          1026.9,
+          2032.5
+        ],
+        [
+          1038.9,
+          2050.1
+        ],
+        [
+          1102.6,
+          2055.6
+        ],
+        [
+          1153.3,
+          2078.8
+        ],
+        [
+          1191.2,
+          2118.5
+        ],
+        [
+          1216.1,
+          2160.2
+        ],
+        [
+          1306.5,
+          2165.7
+        ],
+        [
+          1385.0,
+          2197.2
+        ],
+        [
+          1483.8,
+          2294.3
+        ],
+        [
+          1663.7,
+          2430.1
+        ]
+      ]
+    },
+    {
+      "id": "brevestone-cliffs",
+      "name": "Brevestone Cliffs",
+      "category": "region",
+      "points": [
+        [
+          2619.4,
+          1186.9
+        ],
+        [
+          2457.5,
+          1189.5
+        ],
+        [
+          2366.2,
+          1173.8
+        ],
+        [
+          2317.8,
+          1194.7
+        ],
+        [
+          2260.4,
+          1179.0
+        ],
+        [
+          2218.6,
+          1188.2
+        ],
+        [
+          2176.8,
+          1189.5
+        ],
+        [
+          2181.5,
+          1224.0
+        ],
+        [
+          2158.5,
+          1238.8
+        ],
+        [
+          2140.9,
+          1271.1
+        ],
+        [
+          2135.4,
+          1306.3
+        ],
+        [
+          2165.9,
+          1337.7
+        ],
+        [
+          2212.9,
+          1384.9
+        ],
+        [
+          2263.7,
+          1453.4
+        ],
+        [
+          2277.5,
+          1511.7
+        ],
+        [
+          2287.7,
+          1539.4
+        ],
+        [
+          2368.0,
+          1564.4
+        ],
+        [
+          2400.3,
+          1594.0
+        ],
+        [
+          2423.4,
+          1622.7
+        ],
+        [
+          2427.6,
+          1666.2
+        ],
+        [
+          2418.8,
+          1710.6
+        ],
+        [
+          2414.1,
+          1755.0
+        ],
+        [
+          2446.4,
+          1854.9
+        ],
+        [
+          2492.8,
+          1964.2
+        ],
+        [
+          2667.8,
+          2019.2
+        ],
+        [
+          2836.2,
+          2205.0
+        ],
+        [
+          2940.6,
+          2363.3
+        ],
+        [
+          3277.5,
+          2396.1
+        ],
+        [
+          3462.9,
+          2296.6
+        ],
+        [
+          3546.5,
+          2051.9
+        ],
+        [
+          3395.0,
+          1801.9
+        ],
+        [
+          3238.8,
+          1573.1
+        ],
+        [
+          3069.8,
+          1406.0
+        ],
+        [
+          2942.4,
+          1296.9
+        ],
+        [
+          2750.0,
+          1181.6
+        ]
+      ]
+    },
+    {
+      "id": "ironfern",
+      "name": "Ironfern",
+      "category": "region",
+      "points": [
+        [
+          2243.4,
+          2057.1
+        ],
+        [
+          2492.8,
+          1964.2
+        ],
+        [
+          2446.4,
+          1854.9
+        ],
+        [
+          2414.1,
+          1755.0
+        ],
+        [
+          2418.8,
+          1710.6
+        ],
+        [
+          2427.6,
+          1666.2
+        ],
+        [
+          2423.4,
+          1622.7
+        ],
+        [
+          2400.3,
+          1594.0
+        ],
+        [
+          2368.0,
+          1564.4
+        ],
+        [
+          2287.7,
+          1539.4
+        ],
+        [
+          2277.5,
+          1511.7
+        ],
+        [
+          2263.7,
+          1453.4
+        ],
+        [
+          2212.9,
+          1384.9
+        ],
+        [
+          2165.9,
+          1337.7
+        ],
+        [
+          2135.4,
+          1306.3
+        ],
+        [
+          2098.5,
+          1325.7
+        ],
+        [
+          2053.2,
+          1348.8
+        ],
+        [
+          2012.6,
+          1357.2
+        ],
+        [
+          1986.8,
+          1366.4
+        ],
+        [
+          1942.5,
+          1339.6
+        ],
+        [
+          1889.0,
+          1359.9
+        ],
+        [
+          1853.9,
+          1371.0
+        ],
+        [
+          1797.6,
+          1377.5
+        ],
+        [
+          1761.6,
+          1391.4
+        ],
+        [
+          1712.7,
+          1403.4
+        ],
+        [
+          1673.0,
+          1425.6
+        ],
+        [
+          1678.5,
+          1515.4
+        ],
+        [
+          1637.9,
+          1557.9
+        ],
+        [
+          1577.0,
+          1607.0
+        ],
+        [
+          1530.8,
+          1651.4
+        ],
+        [
+          1530.8,
+          1681.9
+        ],
+        [
+          1577.0,
+          1693.0
+        ],
+        [
+          1599.1,
+          1708.7
+        ],
+        [
+          1644.4,
+          1779.0
+        ],
+        [
+          1684.1,
+          1822.5
+        ],
+        [
+          1776.4,
+          1854.0
+        ],
+        [
+          1829.0,
+          1885.4
+        ],
+        [
+          1877.9,
+          1933.5
+        ],
+        [
+          1909.3,
+          1971.4
+        ],
+        [
+          1957.3,
+          2026.9
+        ],
+        [
+          2039.7,
+          2154.0
+        ]
+      ]
+    },
+    {
+      "id": "enarlond",
+      "name": "Enarlond",
+      "category": "region",
+      "points": [
+        [
+          2145.5,
+          1109.7
+        ],
+        [
+          2081.5,
+          1124.1
+        ],
+        [
+          1994.0,
+          1050.8
+        ],
+        [
+          1957.5,
+          1018.1
+        ],
+        [
+          1888.3,
+          1027.2
+        ],
+        [
+          1809.9,
+          1052.1
+        ],
+        [
+          1731.6,
+          1062.6
+        ],
+        [
+          1674.2,
+          1083.5
+        ],
+        [
+          1605.0,
+          1111.0
+        ],
+        [
+          1518.8,
+          1104.4
+        ],
+        [
+          1447.0,
+          1108.4
+        ],
+        [
+          1375.2,
+          1103.1
+        ],
+        [
+          1166.3,
+          1100.5
+        ],
+        [
+          970.4,
+          1274.6
+        ],
+        [
+          1082.3,
+          1412.7
+        ],
+        [
+          1133.0,
+          1468.2
+        ],
+        [
+          1173.6,
+          1506.1
+        ],
+        [
+          1217.0,
+          1568.1
+        ],
+        [
+          1247.5,
+          1607.0
+        ],
+        [
+          1299.2,
+          1622.7
+        ],
+        [
+          1376.7,
+          1657.8
+        ],
+        [
+          1431.1,
+          1668.9
+        ],
+        [
+          1530.8,
+          1681.9
+        ],
+        [
+          1530.8,
+          1651.4
+        ],
+        [
+          1577.0,
+          1607.0
+        ],
+        [
+          1637.9,
+          1557.9
+        ],
+        [
+          1678.5,
+          1515.4
+        ],
+        [
+          1673.0,
+          1425.6
+        ],
+        [
+          1712.7,
+          1403.4
+        ],
+        [
+          1761.6,
+          1391.4
+        ],
+        [
+          1797.6,
+          1377.5
+        ],
+        [
+          1853.9,
+          1371.0
+        ],
+        [
+          1889.0,
+          1359.9
+        ],
+        [
+          1942.5,
+          1339.6
+        ],
+        [
+          1986.8,
+          1366.4
+        ],
+        [
+          2012.6,
+          1357.2
+        ],
+        [
+          2053.2,
+          1348.8
+        ],
+        [
+          2098.5,
+          1325.7
+        ],
+        [
+          2135.4,
+          1306.3
+        ],
+        [
+          2140.9,
+          1271.1
+        ],
+        [
+          2158.5,
+          1238.8
+        ],
+        [
+          2181.5,
+          1224.0
+        ],
+        [
+          2176.8,
+          1189.5
+        ]
+      ]
+    },
+    {
+      "id": "elyssian-trail",
+      "name": "Elyssian Trail",
+      "category": "region",
+      "points": [
+        [
+          1910.0,
+          552.4
+        ],
+        [
+          1401.3,
+          666.1
+        ],
+        [
+          1286.4,
+          819.2
+        ],
+        [
+          1158.4,
+          1023.3
+        ],
+        [
+          1166.3,
+          1100.5
+        ],
+        [
+          1375.2,
+          1103.1
+        ],
+        [
+          1447.0,
+          1108.4
+        ],
+        [
+          1518.8,
+          1104.4
+        ],
+        [
+          1605.0,
+          1111.0
+        ],
+        [
+          1674.2,
+          1083.5
+        ],
+        [
+          1731.6,
+          1062.6
+        ],
+        [
+          1809.9,
+          1052.1
+        ],
+        [
+          1888.3,
+          1027.2
+        ],
+        [
+          1957.5,
+          1018.1
+        ],
+        [
+          1994.0,
+          1050.8
+        ],
+        [
+          2081.5,
+          1124.1
+        ],
+        [
+          2145.5,
+          1109.7
+        ],
+        [
+          2176.8,
+          1189.5
+        ],
+        [
+          2218.6,
+          1188.2
+        ],
+        [
+          2260.4,
+          1179.0
+        ],
+        [
+          2317.8,
+          1194.7
+        ],
+        [
+          2366.2,
+          1173.8
+        ],
+        [
+          2457.5,
+          1189.5
+        ],
+        [
+          2619.4,
+          1186.9
+        ],
+        [
+          2609.0,
+          1097.9
+        ],
+        [
+          2741.9,
+          934.9
+        ],
+        [
+          2757.8,
+          739.3
+        ],
+        [
+          2724.1,
+          604.5
+        ],
+        [
+          2549.1,
+          592.6
+        ],
+        [
+          2388.6,
+          659.6
+        ],
+        [
+          2178.1,
+          685.7
+        ],
+        [
+          2050.2,
+          654.3
+        ],
+        [
+          2039.3,
+          550.6
+        ]
+      ]
+    },
+    {
+      "id": "fate-s-end",
+      "name": "Fate's End",
+      "category": "region",
+      "points": [
+        [
+          381.6,
+          2096.4
+        ],
+        [
+          402.5,
+          2307.1
+        ],
+        [
+          476.9,
+          2526.9
+        ],
+        [
+          483.4,
+          2660.4
+        ],
+        [
+          552.6,
+          2937.8
+        ],
+        [
+          505.6,
+          3075.2
+        ],
+        [
+          734.0,
+          3207.3
+        ],
+        [
+          1077.5,
+          3283.3
+        ],
+        [
+          1179.3,
+          3067.4
+        ],
+        [
+          1402.6,
+          2871.1
+        ],
+        [
+          1521.4,
+          2643.4
+        ],
+        [
+          1663.7,
+          2430.1
+        ],
+        [
+          1483.8,
+          2294.3
+        ],
+        [
+          1385.0,
+          2197.2
+        ],
+        [
+          1306.5,
+          2165.7
+        ],
+        [
+          1216.1,
+          2160.2
+        ],
+        [
+          1191.2,
+          2118.5
+        ],
+        [
+          1153.3,
+          2078.8
+        ],
+        [
+          1102.6,
+          2055.6
+        ],
+        [
+          1038.9,
+          2050.1
+        ],
+        [
+          1026.9,
+          2032.5
+        ],
+        [
+          993.6,
+          2013.1
+        ],
+        [
+          938.3,
+          2027.9
+        ],
+        [
+          810.9,
+          2019.5
+        ],
+        [
+          728.7,
+          1959.4
+        ],
+        [
+          663.2,
+          1962.2
+        ],
+        [
+          635.5,
+          2003.8
+        ],
+        [
+          534.0,
+          1985.3
+        ],
+        [
+          379.8,
+          1928.6
+        ]
+      ]
+    },
+    {
+      "id": "greyfell-highlands",
+      "name": "Greyfell Highlands",
+      "category": "region",
+      "points": [
+        [
+          710.1,
+          1394.2
+        ],
+        [
+          510.8,
+          1536.3
+        ],
+        [
+          412.6,
+          1722.9
+        ],
+        [
+          379.8,
+          1928.6
+        ],
+        [
+          534.0,
+          1985.3
+        ],
+        [
+          635.5,
+          2003.8
+        ],
+        [
+          663.2,
+          1962.2
+        ],
+        [
+          728.7,
+          1959.4
+        ],
+        [
+          810.9,
+          2019.5
+        ],
+        [
+          938.3,
+          2027.9
+        ],
+        [
+          993.6,
+          2013.1
+        ],
+        [
+          1019.5,
+          1974.2
+        ],
+        [
+          1057.3,
+          1927.0
+        ],
+        [
+          1085.0,
+          1923.3
+        ],
+        [
+          1155.2,
+          1893.7
+        ],
+        [
+          1196.7,
+          1857.7
+        ],
+        [
+          1220.7,
+          1826.2
+        ],
+        [
+          1268.7,
+          1779.9
+        ],
+        [
+          1311.2,
+          1755.9
+        ],
+        [
+          1344.4,
+          1725.4
+        ],
+        [
+          1361.9,
+          1681.9
+        ],
+        [
+          1376.7,
+          1657.8
+        ],
+        [
+          1299.2,
+          1622.7
+        ],
+        [
+          1247.5,
+          1607.0
+        ],
+        [
+          1217.0,
+          1568.1
+        ],
+        [
+          1173.6,
+          1506.1
+        ],
+        [
+          1133.0,
+          1468.2
+        ],
+        [
+          1082.3,
+          1412.7
+        ],
+        [
+          970.4,
+          1274.6
+        ]
+      ]
+    },
+    {
+      "id": "charred-island",
+      "name": "Charred Island",
+      "category": "region",
+      "points": [
+        [
+          3575.2,
+          1425.1
+        ],
+        [
+          3883.3,
+          1376.6
+        ],
+        [
+          4062.1,
+          1317.3
+        ],
+        [
+          4122.2,
+          1097.0
+        ],
+        [
+          3906.4,
+          892.4
+        ],
+        [
+          3526.6,
+          871.1
+        ],
+        [
+          3156.3,
+          935.6
+        ],
+        [
+          2962.4,
+          1094.7
+        ],
+        [
+          2750.0,
+          1181.6
+        ],
+        [
+          2942.4,
+          1296.9
+        ],
+        [
+          3069.8,
+          1406.0
+        ],
+        [
+          3238.8,
+          1573.1
+        ]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,199 @@
+{
+  "_meta": {
+    "generatedAt": "2026-05-09T13:02:03.719Z",
+    "source": "world.json + datamine/quest_resolution.json",
+    "total": 19
+  },
+  "pois": [
+    {
+      "id": "quest-giver-advisor-fjorna-deepriver-11-1578-1812",
+      "category": "questGiver",
+      "name": "Advisor Fjorna Deepriver",
+      "x": 1577.5,
+      "y": 1811.9,
+      "blurb": "Bleeding Scars: Meet Advisor Fjorna Deepriver in Elderbrand Outpost / Present the Bone Bleeder to Advisor Deepriver",
+      "questSlug": "bleeding-scars",
+      "questTitle": "Bleeding Scars"
+    },
+    {
+      "id": "quest-giver-advisor-fjorna-deepriver-12-1796-1926",
+      "category": "questGiver",
+      "name": "Advisor Fjorna Deepriver",
+      "x": 1795.8,
+      "y": 1926.3,
+      "blurb": "The Stitched Trail: Talk to Advisor Fjorna Deepriver",
+      "questSlug": "the-stitched-trail",
+      "questTitle": "The Stitched Trail"
+    },
+    {
+      "id": "quest-giver-advisor-fjorna-deepriver-12-1518-2028",
+      "category": "questGiver",
+      "name": "Advisor Fjorna Deepriver",
+      "x": 1518.4,
+      "y": 2027.5,
+      "blurb": "The Stitched Trail: Talk to Advisor Fjorna Deepriver",
+      "questSlug": "the-stitched-trail",
+      "questTitle": "The Stitched Trail"
+    },
+    {
+      "id": "quest-giver-advisor-fjorna-deepriver-13-1445-1900",
+      "category": "questGiver",
+      "name": "Advisor Fjorna Deepriver",
+      "x": 1445.2,
+      "y": 1899.8,
+      "blurb": "The Goblin Threat: Talk to Advisor Fjorna Deepriver",
+      "questSlug": "the-goblin-threat",
+      "questTitle": "The Goblin Threat"
+    },
+    {
+      "id": "quest-giver-advisor-rushassa-22-1472-2077",
+      "category": "questGiver",
+      "name": "Advisor Rushassa",
+      "x": 1472.2,
+      "y": 2076.6,
+      "blurb": "Flawed Land: Speak with Advisor Rushassa",
+      "questSlug": "flawed-land",
+      "questTitle": "Flawed Land"
+    },
+    {
+      "id": "quest-giver-advisor-rushassa-22-1480-2021",
+      "category": "questGiver",
+      "name": "Advisor Rushassa",
+      "x": 1479.5,
+      "y": 2021.2,
+      "blurb": "Flawed Land: Return to Goathead Town and Debrief with Advisor Rushassa",
+      "questSlug": "flawed-land",
+      "questTitle": "Flawed Land"
+    },
+    {
+      "id": "quest-giver-commander-drak-21-1325-2074",
+      "category": "questGiver",
+      "name": "Commander Drak",
+      "x": 1325.2,
+      "y": 2073.5,
+      "blurb": "Twisted Scars: Present the Bone Bleeder to Commander Drak",
+      "questSlug": "twisted-scars",
+      "questTitle": "Twisted Scars"
+    },
+    {
+      "id": "quest-giver-commander-drak-22-1406-2096",
+      "category": "questGiver",
+      "name": "Commander Drak",
+      "x": 1406.2,
+      "y": 2096.4,
+      "blurb": "Flawed Land: Talk to Commander Drak at Goathead Town",
+      "questSlug": "flawed-land",
+      "questTitle": "Flawed Land"
+    },
+    {
+      "id": "quest-giver-commander-hal-11-1584-1819",
+      "category": "questGiver",
+      "name": "Commander Hal",
+      "x": 1583.6,
+      "y": 1819.2,
+      "blurb": "Bleeding Scars: Debrief Commander Hal back at the Outpost",
+      "questSlug": "bleeding-scars",
+      "questTitle": "Bleeding Scars"
+    },
+    {
+      "id": "quest-giver-genevieve-mourningdale-426-1494-2034",
+      "category": "questGiver",
+      "name": "Genevieve Mourningdale",
+      "x": 1494,
+      "y": 2033.5,
+      "blurb": "A Spy Among Us: Return to Genevieve Mourningdale / Return to Genevieve Mourningdale / Return to Genevieve Mourningdale",
+      "questSlug": "a-spy-among-us",
+      "questTitle": "A Spy Among Us"
+    },
+    {
+      "id": "quest-giver-isdrevar-vashrah-425-1381-1948",
+      "category": "questGiver",
+      "name": "IsDrevar Vashrah",
+      "x": 1380.7,
+      "y": 1947.6,
+      "blurb": "Out on a Limb: Talk to IsDrevar Vashrah",
+      "questSlug": "out-on-a-limb",
+      "questTitle": "Out on a Limb"
+    },
+    {
+      "id": "quest-giver-isvryssar-khazrah-424-1483-2069",
+      "category": "questGiver",
+      "name": "IsVryssar Khazrah",
+      "x": 1483.3,
+      "y": 2068.9,
+      "blurb": "A Soundless Sin: Return to IsVryssar Khazrah",
+      "questSlug": "a-soundless-sin",
+      "questTitle": "A Soundless Sin"
+    },
+    {
+      "id": "quest-giver-master-haldor-11-1487-1782",
+      "category": "questGiver",
+      "name": "Master Haldor",
+      "x": 1487.4,
+      "y": 1781.6,
+      "blurb": "Bleeding Scars: Speak with Master Haldor about Bone Bleeder",
+      "questSlug": "bleeding-scars",
+      "questTitle": "Bleeding Scars"
+    },
+    {
+      "id": "quest-giver-sergeant-elfrida-morhain-421-1304-1909",
+      "category": "questGiver",
+      "name": "Sergeant Elfrida Morhain",
+      "x": 1303.8,
+      "y": 1909.1,
+      "blurb": "Bolstering Ranks: Bring the Oily Goo to Sergeant Elfrida Morhain",
+      "questSlug": "bolstering-ranks",
+      "questTitle": "Bolstering Ranks"
+    },
+    {
+      "id": "quest-giver-thire-mercy-13-1491-1844",
+      "category": "questGiver",
+      "name": "Thire Mercy",
+      "x": 1491.4,
+      "y": 1843.7,
+      "blurb": "The Goblin Threat: Talk to Thire Mercy",
+      "questSlug": "the-goblin-threat",
+      "questTitle": "The Goblin Threat"
+    },
+    {
+      "id": "quest-giver-thomas-fielden-411-1624-1838",
+      "category": "questGiver",
+      "name": "Thomas Fielden",
+      "x": 1624.4,
+      "y": 1837.5,
+      "blurb": "The Harvest Below: Present the suspicious crop to Thomas Fielden",
+      "questSlug": "the-harvest-below",
+      "questTitle": "The Harvest Below"
+    },
+    {
+      "id": "quest-giver-tomas-fielden-411-1511-1766",
+      "category": "questGiver",
+      "name": "Tomas Fielden",
+      "x": 1511.3,
+      "y": 1765.6,
+      "blurb": "The Harvest Below: Return to Tomas Fielden",
+      "questSlug": "the-harvest-below",
+      "questTitle": "The Harvest Below"
+    },
+    {
+      "id": "quest-giver-urdine-deepthorn-416-1788-2089",
+      "category": "questGiver",
+      "name": "Urdine Deepthorn",
+      "x": 1787.7,
+      "y": 2089.3,
+      "blurb": "Greedy Monsters: Report to Urdine Deepthorn",
+      "questSlug": "greedy-monsters",
+      "questTitle": "Greedy Monsters"
+    },
+    {
+      "id": "quest-giver-wounded-advisor-22-1439-1900",
+      "category": "questGiver",
+      "name": "Wounded Advisor",
+      "x": 1439.2,
+      "y": 1900.1,
+      "blurb": "Flawed Land: Talk to Wounded Advisor",
+      "questSlug": "flawed-land",
+      "questTitle": "Flawed Land"
+    }
+  ]
+}

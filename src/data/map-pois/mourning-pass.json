@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/mourning-pass.png",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "note": "Datamined from playtest client. Scene 'MourningPass_Terrain' world extents [60.517, 72.80166]..[422.36395, 439.66153] mapped to image pixels."
+  },
+  "pois": [
+    {
+      "id": "spawn-so-spawn-0",
+      "category": "spawnPoint",
+      "name": "SO_Spawn",
+      "x": 1049.1,
+      "y": 1738.4,
+      "source": "Datamined SceneGroupList SpawnPointData (2, mapId=10)"
+    },
+    {
+      "id": "spawn-dom-spawn-1",
+      "category": "spawnPoint",
+      "name": "Dom_Spawn",
+      "x": 1042.4,
+      "y": 342.7,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=10)"
+    },
+    {
+      "id": "spawn-sacredorderspawn-23",
+      "category": "spawnPoint",
+      "name": "SacredOrderSpawn",
+      "x": 1049.1,
+      "y": 342.7,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=10)"
+    },
+    {
+      "id": "spawn-dominationspawn-24",
+      "category": "spawnPoint",
+      "name": "DominationSpawn",
+      "x": 1049.1,
+      "y": 1738.5,
+      "source": "Datamined SceneGroupList SpawnPointData (2, mapId=10)"
+    }
+  ],
+  "polygons": []
+}

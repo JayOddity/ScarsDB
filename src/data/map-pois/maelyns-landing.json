@@ -1,0 +1,35 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/maelyns-landing.png",
+    "imageWidth": 2048,
+    "imageHeight": 1158,
+    "note": "Datamined from playtest client. Scene 'MourningPass_Human_Hub' world extents [-663.0, -250.0]..[663.0, 500.0] mapped to image pixels."
+  },
+  "pois": [
+    {
+      "id": "spawn-sor-15",
+      "category": "spawnPoint",
+      "name": "sor",
+      "x": 1259.7,
+      "y": 915.9,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=7)"
+    },
+    {
+      "id": "spawn-dom-16",
+      "category": "spawnPoint",
+      "name": "dom",
+      "x": 1259.7,
+      "y": 915.9,
+      "source": "Datamined SceneGroupList SpawnPointData (2, mapId=7)"
+    },
+    {
+      "id": "spawn-mid-17",
+      "category": "spawnPoint",
+      "name": "mid",
+      "x": 1259.7,
+      "y": 915.9,
+      "source": "Datamined SceneGroupList SpawnPointData (0, mapId=7)"
+    }
+  ],
+  "polygons": []
+}

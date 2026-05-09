@@ -1,0 +1,10 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/human-hub.png",
+    "imageWidth": 2048,
+    "imageHeight": 1279,
+    "note": "Datamined from playtest client. Scene 'Human Startings Zone' world extents [-218.93, -0.56925964]..[474.2978, 432.4675] mapped to image pixels."
+  },
+  "pois": [],
+  "polygons": []
+}

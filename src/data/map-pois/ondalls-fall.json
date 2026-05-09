@@ -1,0 +1,43 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/ondalls-fall.png",
+    "imageWidth": 1024,
+    "imageHeight": 1024,
+    "note": "Datamined from playtest client. Scene 'Orc_Starting_Zone' world extents [-1280.0032, -1279.9058]..[1280.0454, 1280.0039] mapped to image pixels."
+  },
+  "pois": [
+    {
+      "id": "spawn-sor-18",
+      "category": "spawnPoint",
+      "name": "sor",
+      "x": 71.4,
+      "y": 447.9,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=8)"
+    },
+    {
+      "id": "spawn-dom-19",
+      "category": "spawnPoint",
+      "name": "dom",
+      "x": 71.4,
+      "y": 447.9,
+      "source": "Datamined SceneGroupList SpawnPointData (2, mapId=8)"
+    },
+    {
+      "id": "spawn-mid-20",
+      "category": "spawnPoint",
+      "name": "mid",
+      "x": 71.4,
+      "y": 447.9,
+      "source": "Datamined SceneGroupList SpawnPointData (0, mapId=8)"
+    },
+    {
+      "id": "spawn-spawnpoint-25",
+      "category": "spawnPoint",
+      "name": "SpawnPoint",
+      "x": 554.3,
+      "y": 478.7,
+      "source": "Datamined SceneGroupList SpawnPointData (0, mapId=8)"
+    }
+  ],
+  "polygons": []
+}

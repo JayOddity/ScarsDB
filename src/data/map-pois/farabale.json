@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/farabale.png",
+    "imageWidth": 2048,
+    "imageHeight": 1157,
+    "note": "Datamined from playtest client. Scene 'Farabale' world extents [-1000.0, -565.0]..[1000.0, 565.0] mapped to image pixels."
+  },
+  "pois": [
+    {
+      "id": "spawn-sacredorderspawn-0",
+      "category": "spawnPoint",
+      "name": "SacredOrderSpawn",
+      "x": 1228.3,
+      "y": 1031.4,
+      "source": "Datamined SceneGroupList SpawnPointData (0, mapId=1)"
+    },
+    {
+      "id": "spawn-dominationspawn-1",
+      "category": "spawnPoint",
+      "name": "DominationSpawn",
+      "x": 729.9,
+      "y": 257.4,
+      "source": "Datamined SceneGroupList SpawnPointData (0, mapId=1)"
+    },
+    {
+      "id": "spawn-sor-1",
+      "category": "spawnPoint",
+      "name": "sor",
+      "x": 1228.8,
+      "y": 957.3,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=1)"
+    },
+    {
+      "id": "spawn-dom-2",
+      "category": "spawnPoint",
+      "name": "dom",
+      "x": 769.0,
+      "y": 308.2,
+      "source": "Datamined SceneGroupList SpawnPointData (2, mapId=1)"
+    },
+    {
+      "id": "spawn-mid-3",
+      "category": "spawnPoint",
+      "name": "mid",
+      "x": 1101.2,
+      "y": 547.9,
+      "source": "Datamined SceneGroupList SpawnPointData (0, mapId=1)"
+    }
+  ],
+  "polygons": []
+}

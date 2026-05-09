@@ -1,0 +1,9 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/world-irongarth.png",
+    "imageWidth": 4096,
+    "imageHeight": 4096,
+    "note": "Manually placed chest locations. Loot chest world positions are server-side and cannot be datamined from the client. Add entries here as you confirm chest spawn points in-game. Use category 'rareChest' (id 7003), 'fantasticChest' (id 7006), or 'mythicalChest' (id 7007). x/y are PIXEL coordinates on the 4096x4096 world map image — to convert from in-game world coords (X, Z) use: pixelX = (worldX - (-627.09)) / (16606.15 - (-627.09)) * 4096; pixelY = (1 - (worldZ - (-979.94)) / (16214.06 - (-979.94))) * 4096."
+  },
+  "pois": []
+}

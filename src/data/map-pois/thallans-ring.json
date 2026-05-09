@@ -1,0 +1,27 @@
+{
+  "_meta": {
+    "image": "/images/maps/zones/thallans-ring.png",
+    "imageWidth": 2048,
+    "imageHeight": 2048,
+    "note": "Datamined from playtest client. Scene 'ThallansRing' world extents [-32.639805, -15.982941]..[157.55856, 170.55777] mapped to image pixels."
+  },
+  "pois": [
+    {
+      "id": "spawn-mid1-13",
+      "category": "spawnPoint",
+      "name": "mid1",
+      "x": 351.5,
+      "y": 1872.5,
+      "source": "Datamined SceneGroupList SpawnPointData (1, mapId=5)"
+    },
+    {
+      "id": "spawn-mid2-14",
+      "category": "spawnPoint",
+      "name": "mid2",
+      "x": 351.5,
+      "y": 1872.5,
+      "source": "Datamined SceneGroupList SpawnPointData (2, mapId=5)"
+    }
+  ],
+  "polygons": []
+}

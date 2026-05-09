@@ -129,13 +129,6 @@ export default function SpellDatabase() {
   const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [sortBy, setSortBy] = useState<SortKey>('class');
   const [sortDir, setSortDir] = useState<SortDir>('asc');
-  const [counts, setCounts] = useState<{ items: number; spells: number } | null>(null);
-
-  useEffect(() => {
-    fetch('/api/counts').then((r) => r.json()).then((d) => {
-      if (typeof d?.items === 'number' && typeof d?.spells === 'number') setCounts(d);
-    }).catch(() => { /* ignore */ });
-  }, []);
 
   useEffect(() => {
     const t = setTimeout(() => { setDebouncedSearch(search); setPage(1); }, 300);
@@ -190,16 +183,22 @@ export default function SpellDatabase() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-6">Spell Database</h1>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 flex-wrap">
         <Link
           href="/database"
           className="px-4 py-2 rounded-lg text-sm font-medium bg-dark-surface text-text-muted hover:text-text-primary transition-all"
         >
-          Items {counts && <span className="ml-1 opacity-60">({counts.items.toLocaleString()})</span>}
+          Items
         </Link>
         <span className="px-4 py-2 rounded-lg text-sm font-medium bg-honor-gold text-void-black">
-          Spells {meta && <span className="ml-1 opacity-70">({meta.total.toLocaleString()})</span>}
+          Spells
         </span>
+        <Link
+          href="/database/quests"
+          className="px-4 py-2 rounded-lg text-sm font-medium bg-dark-surface text-text-muted hover:text-text-primary transition-all"
+        >
+          Quests
+        </Link>
       </div>
 
       <div className="bg-card-bg border border-border-subtle rounded-lg p-4 sm:p-5 mb-6 space-y-3">

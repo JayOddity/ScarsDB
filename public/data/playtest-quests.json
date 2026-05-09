@@ -1,0 +1,1107 @@
+{
+  "generatedAt": "2026-05-09T10:07:03.165Z",
+  "source": "datamine/quest_resolution.json",
+  "total": 19,
+  "types": [
+    "Main",
+    "Side",
+    "Special"
+  ],
+  "quests": [
+    {
+      "id": 11,
+      "title": "Bleeding Scars",
+      "type": 1,
+      "typeLabel": "Main",
+      "objectives": [
+        {
+          "type": 8,
+          "text": "Meet Advisor Fjorna Deepriver in Elderbrand Outpost",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Investigate North Farm",
+          "coords": [
+            5971.061,
+            43.002,
+            8842.498
+          ],
+          "radius": 5000,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Kill Gorejaws around the North Farm",
+          "coords": null,
+          "radius": null,
+          "counter": 3
+        },
+        {
+          "type": 8,
+          "text": "Debrief Commander Hal back at the Outpost",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Gather small bones from Skeleton Warriors",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Get a Big Bone from a Skeleton Berserker",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Speak with Master Haldor about Bone Bleeder",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Find a Large fishing spot for a Fish Scale",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Gather Copper ore from Copper mines",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Use a crafting bench to make a basic longsword",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver the Bone Bleeder materials to Master Haldor",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Present the Bone Bleeder to Advisor Deepriver",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Find the entrance to the crypt under Stormrise Tower",
+          "coords": [
+            6088.501,
+            41.612,
+            8301.582
+          ],
+          "radius": 1500,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Eliminate the Demon spawn",
+          "coords": null,
+          "radius": null,
+          "counter": 3
+        },
+        {
+          "type": 7,
+          "text": "Investigate the Demon Scar",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 7,
+          "text": "Talk to Advisor Fjorna Deepriver",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "bleeding-scars"
+    },
+    {
+      "id": 22,
+      "title": "Flawed Land",
+      "type": 1,
+      "typeLabel": "Main",
+      "objectives": [
+        {
+          "type": 8,
+          "text": "Talk to Commander Drak at Goathead Town",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 4,
+          "text": "Search Goathead Town For Scar",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Speak with Advisor Rushassa",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Kill the Attackers",
+          "coords": null,
+          "radius": null,
+          "counter": 3
+        },
+        {
+          "type": 1,
+          "text": "Eliminate All Enemies",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 8,
+          "text": "Return to Goathead Town and Debrief with Advisor Rushassa",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Travel to King's Gate",
+          "coords": [
+            5597.525,
+            59.639,
+            7729.433
+          ],
+          "radius": 10,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Talk to Wounded Advisor",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "flawed-land"
+    },
+    {
+      "id": 23,
+      "title": "Rupture",
+      "type": 1,
+      "typeLabel": "Main",
+      "objectives": [
+        {
+          "type": 7,
+          "text": "Talk to Advisor Rushassa at Talonsreach Cradle",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 7,
+          "text": "Talk to Advisor Rushassa at Talonsreach Cradle",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Defeat Commander Drak",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 8,
+          "text": "Retrieve Advisor Fjorna Deepriver's Severed Head",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Defeat Advisor Rushassa",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 3,
+          "text": "Retrieve Advisor Rushassa's Severed Head",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "rupture"
+    },
+    {
+      "id": 12,
+      "title": "The Stitched Trail",
+      "type": 1,
+      "typeLabel": "Main",
+      "objectives": [
+        {
+          "type": 8,
+          "text": "Enquire about Advisor Fjorna to the Citizens of Goldport",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Talk to Advisor Fjorna Deepriver",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Travel to Goldport Island",
+          "coords": [
+            6452.761,
+            55.548,
+            7983.884
+          ],
+          "radius": 5,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Eliminate the Gorejaw Alpha at the Scar",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 7,
+          "text": "Investigate the Demon Scar",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Travel to King's Gate",
+          "coords": [
+            5722.769,
+            59.541,
+            7719.541
+          ],
+          "radius": 10,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Eliminate All Enemies",
+          "coords": null,
+          "radius": null,
+          "counter": 2
+        },
+        {
+          "type": 8,
+          "text": "Talk to Advisor Fjorna Deepriver",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "the-stitched-trail"
+    },
+    {
+      "id": 21,
+      "title": "Twisted Scars",
+      "type": 1,
+      "typeLabel": "Main",
+      "objectives": [
+        {
+          "type": 6,
+          "text": "Deliver Letter to IsKryzath Rhulkar in Lanternback Slopes",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Collect 3 Gorejaw Pelts",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver the proof to IsKryzath Rhulkar",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 7,
+          "text": "Speak to Commander Drak at Ravens Reach.",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Gather small bones from Skeleton Warriors",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Get a Big Bone from a Skeleton Berserker",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Speak with IsVryssar Drekkar about Bone Bleeder",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Find a Large fishing spot for a Fish Scale",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Gather Copper ore from Copper mines",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Use a crafting bench to make a basic longsword",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver Items to IsVryssar Drekkar",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Present the Bone Bleeder to Commander Drak",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Travel to Splintered Quarry",
+          "coords": [
+            4948.398,
+            163.639,
+            7510.139
+          ],
+          "radius": 150,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Eliminate All Enemies",
+          "coords": null,
+          "radius": null,
+          "counter": 3
+        },
+        {
+          "type": 7,
+          "text": "Speak with the Advisor at the ruined village",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "twisted-scars"
+    },
+    {
+      "id": 424,
+      "title": "A Soundless Sin",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 12,
+          "text": "Search the area for Monsters",
+          "coords": [
+            5069.011,
+            62.458,
+            8614.118
+          ],
+          "radius": 150,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Defeat the Monster",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 8,
+          "text": "Return to IsVryssar Khazrah",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "a-soundless-sin"
+    },
+    {
+      "id": 426,
+      "title": "A Spy Among Us",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 8,
+          "text": "Talk to the Citizens of Goathead Town",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Return to Genevieve Mourningdale",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Collect ingredients to craft the Poison",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Collect ingredients to craft the Poison",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Craft the Poison",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver Poisoned Food to IsXalniss Vorrik",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Report Back to Genevieve Mourningdale",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "a-spy-among-us"
+    },
+    {
+      "id": 412,
+      "title": "A Warrior's Duty",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 3,
+          "text": "Search the swamp to the North East for tribute",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Persuade the Lieutenant to join the war effort",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "a-warriors-duty"
+    },
+    {
+      "id": 422,
+      "title": "Back in the Game",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 6,
+          "text": "Get and Deliver the Armor to Reginald Ashbourne ",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Get and Deliver the Weapon to Reginald Ashbourne ",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "back-in-the-game"
+    },
+    {
+      "id": 421,
+      "title": "Bolstering Ranks",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 3,
+          "text": "Collect Spider Limbs from the Dead Spiders",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Bring the Spider Limbs back to Friedrik Noirwald",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Collect the Oily Goo from Friedrik Noirwald",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Bring the Oily Goo to Sergeant Elfrida Morhain",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Give the Oily Goo to Prisoner",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Report Back to Sergeant Elfrida Morhain",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "bolstering-ranks"
+    },
+    {
+      "id": 427,
+      "title": "Can't see a thing!",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 3,
+          "text": "Reach the Burnt Forest",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Collect Resin Infused Wood from Spiders",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "cant-see-a-thing"
+    },
+    {
+      "id": 414,
+      "title": "Families in the Wind",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 3,
+          "text": "HiddenObjective",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Ask about the Amulet in Goldport",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Return the Amulet to its Rightful Owner",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "families-in-the-wind"
+    },
+    {
+      "id": 416,
+      "title": "Greedy Monsters",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 3,
+          "text": "Recover the Sack of Hops",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Recover the Sack of Wheat",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver Hops to Urdine Deepthorn",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Listen to Urdine Deepthorn's Request",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Enquire the citizens of Goldport about missing goods",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Report to Urdine Deepthorn",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Find Cultists Hideout",
+          "coords": [
+            6893.577,
+            12.147,
+            7442.506
+          ],
+          "radius": 150,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Eliminate the Cultist Leader",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 3,
+          "text": "Take the loot from the Pirate Leader",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Debrief Urdine Deepthorn",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "greedy-monsters"
+    },
+    {
+      "id": 423,
+      "title": "Lost in Transport",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 12,
+          "text": "Find the Missing Crate",
+          "coords": [
+            5015.899,
+            44.634,
+            8266.603
+          ],
+          "radius": 150,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Retrieve Items from Crate",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Give Items to Ambrose Nightveil",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Continue talking to Ambrose Nightveil",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "lost-in-transport"
+    },
+    {
+      "id": 425,
+      "title": "Out on a Limb",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 12,
+          "text": "Search area for IsDrevar Vashrah",
+          "coords": [
+            5639.651,
+            143.487,
+            7529.032
+          ],
+          "radius": 30,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Defeat Enemies",
+          "coords": null,
+          "radius": null,
+          "counter": 5
+        },
+        {
+          "type": 8,
+          "text": "Talk to IsDrevar Vashrah",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Search for the Lost Sword",
+          "coords": [
+            5593.059,
+            144.294,
+            7563.077
+          ],
+          "radius": 20,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Eliminate the Ambushers",
+          "coords": null,
+          "radius": null,
+          "counter": 3
+        },
+        {
+          "type": 7,
+          "text": "Return to IsDrevar Vashrah",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 7,
+          "text": "Return to IsDrevar Vashrah",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "out-on-a-limb"
+    },
+    {
+      "id": 413,
+      "title": "Strengthening Defenses",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 3,
+          "text": "Gather Resin by chopping down Brownhorns",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Gather Lightwood by chopping down Spiketrees",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver the materials to Hargan Deepthon",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Collect Gorejaw Pelts from Gorejaws around the outpost",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver the materials to Jorma Steelsmith",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "strengthening-defenses"
+    },
+    {
+      "id": 411,
+      "title": "The Harvest Below",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 3,
+          "text": "Investigate the South Farm",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Present the suspicious crop to Thomas Fielden",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Find Pritch's farm",
+          "coords": [
+            6187.345,
+            46.416,
+            8487.896
+          ],
+          "radius": 5000,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Confront Farmer Pritch",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Kill the Skeleton",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 8,
+          "text": "Return to Tomas Fielden",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "the-harvest-below"
+    },
+    {
+      "id": 415,
+      "title": "Venomous Healing",
+      "type": 2,
+      "typeLabel": "Side",
+      "objectives": [
+        {
+          "type": 7,
+          "text": "Talk to Herbalist Perrin Duskvale",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Kill 5 Cultist Thugs",
+          "coords": null,
+          "radius": null,
+          "counter": 3
+        },
+        {
+          "type": 6,
+          "text": "Deliver the Medalion to Perrin Duskvale",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Find Toxic spiders in the woods to the west and retrieve their Venom Sacks",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 3,
+          "text": "Collect Ghostleaf for the Antipodes",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver the Spider Venom to Gramli Hearthvein",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Deliver the Ghostleaf flowers to Gramli Hearthvein",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 6,
+          "text": "Heal Fallen Soldier",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "venomous-healing"
+    },
+    {
+      "id": 13,
+      "title": "The Goblin Threat",
+      "type": 8,
+      "typeLabel": "Special",
+      "objectives": [
+        {
+          "type": 12,
+          "text": "Travel to Heartline Post",
+          "coords": [
+            5650.883,
+            40.438,
+            8465.873
+          ],
+          "radius": 10,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Talk to Thire Mercy",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 12,
+          "text": "Travel to Talonsreach Cradle",
+          "coords": [
+            5434.057,
+            32.311,
+            8260.959
+          ],
+          "radius": 20,
+          "counter": null
+        },
+        {
+          "type": 8,
+          "text": "Talk to Advisor Fjorna Deepriver",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        },
+        {
+          "type": 1,
+          "text": "Defeat Advisor Fjorna Deepriver",
+          "coords": null,
+          "radius": null,
+          "counter": 1
+        },
+        {
+          "type": 3,
+          "text": "Retrieve Advisor Fjorna Deepriver's Severed Head",
+          "coords": null,
+          "radius": null,
+          "counter": null
+        }
+      ],
+      "slug": "the-goblin-threat"
+    }
+  ]
+}

@@ -295,7 +295,7 @@ export default function ItemDatabase({ initialData, apiUrl = '/api/items', title
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
       <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-6">Item Database{titleSuffix ? ` — ${titleSuffix}` : ''}</h1>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 flex-wrap">
         <span className="px-4 py-2 rounded-lg text-sm font-medium bg-honor-gold text-void-black">
           Items
         </span>
@@ -304,6 +304,12 @@ export default function ItemDatabase({ initialData, apiUrl = '/api/items', title
           className="px-4 py-2 rounded-lg text-sm font-medium bg-dark-surface text-text-muted hover:text-text-primary transition-all"
         >
           Spells
+        </Link>
+        <Link
+          href="/database/quests"
+          className="px-4 py-2 rounded-lg text-sm font-medium bg-dark-surface text-text-muted hover:text-text-primary transition-all"
+        >
+          Quests
         </Link>
       </div>
 

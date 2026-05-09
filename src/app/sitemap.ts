@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import type { MetadataRoute } from 'next';
 import { classes, allRaces } from '@/data/classes';
 import { professions } from '@/data/professions';
@@ -15,6 +17,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/races`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/talents`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${base}/database`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+    { url: `${base}/database/spells`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${base}/database/quests`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${base}/gear`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${base}/builds`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${base}/builds/pvp`, lastModified: now, changeFrequency: 'daily', priority: 0.7 },
@@ -73,5 +77,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [...staticPages, ...classPages, ...racePages, ...talentPages, ...professionPages];
+  // Quest detail pages from datamined JSON
+  let questPages: MetadataRoute.Sitemap = [];
+  try {
+    const questsFile = path.join(process.cwd(), 'public', 'data', 'playtest-quests.json');
+    const raw = JSON.parse(fs.readFileSync(questsFile, 'utf8')) as { quests: Array<{ slug: string }> };
+    questPages = raw.quests.map((q) => ({
+      url: `${base}/database/quests/${q.slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    }));
+  } catch {
+    // file not present in this build — skip
+  }
+
+  return [...staticPages, ...classPages, ...racePages, ...talentPages, ...professionPages, ...questPages];
 }

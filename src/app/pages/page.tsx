@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { sanityClient } from '@/lib/sanity';
 
 export const metadata = {
-  title: 'Pages - ScarsHQ',
+  title: 'Scars of Honor Guides & Info Pages | ScarsHQ',
   description: 'General information pages for the Scars of Honor fan site.',
 };
 

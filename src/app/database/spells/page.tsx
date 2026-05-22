@@ -1,7 +1,7 @@
 import SpellDatabase from '@/components/SpellDatabase';
 
 export const metadata = {
-  title: 'Spell Database — ScarsHQ',
+  title: 'Scars of Honor Spell Database | ScarsHQ',
   description: 'Every spell, ability, and passive in Scars of Honor. Filter by school, resource, and flags.',
   alternates: { canonical: '/database/spells' },
 };

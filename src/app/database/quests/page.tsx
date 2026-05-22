@@ -3,7 +3,7 @@ import path from 'node:path';
 import QuestDatabase, { type Quest } from '@/components/QuestDatabase';
 
 export const metadata = {
-  title: 'Quest Database — ScarsHQ',
+  title: 'Scars of Honor Quest Database | ScarsHQ',
   description: 'Every datamined Scars of Honor quest. Filter by Main, Side, or Special and search objectives.',
   alternates: { canonical: '/database/quests' },
 };

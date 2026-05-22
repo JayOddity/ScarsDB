@@ -4,7 +4,7 @@ import { factions, classes } from '@/data/classes';
 const classMap = new Map(classes.map((c) => [c.slug, c]));
 
 export const metadata = {
-  title: 'Races - ScarsHQ',
+  title: 'Scars of Honor Races: All 8 Playable Races & Factions | ScarsHQ',
   description: 'All 8 playable races in Scars of Honor. Humans, Sun Elves, Dwarves, Bearans, Orcs, Infernal Demons, Undead, and Gronthar.',
   alternates: { canonical: '/races' },
 };

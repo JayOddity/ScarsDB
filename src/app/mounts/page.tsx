@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Mounts - ScarsHQ',
+  title: 'Scars of Honor Mounts: Ground Mounts Explained | ScarsHQ',
   description: 'Mounts in Scars of Honor. Ground mounts only — no flying mounts in the game.',
   alternates: { canonical: '/mounts' },
 };
@@ -13,7 +13,7 @@ export default function MountsPage() {
         <div className="w-3 h-3 gem-bullet" />
         <p className="text-xs uppercase tracking-[0.22em] text-honor-gold">Mounts</p>
       </div>
-      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-4">Mounts</h1>
+      <h1 className="font-heading text-3xl md:text-4xl text-honor-gold mb-4">Scars of Honor Mounts</h1>
       <p className="text-text-secondary leading-8 mb-8 max-w-3xl">
         Scars of Honor has ground mounts only — there are no flying mounts in the game. Beyond
         that, specific mount names, speeds, and how you get them have not been confirmed yet.

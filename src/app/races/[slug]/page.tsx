@@ -13,7 +13,7 @@ export function generateMetadata({ params }: { params: Promise<{ slug: string }>
     const race = allRaces.find((r) => r.slug === slug);
     if (!race) return { title: 'Not Found' };
     return {
-      title: `${race.name} - ScarsHQ`,
+      title: `${race.name} - Scars of Honor Race Guide | ScarsHQ`,
       description: race.description,
       alternates: { canonical: `/races/${race.slug}` },
     };

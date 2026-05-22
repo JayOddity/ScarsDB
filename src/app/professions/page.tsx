@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { professions, type Profession } from '@/data/professions';
 
 export const metadata = {
-  title: 'Professions - ScarsHQ',
+  title: 'Scars of Honor Professions: Gathering & Crafting | ScarsHQ',
   description: 'Five gathering and three crafting professions in Scars of Honor: Mining, Woodcutting, Herbalism, Carving, Fishing, Blacksmithing, Cooking, and Alchemy.',
   alternates: { canonical: '/professions' },
 };

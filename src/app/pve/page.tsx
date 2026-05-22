@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'PvE Content - Dungeons, Questing & Bosses | ScarsHQ',
+  title: 'Scars of Honor PvE: Dungeons, Questing & Bosses | ScarsHQ',
   description: 'PvE in Scars of Honor — procedural dungeons, open world questing, boss encounters, and group content.',
   alternates: { canonical: '/pve' },
 };

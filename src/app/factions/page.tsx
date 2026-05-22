@@ -4,7 +4,7 @@ import { factions } from '@/data/classes';
 import type { Faction } from '@/data/classes';
 
 export const metadata = {
-  title: 'Factions - ScarsHQ',
+  title: 'Scars of Honor Factions: Sacred Order vs The Domination | ScarsHQ',
   description: 'The Sacred Order vs. The Domination. Two factions locked in eternal war over the fate of Aragon.',
   alternates: { canonical: '/factions' },
 };

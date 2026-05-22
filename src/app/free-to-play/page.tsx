@@ -278,7 +278,7 @@ export default function FreeToPlayPage() {
           <div className="relative max-w-2xl mx-auto">
             <h2 className="font-heading text-2xl md:text-3xl text-honor-gold mb-3">Try It Yourself</h2>
             <p className="text-sm md:text-base text-text-muted mb-6 leading-7">
-              Scars of Honor is available to wishlist on Steam now. The next playtest runs
+              Scars of Honor is available to wishlist on Steam now. The most recent playtest ran
               April 30 to May 11, 2026.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

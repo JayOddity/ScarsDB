@@ -4,7 +4,7 @@ const quickFacts = [
   { label: 'Platform', value: 'PC via Steam' },
   { label: 'Price', value: 'Free to Play' },
   { label: 'Status', value: 'Pre release playtest phase' },
-  { label: 'Next Access', value: 'April 30 - May 11, 2026' },
+  { label: 'Next Access', value: 'To be announced' },
 ];
 
 const steps = [
@@ -46,7 +46,7 @@ const faqs = [
   {
     question: 'Can I download Scars of Honor right now?',
     answer:
-      'Not yet as a permanent download. The game opens for download during playtest windows on Steam. The next one is April 30 to May 11, 2026.',
+      'Not yet as a permanent download. The game opens for download during playtest windows on Steam. The most recent one ran April 30 to May 11, 2026, and no date has been set for the next.',
   },
   {
     question: 'Do I need a key to play?',
@@ -93,7 +93,7 @@ export default function DownloadContent() {
             Wishlist on Steam
           </a>
           <p className="text-text-muted text-sm mt-4">
-            Next playtest: April 30 to May 11, 2026.
+            Last playtest: April 30 to May 11, 2026. Wishlist to hear about the next one.
           </p>
         </div>
       </section>
@@ -157,7 +157,7 @@ export default function DownloadContent() {
             <h2 className="font-heading text-2xl text-honor-gold mb-4">Availability Right Now</h2>
             <p className="text-text-secondary leading-8 mb-4">
               Scars of Honor is not in full release yet. The game opens for download on Steam
-              during official playtest windows. The next one runs April 30 to May 11, 2026.
+              during official playtest windows. The most recent one ran April 30 to May 11, 2026, and no date has been announced for the next.
             </p>
             <p className="text-text-muted leading-8 mb-6">
               Request access on the Steam page to sign up. If you are accepted, the download

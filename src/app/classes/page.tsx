@@ -5,7 +5,7 @@ import { PLAYABLE_CLASS_SLUGS } from '@/lib/classTalents';
 
 export const metadata = {
   title: 'Scars of Honor Classes: 4 Playable in Spring 2026 Playtest | ScarsHQ',
-  description: 'All 10 Scars of Honor classes. Druid, Mage, Paladin, and Ranger are playable in the Spring 2026 playtest, each with full ability lists on its own page. The other 6 classes are not in this test.',
+  description: 'All 10 Scars of Honor classes. Druid, Mage, Paladin, and Ranger were playable in the Spring 2026 playtest, each with full ability lists on its own page. The other 6 classes were not in that test.',
   openGraph: {
     title: 'Scars of Honor Classes: 4 Playable, 6 Coming Later',
     description: 'Druid, Mage, Paladin, Ranger playable in the Spring 2026 playtest. Open each class for its full abilities and talent tree.',
@@ -53,7 +53,7 @@ export default function ClassesPage() {
         Scars of Honor has 10 classes with no fixed subclasses. Each class has a talent tree of 190 to 210 nodes — your picks define the role.
       </p>
       <p className="text-text-secondary max-w-3xl mb-8">
-        Four classes are playable in the Spring 2026 playtest (April 30 to May 11): <Link href="/classes/druid" className="text-honor-gold hover:text-honor-gold-light">Druid</Link>, <Link href="/classes/mage" className="text-honor-gold hover:text-honor-gold-light">Mage</Link>, <Link href="/classes/paladin" className="text-honor-gold hover:text-honor-gold-light">Paladin</Link>, and <Link href="/classes/ranger" className="text-honor-gold hover:text-honor-gold-light">Ranger</Link>. The other six are listed below for reference.
+        Four classes were playable in the Spring 2026 playtest (April 30 to May 11): <Link href="/classes/druid" className="text-honor-gold hover:text-honor-gold-light">Druid</Link>, <Link href="/classes/mage" className="text-honor-gold hover:text-honor-gold-light">Mage</Link>, <Link href="/classes/paladin" className="text-honor-gold hover:text-honor-gold-light">Paladin</Link>, and <Link href="/classes/ranger" className="text-honor-gold hover:text-honor-gold-light">Ranger</Link>. The other six are listed below for reference.
       </p>
 
       {/* Quick nav */}

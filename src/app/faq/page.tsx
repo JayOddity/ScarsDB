@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const faqItems = [
   { q: 'Is Scars of Honor free to play?', a: 'Yes. Free to play, no subscription. The shop is cosmetic only.' },
   { q: 'What platform is the game on?', a: 'PC only for now. The team has said they want to get PC right first before looking at anything else.' },
-  { q: 'When does Scars of Honor come out?', a: 'Early Access is expected around Q1 2027 based on what Beastburst CEO Armegon has said on stream. No confirmed full release date yet. The next Technical Alpha runs April 30 to May 11, 2026 on Steam.' },
+  { q: 'When does Scars of Honor come out?', a: 'Early Access is expected around Q1 2027 based on what Beastburst CEO Armegon has said on stream. No confirmed full release date yet. The most recent Technical Alpha ran April 30 to May 11, 2026 on Steam.' },
   { q: 'How many classes are there?', a: '10 classes. There are no subclasses. Instead, each class has a talent tree with 240+ nodes and three paths you can spend points in however you want.' },
   { q: 'Are there subclasses?', a: 'No. The talent tree replaces subclasses. You pick your nodes and that determines your role.' },
   { q: 'How many races can I choose from?', a: '8 races across 2 factions (Sacred Order and Domination, 4 races each). Your race locks your faction and limits which classes you can play.' },

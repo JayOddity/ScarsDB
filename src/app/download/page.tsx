@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import DownloadContent from './DownloadContent';
 
 export const metadata: Metadata = {
-  title: 'Download Scars of Honor: Free on Steam, Playtest Live Now | ScarsHQ',
-  description: 'Scars of Honor is free on Steam and the playtest is live until May 11, 2026. No key needed. Step by step guide to get in game in under 2 minutes.',
+  title: 'Download Scars of Honor: Free on Steam, How to Get In | ScarsHQ',
+  description: 'Scars of Honor is free on Steam and opens for download during playtest windows. The Spring 2026 test ran April 30 to May 11. Step by step guide to get in game.',
   openGraph: {
     title: 'How to Download and Play Scars of Honor',
     description: 'Free to play MMORPG on Steam. Request playtest access on the Steam page. Step by step guide to get in game.',
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'How to Download Scars of Honor',
-    description: 'Free on Steam. Request playtest access on the Steam page. Next playtest: April 30 to May 11, 2026.',
+    description: 'Free on Steam. Request playtest access on the Steam page. The Spring 2026 test ran April 30 to May 11.',
     images: ['/images/og-download.jpg'],
   },
   alternates: {

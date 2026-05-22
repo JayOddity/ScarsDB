@@ -161,7 +161,7 @@ export default function CommunityPage() {
         </div>
         <h2 className="font-heading text-2xl text-honor-gold mb-4">Ready to Play?</h2>
         <p className="text-text-secondary mb-8">
-          The next playtest runs April 30 - May 11, 2026. Request access on the Steam page.
+          The Spring 2026 playtest ran April 30 - May 11. Wishlist on Steam to hear when the next one opens.
         </p>
         <a
           href="https://store.steampowered.com/app/4253010/Scars_of_Honor/"

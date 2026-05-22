@@ -59,10 +59,10 @@ export default async function ClassTierListPage() {
       </p>
       <div className="mb-8 p-4 rounded-lg border border-honor-gold/20 bg-honor-gold/5 max-w-3xl">
         <p className="text-sm text-text-secondary">
-          <span className="font-heading text-honor-gold">Heads up:</span> Scars of Honor is still in
-          playtest. Any tier list this early is guesswork. These rankings will mean a lot more once
-          the Spring 2026 Playtest (April 30 to May 11) produces real combat data and a larger pool
-          of builds to vote on. Check back often.
+          <span className="font-heading text-honor-gold">Heads up:</span> Scars of Honor is still pre
+          release. A tier list this early is mostly guesswork. The Spring 2026 Playtest (April 30 to
+          May 11) gave the first real combat data, and these rankings will keep shifting as the build
+          pool grows. Check back often.
         </p>
       </div>
 

@@ -14,7 +14,7 @@ const faqs = [
       },
       {
         q: 'When does Scars of Honor come out?',
-        a: 'Early Access is expected around Q1 2027 based on what Beastburst CEO Armegon has said on stream. No confirmed full release date yet. The next Technical Alpha runs April 30 to May 11, 2026 on Steam.',
+        a: 'Early Access is expected around Q1 2027 based on what Beastburst CEO Armegon has said on stream. No confirmed full release date yet. The most recent Technical Alpha ran April 30 to May 11, 2026 on Steam.',
       },
     ],
   },

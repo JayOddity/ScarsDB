@@ -4,10 +4,10 @@ import PlaytestCountdown from '@/components/PlaytestCountdown';
 
 export const metadata: Metadata = {
   title: 'Scars of Honor Release Date: Early Access & Alpha Roadmap 2026 | ScarsHQ',
-  description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. Next playtest: April 30 to May 11, 2026. Get the latest roadmap updates here.',
+  description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. The Spring 2026 playtest ran April 30 to May 11. Get the latest roadmap updates here.',
   openGraph: {
     title: 'Scars of Honor Release Date: Early Access & Alpha Roadmap 2026',
-    description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. Next playtest: April 30 to May 11, 2026. Get the latest roadmap updates here.',
+    description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. The Spring 2026 playtest ran April 30 to May 11. Get the latest roadmap updates here.',
     url: '/scars-of-honor-release-date',
     siteName: 'ScarsHQ',
     type: 'website',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Scars of Honor Release Date: Early Access & Alpha Roadmap 2026',
-    description: 'When is the Scars of Honor release date? Early Access is estimated around Q1 2027. Next playtest: April 30 to May 11, 2026.',
+    description: 'When is the Scars of Honor release date? Early Access is estimated around Q1 2027. The Spring 2026 playtest ran April 30 to May 11.',
     images: ['/images/og-release-date.jpg'],
   },
   alternates: {
@@ -31,30 +31,32 @@ export const metadata: Metadata = {
   },
 };
 
-const timeline = [
+type TimelineStatus = 'completed' | 'upcoming' | 'future';
+
+const timeline: { date: string; title: string; description: string; status: TimelineStatus }[] = [
   {
     date: 'October 2024',
     title: 'First Public Playtest',
     description: 'Initial playtest giving players their first hands on experience with the game.',
-    status: 'completed' as const,
+    status: 'completed',
   },
   {
     date: 'April 30 - May 11, 2026',
     title: 'Public Technical Alpha',
-    description: 'Public Technical Alpha on Steam. 6 races (Human, Dwarf, Infernal Demon, Undead, Bearan, Gronthar) and all 10 classes available to both factions. Ondall\'s Fall region, world bosses including The Lord of Shadows, and PvP across 3 content waves. Dungeons not included this time.',
-    status: 'upcoming' as const,
+    description: 'Public Technical Alpha on Steam. 6 races (Human, Dwarf, Infernal Demon, Undead, Bearan, Gronthar) and 4 classes (Druid, Mage, Paladin, Ranger). Ondall\'s Fall region, world bosses including The Lord of Shadows, and PvP across 3 content waves. Dungeons were not included this time.',
+    status: 'completed',
   },
   {
     date: 'Estimated Q1 2027',
     title: 'Early Access Launch',
     description: 'Scars of Honor is expected to release in Early Access around Q1 2027, as stated by Beastburst CEO Armegon on his Twitch channel. This date is subject to possible change.',
-    status: 'future' as const,
+    status: 'future',
   },
   {
     date: 'TBA',
     title: 'Full Release',
     description: 'The full release date for Scars of Honor is currently unknown. More details are expected after the Early Access launch.',
-    status: 'future' as const,
+    status: 'future',
   },
 ];
 
@@ -73,7 +75,7 @@ const knownFacts = [
   },
   {
     question: 'Can I play it right now?',
-    answer: 'Not currently. The next opportunity to play is the April 30th Playtest running until May 11. Request access on Steam where it says "Join the Scars of Honor Playtest".',
+    answer: 'Not right now. The most recent chance to play was the Spring 2026 Technical Alpha, which ran April 30 to May 11. Wishlist on Steam and watch the Discord for the next test window.',
   },
   {
     question: 'What are the system requirements?',
@@ -138,7 +140,7 @@ export default function ReleaseDatePage() {
             '@context': 'https://schema.org',
             '@type': 'Article',
             headline: 'Scars of Honor Release Date: Early Access & Alpha Roadmap 2026',
-            description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. Next playtest: April 30 to May 11, 2026.',
+            description: 'When is the Scars of Honor release date? Early Access is expected around Q1 2027. The Spring 2026 playtest ran April 30 to May 11.',
             author: { '@type': 'Organization', name: 'ScarsHQ', url: 'https://scarshq.com' },
             publisher: { '@type': 'Organization', name: 'ScarsHQ', url: 'https://scarshq.com' },
             image: 'https://scarshq.com/images/og-release-date.jpg',
@@ -163,10 +165,10 @@ export default function ReleaseDatePage() {
             When is Scars of Honor coming out?
           </p>
           <p className="text-text-muted">
-            Scars of Honor is expected to launch in Early Access around Q1 2027. The next chance to play is the
+            Scars of Honor is expected to launch in Early Access around Q1 2027. The most recent chance to play was the
             <Link href="/playtest" className="text-honor-gold hover:text-honor-gold-light"> public Technical Alpha</Link> on Steam,
-            running April 30 - May 11, 2026. Sign up for the test on their{' '}
-            <a href="https://store.steampowered.com/app/4253010/Scars_of_Honor/" target="_blank" rel="noopener noreferrer" className="text-honor-gold hover:text-honor-gold-light">Steam page</a> now.
+            which ran April 30 - May 11, 2026. Wishlist on their{' '}
+            <a href="https://store.steampowered.com/app/4253010/Scars_of_Honor/" target="_blank" rel="noopener noreferrer" className="text-honor-gold hover:text-honor-gold-light">Steam page</a> to hear about the next one.
           </p>
         </div>
       </section>
@@ -190,7 +192,7 @@ export default function ReleaseDatePage() {
             <tr className="border-t border-border-subtle">
               <td className="px-4 py-3">Public Technical Alpha</td>
               <td className="px-4 py-3">April 30 – May 11, 2026</td>
-              <td className="px-4 py-3"><span className="text-honor-gold">Upcoming</span></td>
+              <td className="px-4 py-3"><span className="text-green-400">Completed</span></td>
             </tr>
             <tr className="border-t border-border-subtle">
               <td className="px-4 py-3">Early Access</td>

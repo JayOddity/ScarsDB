@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import type { GameClass } from '@/data/classes';
 import { classes } from '@/data/classes';
@@ -234,6 +235,19 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       if (data.banned) setIsBanned(true);
       if (data.loggedIn) setLoggedIn(true);
     }).catch(() => {});
+  }, [readOnly]);
+
+  // Show class picker on first visit of the day (skip for read-only and build loads)
+  useEffect(() => {
+    if (readOnly) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('build')) return;
+    const today = new Date().toISOString().slice(0, 10);
+    const seen = localStorage.getItem('scarshq-class-picker-date');
+    if (seen !== today) {
+      localStorage.setItem('scarshq-class-picker-date', today);
+      setShowClassPicker(true);
+    }
   }, [readOnly]);
 
   // Strip stale ?pick=true if present (legacy hub redirect)
@@ -1025,62 +1039,69 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       {/* Scars tab */}
       {!readOnly && activeTab === 'Scars' && (
         <div className="flex-1 overflow-y-auto bg-void-black">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
             <h2 className="font-heading text-2xl text-honor-gold mb-2">Scars</h2>
             <p className="text-text-secondary text-sm mb-8 max-w-2xl">
-              Scars are permanent marks earned through gameplay achievements. Unlike talents that can be respecced, Scars are forever — choose wisely.
+              Six named Scars from the playtest client. Each is a tradeoff. Numbers can still change before launch.
             </p>
 
-            {/* Scar Slots */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-10">
-              {[
-                { name: 'PvE Scar', desc: 'Earned through dungeon mastery and boss kills' },
-                { name: 'PvP Scar', desc: 'Earned through arena victories and battleground dominance' },
-                { name: 'Exploration Scar', desc: 'Earned through world discovery and hidden secrets' },
-                { name: 'Crafting Scar', desc: 'Earned through crafting mastery and rare creations' },
-                { name: 'Achievement Scar', desc: 'Earned through unique feats and milestones' },
-                { name: 'Legacy Scar', desc: 'Earned through long-term dedication and progression' },
-              ].map((scar) => (
-                <div key={scar.name} className="bg-card-bg border border-border-subtle rounded-lg p-5 flex items-start gap-4 hover:border-honor-gold-dim transition-colors">
-                  <div className="w-12 h-12 rounded-lg bg-dark-surface border border-border-subtle flex items-center justify-center flex-shrink-0">
-                    <div className="w-3 h-3 gem-bullet" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-heading text-sm text-text-primary mb-1">{scar.name}</h3>
-                    <p className="text-xs text-text-muted">{scar.desc}</p>
-                    <div className="mt-2 flex items-center gap-2">
-                      <div className="h-1.5 flex-1 bg-dark-surface rounded-full overflow-hidden">
-                        <div className="h-full bg-border-subtle rounded-full" style={{ width: '0%' }} />
+            {/* Confirmed Scars — single row, fixed dimensions, scroll on narrow viewports */}
+            <div className="overflow-x-auto pb-2 mb-12">
+              <div className="flex flex-nowrap gap-3 mx-auto w-fit">
+                {[
+                  { name: 'Vampiric Strike', gain: 'Heal 10 HP on Basic Attacks' },
+                  { name: 'Armor Shredding', gain: '+30% Armor Penetration', loss: '−3% Crit Chance, −20% Crit Damage' },
+                  { name: 'Go with the Wind', gain: '+10% Movement Speed', loss: '−5% Strength, Dexterity, Intelligence' },
+                  { name: 'Unmovable Object', gain: '+200 Armor and Resistance', loss: '−5% Movement Speed' },
+                  { name: 'Glass Cannon', gain: '+20% Intellect', loss: '−30% Vitality' },
+                  { name: 'Path of the Berserker', gain: '+25 Crit Chance, +50 Crit Damage', loss: '−150 Armor' },
+                ].map((scar) => (
+                  <div
+                    key={scar.name}
+                    className="shrink-0 relative w-[170px] h-[265px] hover:scale-[1.04] transition-transform"
+                  >
+                    <Image
+                      src="/Icons/UI/Scars/container-normal.png"
+                      alt=""
+                      fill
+                      sizes="170px"
+                      className="object-contain pointer-events-none select-none"
+                    />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center px-[10%] pt-[16%] pb-[14%] text-center">
+                      <h3 className="font-heading text-xs text-honor-gold mb-2 leading-tight">{scar.name}</h3>
+                      <div className="space-y-1.5 text-[11px] leading-snug">
+                        <p className="text-emerald-400">{scar.gain}</p>
+                        {scar.loss && <p className="text-scar-red-light">{scar.loss}</p>}
                       </div>
-                      <span className="text-[10px] text-text-muted">Locked</span>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
 
-            {/* How It Works */}
-            <div className="bg-card-bg border border-border-subtle rounded-lg p-6 mb-6">
-              <h3 className="font-heading text-lg text-honor-gold mb-4">How Scars Work</h3>
-              <div className="space-y-3">
-                <div className="flex items-start gap-3">
-                  <span className="text-honor-gold text-sm mt-0.5">1.</span>
-                  <p className="text-sm text-text-secondary"><strong className="text-text-primary">Earn through gameplay</strong> — Complete achievements, conquer challenges, and reach milestones to unlock Scar choices.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-honor-gold text-sm mt-0.5">2.</span>
-                  <p className="text-sm text-text-secondary"><strong className="text-text-primary">Choose your mark</strong> — Each Scar slot presents a meaningful choice between different bonuses and effects.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <span className="text-honor-gold text-sm mt-0.5">3.</span>
-                  <p className="text-sm text-text-secondary"><strong className="text-text-primary">Permanent decision</strong> — Once chosen, a Scar cannot be changed. It becomes part of your character&apos;s identity.</p>
+            {/* Lord of Shadows — locked banner */}
+            <div className="mb-6 max-w-2xl mx-auto">
+              <div className="relative aspect-[580/320]">
+                <Image
+                  src="/Icons/UI/Scars/container-locked.png"
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  className="object-contain pointer-events-none select-none"
+                />
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-[10%] pt-[10%] pb-[18%] text-center">
+                  <h3 className="font-heading text-base lg:text-lg text-honor-gold mb-2">Lord of Shadows Scars</h3>
+                  <p className="text-xs lg:text-sm text-text-primary italic max-w-md">
+                    &ldquo;Slay the Lord of Shadows at Ondal&apos;s Fall to unlock his powers.&rdquo;
+                  </p>
+                  <p className="text-[10px] lg:text-xs text-text-muted mt-2">Locked — list not yet datamined</p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-honor-gold/5 border border-honor-gold/20 rounded-lg p-5 text-center">
-              <p className="text-sm text-text-secondary">
-                <strong className="text-honor-gold">Coming Soon</strong> — Specific Scar options and their effects will be added as more information becomes available from playtests.
+            <div className="bg-honor-gold/5 border border-honor-gold/20 rounded-lg p-4">
+              <p className="text-xs text-text-secondary">
+                <strong className="text-honor-gold">Source:</strong> ScarsTable in the playtest client localization. The system also has rarity tiers (white, blue, purple, orange), Levels and Challenges progression axes, and a coin-cost reroll. Selection and saving Scars with builds is a follow-up.
               </p>
             </div>
           </div>
@@ -1907,11 +1928,12 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
         document.body
       )}
 
-      {/* Class Picker Overlay */}
+      {/* Class Picker Overlay — shown once per day on first visit */}
       {showClassPicker && (
-        <div className="fixed top-[109px] left-0 right-0 bottom-0 z-50 bg-black/40" onClick={() => setShowClassPicker(false)}>
+        <div className="fixed top-[109px] left-0 right-0 bottom-0 z-50 bg-black/50 backdrop-blur-sm" onClick={() => setShowClassPicker(false)}>
           <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-deep-night border border-border-subtle rounded-lg p-6 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
-            <h3 className="font-heading text-xl text-honor-gold mb-5 text-center">Talent Calculator</h3>
+            <h3 className="font-heading text-xl text-honor-gold mb-1 text-center">Pick a class</h3>
+            <p className="text-text-muted text-sm text-center mb-5">Select a class to plan your talent tree.</p>
             <div className="grid grid-cols-5 gap-4">
               {[...classes].sort((a, b) => a.name.localeCompare(b.name)).map((cls) => (
                 <button
@@ -1932,6 +1954,11 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                   </span>
                 </button>
               ))}
+            </div>
+            <div className="mt-5 text-center">
+              <button onClick={() => setShowClassPicker(false)} className="text-sm text-text-muted hover:text-text-secondary transition-colors">
+                Continue with {gameClass.name}
+              </button>
             </div>
           </div>
         </div>

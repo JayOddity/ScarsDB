@@ -1931,7 +1931,7 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
       {/* Class Picker Overlay — shown once per day on first visit */}
       {showClassPicker && (
         <div className="fixed top-[109px] left-0 right-0 bottom-0 z-50 bg-black/50 backdrop-blur-sm" onClick={() => setShowClassPicker(false)}>
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-deep-night border border-border-subtle rounded-lg p-6 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-deep-night/80 border border-border-subtle rounded-lg p-6 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-heading text-xl text-honor-gold mb-1 text-center">Pick a class</h3>
             <p className="text-text-muted text-sm text-center mb-5">Select a class to plan your talent tree.</p>
             <div className="grid grid-cols-5 gap-4">
@@ -1940,25 +1940,14 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
                   key={cls.slug}
                   onClick={() => {
                     setShowClassPicker(false);
-                    if (cls.slug !== gameClass.slug) talentRouter.push(`/talents/${cls.slug}`);
+                    talentRouter.push(`/talents/${cls.slug}`);
                   }}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-lg border transition-all hover:border-honor-gold-dim hover:bg-honor-gold/5 ${
-                    cls.slug === gameClass.slug
-                      ? 'border-honor-gold bg-honor-gold/10'
-                      : 'border-border-subtle'
-                  }`}
+                  className="flex flex-col items-center gap-2 p-4 rounded-lg border border-border-subtle transition-all hover:border-honor-gold-dim hover:bg-honor-gold/5"
                 >
                   <img src={cls.icon} alt={cls.name} className="w-10 h-10" />
-                  <span className={`text-xs font-heading ${cls.slug === gameClass.slug ? 'text-honor-gold' : 'text-text-secondary'}`}>
-                    {cls.name}
-                  </span>
+                  <span className="text-xs font-heading text-text-secondary">{cls.name}</span>
                 </button>
               ))}
-            </div>
-            <div className="mt-5 text-center">
-              <button onClick={() => setShowClassPicker(false)} className="text-sm text-text-muted hover:text-text-secondary transition-colors">
-                Continue with {gameClass.name}
-              </button>
             </div>
           </div>
         </div>

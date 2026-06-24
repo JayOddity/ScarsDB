@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { classes } from '@/data/classes';
 import BreadcrumbJsonLd from '@/components/BreadcrumbJsonLd';
-import TalentsHubRedirect from './TalentsHubRedirect';
 
 export const metadata: Metadata = {
   title: 'Scars of Honor Talent Tree — Calculator & Build Planner | ScarsHQ',
@@ -43,14 +41,10 @@ export default async function TalentsHubPage({ searchParams }: { searchParams: P
   if (lastClass) {
     redirect(`/talents/${lastClass}`);
   }
-  // First-time visitor (no cookie, no tab): default to Mage so they see real
-  // datamined content rather than an empty Warrior stub.
-  redirect('/talents/mage');
+  // First-time visitor: render the hub so Google indexes /talents as the
+  // canonical talent tree page rather than routing that signal to /builds.
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 pb-8">
-      <Suspense fallback={null}>
-        <TalentsHubRedirect />
-      </Suspense>
       <BreadcrumbJsonLd
         items={[
           { name: 'Home', url: '/' },

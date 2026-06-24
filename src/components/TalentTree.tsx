@@ -1930,8 +1930,8 @@ export default function TalentTree({ gameClass, readOnly = false, initialAllocat
 
       {/* Class Picker Overlay — shown once per day on first visit */}
       {showClassPicker && (
-        <div className="fixed top-[109px] left-0 right-0 bottom-0 z-50 bg-black/50 backdrop-blur-sm" onClick={() => setShowClassPicker(false)}>
-          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-deep-night/80 border border-border-subtle rounded-lg p-6 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed top-[109px] left-0 right-0 bottom-0 z-50 bg-black/50 backdrop-blur-[3px]" onClick={() => setShowClassPicker(false)}>
+          <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[60] bg-deep-night/65 border border-border-subtle rounded-lg p-6 w-full max-w-2xl shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <h3 className="font-heading text-xl text-honor-gold mb-1 text-center">Pick a class</h3>
             <p className="text-text-muted text-sm text-center mb-5">Select a class to plan your talent tree.</p>
             <div className="grid grid-cols-5 gap-4">
